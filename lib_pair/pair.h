@@ -21,6 +21,9 @@ class TPair {
     TPair(const TPair& pair) : _first(pair._first), _second(pair._second) { }
     ~TPair() { }
 
+    inline T1 first() const noexcept;
+    inline T2 second() const noexcept;
+
     inline void set_first(const T1& value) noexcept;
     inline void set_second(const T2& value) noexcept;
 
@@ -55,6 +58,16 @@ inline void TPair<T1, T2>::set_second(const T2& value) noexcept {
 }
 
 template <class T1, class T2>
+inline T1 TPair<T1, T2>::first() const noexcept {
+    return _first;
+}
+
+template <class T1, class T2>
+inline T2 TPair<T1, T2>::second() const noexcept {
+    return _second;
+}
+
+template <class T1, class T2>
 TPair<T1, T2>& TPair<T1, T2>::operator=(const TPair<T1, T2>& pair) noexcept {
     if (this != &pair) {
         _first = pair._first;
@@ -74,6 +87,13 @@ template <class T1, class T2>
 TPair<T1, T2>& TPair<T1, T2>::operator+=(const TPair<T1, T2>& pair) noexcept {
     _first += pair._first;
     _second += pair._second;
+    return *this;
+}
+
+template <class T1, class T2>
+TPair<T1, T2>& TPair<T1, T2>::operator/=(const TPair<T1, T2>& pair) noexcept {
+    _first /= pair._first;
+    _second /= pair._second;
     return *this;
 }
 

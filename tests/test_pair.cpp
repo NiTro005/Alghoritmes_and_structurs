@@ -22,5 +22,26 @@ TEST(TestPairLib, CheckOperatorPlusRavno) {
 
 	t1 += t;
 
-	EXPECT_EQ(t1.first(), 13, t1.second(), 5);
+	EXPECT_EQ(t1.first(), 11);
+	EXPECT_EQ(t1.second(), 14);
+}
+
+TEST(TestPairLib, CheckOperatorMinusRavno) {
+	TPair<int, int> t(1, 4);
+	TPair<int, int> t1(10, 10);
+
+	t1 -= t;
+
+	EXPECT_EQ(t1.first(), 9);
+	EXPECT_EQ(t1.second(), 6);
+}
+
+TEST(TestPairLib, CheckOperatorFractionRavno) {
+	TPair<double, double> t(1, 5);
+	TPair<double, double> t1(10, 10);
+
+	t1 /= t;
+
+	EXPECT_DOUBLE_EQ(t1.first(), 10.0);
+	EXPECT_DOUBLE_EQ(t1.second(), 2.0);
 }
