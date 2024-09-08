@@ -45,3 +45,13 @@ TEST(TestPairLib, CheckOperatorFractionRavno) {
 	EXPECT_DOUBLE_EQ(t1.first(), 10.0);
 	EXPECT_DOUBLE_EQ(t1.second(), 2.0);
 }
+
+TEST(TestPairLib, CheckOperatorMultRavno) {
+	TPair<int, int> t(1, 4);
+	TPair<int, int> t1(10, 10);
+
+	t1 *= t;
+
+	EXPECT_EQ(t1.first(), 10);
+	EXPECT_EQ(t1.second(), 40);
+}

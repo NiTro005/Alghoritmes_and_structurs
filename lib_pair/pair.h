@@ -98,6 +98,13 @@ TPair<T1, T2>& TPair<T1, T2>::operator/=(const TPair<T1, T2>& pair) noexcept {
 }
 
 template <class T1, class T2>
+TPair<T1, T2>& TPair<T1, T2>::operator*=(const TPair<T1, T2>& pair) noexcept {
+    _first *= pair._first;
+    _second *= pair._second;
+    return *this;
+}
+
+template <class T1, class T2>
 TPair<T1, T2>& TPair<T1, T2>::operator+(const TPair<T1, T2>& pair) const noexcept {
     TPair<T1, T2> temp(*this);
     temp._first += pair._first;
