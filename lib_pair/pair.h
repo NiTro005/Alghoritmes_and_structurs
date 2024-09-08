@@ -37,7 +37,10 @@ class TPair {
 
     std::string to_string() const noexcept;
 
-    friend std::ostream& operator<<<T1, T2>(std::ostream& out, const TPair<T1, T2>& pair) noexcept;
+    void swap(TPair& pair)noexcept;
+
+    friend std::ostream& operator<< <T1, T2>(std::ostream& out, const TPair<T1, T2>& pair) noexcept;
+
 };
 
 
@@ -64,6 +67,13 @@ template <class T1, class T2>
 TPair<T1, T2>& TPair<T1, T2>::operator-=(const TPair<T1, T2>& pair) noexcept {
     _first -= pair._first;
     _second -= pair._second;
+    return *this;
+}
+
+template <class T1, class T2>
+TPair<T1, T2>& TPair<T1, T2>::operator+=(const TPair<T1, T2>& pair) noexcept {
+    _first += pair._first;
+    _second += pair._second;
     return *this;
 }
 

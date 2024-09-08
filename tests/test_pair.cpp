@@ -16,4 +16,11 @@ TEST(TestPairLib, WorkOnAllTipe) {
 	ASSERT_NO_THROW(tipe1, tipe2, tipe3, tipe4, tipe5, tipe6, tipe7, tipe8);
 }
 
+TEST(TestPairLib, CheckOperatorPlusRavno) {
+	TPair<int, int> t(1, 4);
+	TPair<int, int> t1(10, 10);
 
+	t1 += t;
+
+	EXPECT_EQ(t1.first(), 13, t1.second(), 5);
+}
