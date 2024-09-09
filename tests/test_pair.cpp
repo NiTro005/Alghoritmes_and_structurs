@@ -87,7 +87,6 @@ TEST(TestPairLib, CheckOperatorMultiply) {
 }
 
 
-
 TEST(TestPairLib, CheckOperatorFrac) {
 	TPair<double, double> t(2.0, 4.0);
 	TPair<double, double> t1(4.0, 2.0);
@@ -96,4 +95,16 @@ TEST(TestPairLib, CheckOperatorFrac) {
 
 	EXPECT_DOUBLE_EQ(result.first(), 2.0);
 	EXPECT_DOUBLE_EQ(result.second(), 0.5);
+}
+
+TEST(TestPairLib, CheckSwap) {
+	TPair<int, int> t(1, 4);
+	TPair<int, int> t1(10, 10);
+
+	t.swap(t1);
+
+	EXPECT_EQ(t.first(), 10);
+	EXPECT_EQ(t.second(), 10);
+	EXPECT_EQ(t1.first(), 1);
+	EXPECT_EQ(t1.second(), 4);
 }

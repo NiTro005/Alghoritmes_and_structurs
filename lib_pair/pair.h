@@ -145,6 +145,16 @@ TPair<T1, T2>& TPair<T1, T2>::operator/(const TPair<T1, T2>& pair) const noexcep
 }
 
 template <class T1, class T2>
+void TPair<T1, T2>::swap(TPair& pair) noexcept {
+    T1 tempF = pair._first;
+    T2 tempS = pair._second;
+    pair._first = _first;
+    pair._second = _second;
+    _first = tempF;
+    _second = tempS;
+}
+
+template <class T1, class T2>
 std::string TPair<T1, T2>::to_string() const noexcept {
     std::string str = "(" + std::to_string(_first) + ", " + std::to_string(_second) + ")";
     return str;
