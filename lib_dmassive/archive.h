@@ -22,7 +22,8 @@ class TDMassive {
     size_t _capacity;          // реальный размер массива
     size_t _size;              // количество хранимых данных
     size_t _deleted;           // количество "удалённых" позиций
-public:
+
+    public:
     TDMassive();
     TDMassive(const TDMassive& archive);
     TDMassive(const T* arr, size_t n);
@@ -72,7 +73,7 @@ public:
 
     const T& operator[](size_t index) const;
 
-private:
+    private:
     size_t count_value(T value)  const noexcept;
     void repacking();
 };
@@ -149,8 +150,7 @@ TDMassive<T>::TDMassive(const TDMassive& archive, size_t pos, size_t n) {
         if (pos + i < archive._size) {
             _data[i] = archive._data[pos + i];
             _states[i] = archive._states[pos + i];
-        }
-        else {
+        } else {
             _data[i] = T();
             _states[i] = State::empty;
         }
