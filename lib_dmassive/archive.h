@@ -221,7 +221,8 @@ void TDMassive <T>::reserve(size_t n) {
     }
     _capacity = (n / STEP_CAPACITY) * STEP_CAPACITY + STEP_CAPACITY;
     if (_capacity > MAX_CAPACITY) {
-        throw std::logic_error("Error in function \"void TArchive<T>::reserve(size_t n)\":"
+        throw std::logic_error("Error in function" \
+                               "void TArchive<T>::reserve(size_t n)\":"
                                " complete max size of capacity.");
     }
     T* newData = new T[_capacity];
@@ -272,8 +273,9 @@ inline bool TDMassive<T>::full() const noexcept {
 template <typename T>
 TDMassive<T>& TDMassive<T>::insert(T value, size_t pos) {
     if (_size < pos) {
-        throw std::logic_error("Error in function \
-        \"TArchive<T>& insert(T value, size_t pos)\": wrong position value.");
+        throw std::logic_error("Error in function" \
+                               "TArchive<T>& insert(T value, size_t pos)\":"
+                                " wrong position value.");
     }
     
     if (this->full()) {
@@ -292,7 +294,8 @@ TDMassive<T>& TDMassive<T>::insert(T value, size_t pos) {
 template <typename T>
 TDMassive<T>& TDMassive<T>::insert(const T* arr, size_t n, size_t pos) {
     if (_size < pos) {
-        throw std::logic_error("Error in function \"TArchive<T>& insert(T value, size_t pos)\":"
+        throw std::logic_error("Error in function" \
+                               "TArchive<T>& insert(T value, size_t pos)\":"
                                " wrong position value.");
     }
 
@@ -338,8 +341,8 @@ void TDMassive<T>::push_front(T value) {
 template <typename T>
 void TDMassive<T>::pop_front() {
     if (_size <= 0) {
-        throw std::logic_error("Error in function \
-        \"void TArchive<T>::pop_front()\": archive clear");
+        throw std::logic_error("Error in function" \
+                               "void TArchive<T>::pop_front()\": archive clear");
     }
     for (size_t i = 1; i < _size; i++) {
         _data[i - 1] = _data[i];
@@ -353,7 +356,8 @@ void TDMassive<T>::pop_front() {
 template <typename T>
 void TDMassive<T>::pop_back() {
     if (_size <= 0) {
-        throw std::logic_error("Error in function \"TArchive<T>& insert(const T* arr, size_t n, size_t pos)\":"
+        throw std::logic_error("Error in function" \
+                               "TArchive<T>& insert(const T* arr, size_t n, size_t pos)\":"
                                " wrong position value.");
     }
     _states[_size - 1] = State::empty;
@@ -402,8 +406,9 @@ TDMassive<T>& TDMassive<T>::remove_all(T value) {
 template <typename T>
 TDMassive<T>& TDMassive<T>::remove_first(T value) {
     if (_size <= 0) {
-        throw std::logic_error("Error in function \
-                               \"TArchive<T>& TArchive<T>::remove_first(T value)\": archive clear");
+        throw std::logic_error("Error in function" \
+                               "TArchive<T>& TArchive<T>::remove_first(T value)\":"
+                               "archive clear");
     }
     for (size_t i = 0; i < _size; i++) {
         if (_data[i] == value) {
@@ -417,8 +422,9 @@ TDMassive<T>& TDMassive<T>::remove_first(T value) {
 template <typename T>
 TDMassive<T>& TDMassive<T>::remove_last(T value) {
     if (_size <= 0) {
-        throw std::logic_error("Error in function \
-                               \"TArchive<T>& TArchive<T>::remove_last(T value)\": archive clear");
+        throw std::logic_error("Error in function" \
+                               "TArchive<T>& TArchive<T>::remove_last(T value)\":"
+                               "archive clear");
     }
     for (size_t i = _size; i > 0; i--) {
         if (_data[i] == value) {
@@ -436,8 +442,8 @@ size_t TDMassive<T>::find_first(T value) const{
             return i;
         }
     }
-    throw std::logic_error("Error in function \
-                           \"size_t TArchive<T>::find_first(T value)\":No mathes");
+    throw std::logic_error("Error in function" \
+                           "size_t TArchive<T>::find_first(T value)\":No mathes");
 }
 
 
@@ -448,8 +454,8 @@ size_t TDMassive<T>::find_last(T value) const {
             return i;
         }
     }
-    throw std::logic_error("Error in function \
-                           \"size_t TArchive<T>::find_first(T value)\":No mathes");
+    throw std::logic_error("Error in function" \
+                           "size_t TArchive<T>::find_first(T value)\":No mathes");
 }
 
 template <typename T>
@@ -472,8 +478,9 @@ size_t* TDMassive<T>::find_all(T value) const noexcept {
 template <typename T>
 TDMassive<T>& TDMassive<T>::replace(size_t pos, T new_value) {
     if (_data[pos] != State::busy) {
-        throw std::logic_error("Error in function \
-\"TArchive<T>& replace(size_t pos, T new_value)\":No mathes");
+        throw std::logic_error("Error in function" \
+                               "TArchive<T>& replace(size_t pos, T new_value)\":"
+                               "No mathes");
     }
     if (_data[pos] )
     _data[pos] = new_value;
