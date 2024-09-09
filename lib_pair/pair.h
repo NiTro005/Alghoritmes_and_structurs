@@ -112,6 +112,13 @@ TPair<T1, T2>& TPair<T1, T2>::operator+(const TPair<T1, T2>& pair) const noexcep
     return temp;
 }
 
+template <class T1, class T2>
+TPair<T1, T2>& TPair<T1, T2>::operator-(const TPair<T1, T2>& pair) const noexcept {
+    TPair<T1, T2> temp(*this);
+    temp._first -= pair._first;
+    temp._second -= pair._second;
+    return temp;
+}
 
 template <class T1, class T2>
 TPair<T1, T2>& operator-(const TPair<T1, T2>& pair1, const TPair<T1, T2>& pair2) noexcept {
