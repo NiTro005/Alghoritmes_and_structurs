@@ -10,6 +10,8 @@
 template <class T1, class T2> class TPair;
 template <class T1, class T2>
 std::ostream& operator<<(std::ostream& out, const TPair<T1, T2>& obj) noexcept;
+template <class T1, class T2>
+std::istream& operator>>(std::istream& in, TPair<T1, T2>& obj) noexcept;
 
 template <class T1, class T2>
 class TPair {
@@ -28,21 +30,11 @@ class TPair {
     inline void set_second(const T2& value) noexcept;
 
     TPair& operator=(const TPair& pair) noexcept;
-    TPair& operator+=(const TPair& pair) noexcept;
-    TPair& operator-=(const TPair& pair) noexcept;
-    TPair& operator*=(const TPair& pair) noexcept;
-    TPair& operator/=(const TPair& pair) noexcept;
-
-    TPair& operator+(const TPair& pair) const noexcept;
-    TPair& operator-(const TPair& pair) const noexcept;
-    TPair& operator/(const TPair& pair) const noexcept;
-    TPair& operator*(const TPair& pair) const noexcept;
-
-    std::string to_string() const noexcept;
 
     void swap(TPair& pair)noexcept;
 
     friend std::ostream& operator<< <T1, T2>(std::ostream& out, const TPair<T1, T2>& pair) noexcept;
+    friend std::istream& operator>><T1, T2>(std::istream& in, TPair<T1, T2>& obj) noexcept;
 
 };
 
@@ -77,74 +69,6 @@ TPair<T1, T2>& TPair<T1, T2>::operator=(const TPair<T1, T2>& pair) noexcept {
 }
 
 template <class T1, class T2>
-TPair<T1, T2>& TPair<T1, T2>::operator-=(const TPair<T1, T2>& pair) noexcept {
-    _first -= pair._first;
-    _second -= pair._second;
-    return *this;
-}
-
-template <class T1, class T2>
-TPair<T1, T2>& TPair<T1, T2>::operator+=(const TPair<T1, T2>& pair) noexcept {
-    _first += pair._first;
-    _second += pair._second;
-    return *this;
-}
-
-template <class T1, class T2>
-TPair<T1, T2>& TPair<T1, T2>::operator/=(const TPair<T1, T2>& pair) noexcept {
-    _first /= pair._first;
-    _second /= pair._second;
-    return *this;
-}
-
-template <class T1, class T2>
-TPair<T1, T2>& TPair<T1, T2>::operator*=(const TPair<T1, T2>& pair) noexcept {
-    _first *= pair._first;
-    _second *= pair._second;
-    return *this;
-}
-
-template <class T1, class T2>
-TPair<T1, T2>& TPair<T1, T2>::operator+(const TPair<T1, T2>& pair) const noexcept {
-    TPair<T1, T2> temp(*this);
-    temp._first += pair._first;
-    temp._second += pair._second;
-    return temp;
-}
-
-template <class T1, class T2>
-TPair<T1, T2>& TPair<T1, T2>::operator-(const TPair<T1, T2>& pair) const noexcept {
-    TPair<T1, T2> temp(*this);
-    temp._first -= pair._first;
-    temp._second -= pair._second;
-    return temp;
-}
-
-template <class T1, class T2>
-TPair<T1, T2>& operator-(const TPair<T1, T2>& pair1, const TPair<T1, T2>& pair2) noexcept {
-    TPair<T1, T2> temp(*this);
-    temp._first -= pair._first;
-    temp._second -= pair._second;
-    return temp;
-}
-
-template <class T1, class T2>
-TPair<T1, T2>& TPair<T1, T2>::operator*(const TPair<T1, T2>& pair) const noexcept {
-    TPair<T1, T2> temp(*this);
-    temp._first *= pair._first;
-    temp._second *= pair._second;
-    return temp;
-}
-
-template <class T1, class T2>
-TPair<T1, T2>& TPair<T1, T2>::operator/(const TPair<T1, T2>& pair) const noexcept {
-    TPair<T1, T2> temp(*this);
-    temp._first /= pair._first;
-    temp._second /= pair._second;
-    return temp;
-}
-
-template <class T1, class T2>
 void TPair<T1, T2>::swap(TPair& pair) noexcept {
     T1 tempF = pair._first;
     T2 tempS = pair._second;
@@ -155,14 +79,8 @@ void TPair<T1, T2>::swap(TPair& pair) noexcept {
 }
 
 template <class T1, class T2>
-std::string TPair<T1, T2>::to_string() const noexcept {
-    std::string str = "(" + std::to_string(_first) + ", " + std::to_string(_second) + ")";
-    return str;
-}
-
-template <class T1, class T2>
 std::ostream& operator<< <T1, T2>(std::ostream& out, const TPair<T1, T2>& pair) noexcept {
-    out << pair.to_string();
+    out << _first <<" "<< _second;
     return out;
 }
 
