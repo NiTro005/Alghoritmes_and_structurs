@@ -55,3 +55,45 @@ TEST(TestPairLib, CheckOperatorMultRavno) {
 	EXPECT_EQ(t1.first(), 10);
 	EXPECT_EQ(t1.second(), 40);
 }
+
+TEST(TestPairLib, CheckOperatorPlus) {
+	TPair<int, int> t(1, 4);
+	TPair<int, int> t1(10, 10);
+
+	TPair<int, int> result = t + t1;
+
+	EXPECT_EQ(result.first(), 11);
+	EXPECT_EQ(result.second(), 14);
+}
+
+TEST(TestPairLib, CheckOperatorMinus) {
+	TPair<int, int> t(1, 4);
+	TPair<int, int> t1(10, 10);
+
+	TPair<int, int> result = t1 - t;
+
+	EXPECT_EQ(result.first(), 9);
+	EXPECT_EQ(result.second(), 6);
+}
+
+TEST(TestPairLib, CheckOperatorMultiply) {
+	TPair<int, int> t(2, 3);
+	TPair<int, int> t1(4, 5);
+
+	TPair<int, int> result = t * t1;
+
+	EXPECT_EQ(result.first(), 8);
+	EXPECT_EQ(result.second(), 15);
+}
+
+
+
+TEST(TestPairLib, CheckOperatorFrac) {
+	TPair<double, double> t(2.0, 4.0);
+	TPair<double, double> t1(4.0, 2.0);
+
+	TPair<double, double> result = t1 / t;
+
+	EXPECT_DOUBLE_EQ(result.first(), 2.0);
+	EXPECT_DOUBLE_EQ(result.second(), 0.5);
+}

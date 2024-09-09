@@ -129,6 +129,22 @@ TPair<T1, T2>& operator-(const TPair<T1, T2>& pair1, const TPair<T1, T2>& pair2)
 }
 
 template <class T1, class T2>
+TPair<T1, T2>& TPair<T1, T2>::operator*(const TPair<T1, T2>& pair) const noexcept {
+    TPair<T1, T2> temp(*this);
+    temp._first *= pair._first;
+    temp._second *= pair._second;
+    return temp;
+}
+
+template <class T1, class T2>
+TPair<T1, T2>& TPair<T1, T2>::operator/(const TPair<T1, T2>& pair) const noexcept {
+    TPair<T1, T2> temp(*this);
+    temp._first /= pair._first;
+    temp._second /= pair._second;
+    return temp;
+}
+
+template <class T1, class T2>
 std::string TPair<T1, T2>::to_string() const noexcept {
     std::string str = "(" + std::to_string(_first) + ", " + std::to_string(_second) + ")";
     return str;
