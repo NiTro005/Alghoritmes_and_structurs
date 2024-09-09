@@ -342,7 +342,8 @@ template <typename T>
 void TDMassive<T>::pop_front() {
     if (_size <= 0) {
         throw std::logic_error("Error in function" \
-                               "void TArchive<T>::pop_front()\": archive clear");
+                               "void TArchive<T>::pop_front()\":"
+                               "archive clear");
     }
     for (size_t i = 1; i < _size; i++) {
         _data[i - 1] = _data[i];
@@ -357,8 +358,8 @@ template <typename T>
 void TDMassive<T>::pop_back() {
     if (_size <= 0) {
         throw std::logic_error("Error in function" \
-                               "TArchive<T>& insert(const T* arr, size_t n, size_t pos)\":"
-                               " wrong position value.");
+        "TArchive<T>& insert(const T* arr, size_t n, size_t pos)\":"
+        " wrong position value.");
     }
     _states[_size - 1] = State::empty;
     --_size;
@@ -436,7 +437,7 @@ TDMassive<T>& TDMassive<T>::remove_last(T value) {
 }
 
 template <typename T>
-size_t TDMassive<T>::find_first(T value) const{
+size_t TDMassive<T>::find_first(T value) const {
     for (size_t i = 0; i < _size; i++) {
         if (_data[i] == value && _states[i] != State::deleted) {
             return i;
@@ -450,7 +451,7 @@ size_t TDMassive<T>::find_first(T value) const{
 template <typename T>
 size_t TDMassive<T>::find_last(T value) const {
     for (size_t i = _size; i > 0; i--) {
-        if (_data[i] == value && _states[i] != State::deleted ) {
+        if (_data[i] == value && _states[i] != State::deleted) {
             return i;
         }
     }
