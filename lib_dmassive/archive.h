@@ -23,7 +23,7 @@ class TDMassive {
     size_t _size;              // количество хранимых данных
     size_t _deleted;           // количество "удалённых" позиций
 
- public:
+  public:
     TDMassive();
     TDMassive(const TDMassive& archive);
     TDMassive(const T* arr, size_t n);
@@ -73,7 +73,7 @@ class TDMassive {
 
     const T& operator[](size_t index) const;
 
- private:
+  private:
     size_t count_value(T value)  const noexcept;
     void repacking();
 };
@@ -167,7 +167,7 @@ size_t TDMassive<T>::capacity() {
 }
 
 template <typename T>
-const T* TDMassive<T> ::data() const{
+const T* TDMassive<T> ::data() const {
     return _data;
 }
 
@@ -207,11 +207,9 @@ void TDMassive <T>::resize(size_t n) {
             _states[i] = State::empty;
         }
         _size = n;
-    }
-    else {
+    } else {
         reserve(n);
         for (size_t i = _size; i < n; ++i) {
-
             _states[i] = State::busy;
         }
         _size = n;
@@ -221,13 +219,12 @@ void TDMassive <T>::resize(size_t n) {
 template <typename T>
 void TDMassive <T>::reserve(size_t n) {
     repacking();
-    if (n <= _capacity ||( _size < _capacity && n <= _capacity)) {
+    if (n <= _capacity ||(_size < _capacity && n <= _capacity)) {
         return;
     }
     _capacity = (n / STEP_CAPACITY) * STEP_CAPACITY + STEP_CAPACITY;
     if (_capacity > MAX_CAPACITY) {
-        throw std::logic_error("Error in function \
-\"void TArchive <T>::reserve(size_t n)\": complete max size of capacity.");
+        throw std::logic_error("Error in function \\"void TArchive <T>::reserve(size_t n)\": complete max size of capacity.");
     }
     T* newData = new T[_capacity];
     std::memcpy(newData, _data, _size);
