@@ -1,5 +1,4 @@
 // Copyright 2024 Marina Usova
-
 #ifndef LIB_PAIR_PAIR_H_
 #define LIB_PAIR_PAIR_H_
 
