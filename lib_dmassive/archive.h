@@ -1,6 +1,7 @@
 // Copyright 2024 Kita Trofimov
 #pragma once
 #include <iostream>
+#include <utility>
 #define STEP_CAPACITY 15
 #define MAX_CAPACITY 100000
 
@@ -275,9 +276,8 @@ TDMassive<T>& TDMassive<T>::insert(T value, size_t pos) {
     if (_size < pos) {
         throw std::logic_error("Error in function" \
                                "TArchive<T>& insert(T value, size_t pos)\":"
-                                " wrong position value.");
+                               " wrong position value.");
     }
-    
     if (this->full()) {
         this->reserve();
     }
@@ -368,7 +368,8 @@ void TDMassive<T>::pop_back() {
 template <typename T>
 TDMassive<T>& TDMassive<T> ::remove_by_index(size_t pos) {
     if (_size <= pos || pos < 0) {
-        throw std::logic_error("Error in function \"void TArchive<T>::pop_back()\":"
+        throw std::logic_error("Error in function" \
+                               "void TArchive<T>::pop_back()\":"
                                " archive clear");
     }
     _states[pos] = State::deleted;
