@@ -1,3 +1,4 @@
+// Copyright 2024 Kita Trofimov
 #pragma once
 #include <iostream>
 #define STEP_CAPACITY 15

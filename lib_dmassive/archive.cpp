@@ -1,2 +1,2 @@
-// Copyright 2024 Trofimov Nikita
+// Copyright 2024 Kita Trofimov
 #include "archive.h"

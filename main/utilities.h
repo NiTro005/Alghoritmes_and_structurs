@@ -1,4 +1,4 @@
-// Copyright 2024 Trofimov Nikita
+// Copyright 2024 Kita Trofimov
 #pragma once
 #include <iostream>
 #include <Windows.h>
