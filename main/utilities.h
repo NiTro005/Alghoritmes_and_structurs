@@ -2,7 +2,7 @@
 #pragma once
 #include <iostream>
 #include <Windows.h>
-#include "archive.h"
+#include "../lib_dmassive/archive.h"
 
 /*                     —À”∆≈¡Õ€≈/¬—œŒÃŒ√¿“≈À‹Õ€≈ ‘”Õ ÷»»                     */
 
@@ -171,7 +171,7 @@ namespace OutputSystem {
     }
 
     template <typename T>
-    static void find(size_t* values, InputSystem::FindMode mode, const TArchive<T>& archive, size_t count) noexcept {
+    static void find(size_t* values, InputSystem::FindMode mode, const TDMassive<T>& archive, size_t count) noexcept {
         system("cls");
         const auto& data = archive.data();
         std::cout << "Matches found: ";
@@ -191,7 +191,7 @@ namespace OutputSystem {
     }
 
     template <typename T>
-    void show(const TArchive<T>& archive) noexcept {
+    void show(const TDMassive<T>& archive) noexcept {
         std::cout << "Archive: { ";
         archive.print();
         if (!archive.empty()) {
