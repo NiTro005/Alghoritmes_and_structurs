@@ -80,7 +80,7 @@ void TPair<T1, T2>::swap(TPair& pair) noexcept {
 
 template <class T1, class T2>
 std::ostream& operator<< <T1, T2>(std::ostream& out, const TPair<T1, T2>& pair) noexcept {
-    out << _first <<" "<< _second;
+    out << pair._first <<" "<< pair._second;
     return out;
 }
 

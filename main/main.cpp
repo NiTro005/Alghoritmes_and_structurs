@@ -43,10 +43,6 @@ int main() {
     int main() {
         TPair<int, int> pair1(1, 4);
         TPair<int, int> pair2(10, 10);
-
-        TPair<int, int> resultPair = pair1 + pair2;
-        std::cout << "Pair1 + Pair2 = " << resultPair << std::endl;
-
         pair1.swap(pair2);
         std::cout << "After swap: Pair1 = " << pair1 << ", Pair2 = " << pair2 << std::endl;
         return 0;
