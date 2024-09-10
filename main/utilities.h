@@ -149,16 +149,24 @@ namespace OutputSystem {
             coord);
     }
 
-    static void getCursor(int& column, int& line) noexcept {
+    static void getCursor(int* column, int* line) noexcept {
         CONSOLE_SCREEN_BUFFER_INFO csbi;
 
-        if (GetConsoleScreenBufferInfo
-        (GetStdHandle(STD_OUTPUT_HANDLE), &csbi)) {
-            column = csbi.dwCursorPosition.X;
-            line = csbi.dwCursorPosition.Y;
-        } else {
-            column = 0;
-            line = 0;
+        if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi)) {
+            if (column != nullptr) {
+                *column = csbi.dwCursorPosition.X;
+            }
+            if (line != nullptr) {
+                *line = csbi.dwCursorPosition.Y;
+            }
+        }
+        else {
+            if (column != nullptr) {
+                *column = 0;
+            }
+            if (line != nullptr) {
+                *line = 0;
+            }
         }
     }
 

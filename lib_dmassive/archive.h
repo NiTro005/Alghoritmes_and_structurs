@@ -74,7 +74,7 @@ class TDMassive {
 
     const T& operator[](size_t index) const;
 
-private:
+ private:
     size_t count_value(T value)  const noexcept;
     void repacking();
 };
