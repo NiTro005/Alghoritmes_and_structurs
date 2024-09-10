@@ -4,15 +4,14 @@
 #include <Windows.h>
 #include "../lib_dmassive/archive.h"
 
-/*                     —À”∆≈¡Õ€≈/¬—œŒÃŒ√¿“≈À‹Õ€≈ ‘”Õ ÷»»                     */
-
 namespace InputSystem {
     enum InsertMode {Back, Front, OneValue, SeveralValues};
     enum RemoveMode{Back1, Front1, All, First, Last, OneValue1, SeveralValues1};
     enum FindMode{FAll, FFirst, FLast};
 
     template <typename T>
-    T* remove(const size_t& n, const size_t& pos, const InputSystem::RemoveMode& mode) noexcept {
+    T* remove(const size_t& n, const size_t& pos,
+        const InputSystem::RemoveMode& mode) noexcept {
         T* value = nullptr;
         mode = Back1;
         int user;
@@ -63,7 +62,8 @@ namespace InputSystem {
     }
 
     template <typename T>
-    T* insert(const size_t& n, const size_t& pos, const InputSystem::InsertMode& mode) noexcept {
+    T* insert(const size_t& n, const size_t& pos,
+        const InputSystem::InsertMode& mode) noexcept {
         T* value = nullptr;
         mode = Back;
         int user;
@@ -137,7 +137,7 @@ namespace InputSystem {
         }
         return value;
     }
-} //InputSystem
+}  // namespace InputSystem
 
 namespace OutputSystem {
     static void setCursor(int column, int line) {
@@ -152,7 +152,8 @@ namespace OutputSystem {
     static void getCursor(int& column, int& line) noexcept {
         CONSOLE_SCREEN_BUFFER_INFO csbi;
 
-        if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi)) {
+        if (GetConsoleScreenBufferInfo
+        (GetStdHandle(STD_OUTPUT_HANDLE), &csbi)) {
             column = csbi.dwCursorPosition.X;
             line = csbi.dwCursorPosition.Y;
         } else {
@@ -169,7 +170,10 @@ namespace OutputSystem {
     }
 
     template <typename T>
-    static void find(size_t* values, const InputSystem::FindMode mode, const TDMassive<T>& archive, size_t count) noexcept {
+    static void find(size_t* values,
+        const InputSystem::FindMode mode,
+        const TDMassive<T>& archive,
+        size_t count) noexcept {
         system("cls");
         const auto& data = archive.data();
         std::cout << "Matches found: ";
@@ -192,7 +196,6 @@ namespace OutputSystem {
         std::cout << "Archive: { ";
         archive.print();
         if (!archive.empty()) {
-            // ÒÚË‡ÂÏ ÔÓÒÎÂ‰Ì˛˛ Á‡ÔˇÚÛ˛
             int column, line;
             getCursor(column, line);
             column -= 2;
@@ -200,4 +203,4 @@ namespace OutputSystem {
         }
         std::cout << " }\n";
     }
-}
+}  // namespace OutputSystem

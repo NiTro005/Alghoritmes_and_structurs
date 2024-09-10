@@ -9,7 +9,6 @@
 
 
 int main() {
-
     int a, b;
     float result;
 
@@ -47,4 +46,4 @@ int main() {
             pair1 << ", Pair2 = " << pair2 << std::endl;
         return 0;
     }
-#endif // Pair
+#endif  // Pair
