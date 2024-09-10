@@ -12,7 +12,7 @@ namespace InputSystem {
     enum FindMode{FAll, FFirst, FLast};
 
     template <typename T>
-    T* remove(size_t& n, size_t& pos, InputSystem::RemoveMode& mode) noexcept {
+    T* remove(const size_t& n, const size_t& pos, const InputSystem::RemoveMode& mode) noexcept {
         T* value = nullptr;
         mode = Back1;
         int user;
@@ -63,7 +63,7 @@ namespace InputSystem {
     }
 
     template <typename T>
-    T* insert(size_t& n, size_t& pos, InputSystem::InsertMode& mode) noexcept {
+    T* insert(const size_t& n, const size_t& pos, const InputSystem::InsertMode& mode) noexcept {
         T* value = nullptr;
         mode = Back;
         int user;
@@ -107,7 +107,7 @@ namespace InputSystem {
     }
 
     template <typename T>
-    T* find(InputSystem::FindMode& mode) noexcept {
+    T* find(const InputSystem::FindMode& mode) noexcept {
         T* value = nullptr;
         mode = FFirst;
         int user;
@@ -137,7 +137,7 @@ namespace InputSystem {
         }
         return value;
     }
-}
+} //InputSystem
 
 namespace OutputSystem {
     static void setCursor(int column, int line) {
@@ -146,8 +146,7 @@ namespace OutputSystem {
         coord.Y = line;
         SetConsoleCursorPosition(
             GetStdHandle(STD_OUTPUT_HANDLE),
-            coord
-        );
+            coord);
     }
 
     static void getCursor(int& column, int& line) noexcept {
@@ -156,8 +155,7 @@ namespace OutputSystem {
         if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi)) {
             column = csbi.dwCursorPosition.X;
             line = csbi.dwCursorPosition.Y;
-        }
-        else {
+        } else {
             column = 0;
             line = 0;
         }
@@ -171,7 +169,7 @@ namespace OutputSystem {
     }
 
     template <typename T>
-    static void find(size_t* values, InputSystem::FindMode mode, const TDMassive<T>& archive, size_t count) noexcept {
+    static void find(size_t* values, const InputSystem::FindMode mode, const TDMassive<T>& archive, size_t count) noexcept {
         system("cls");
         const auto& data = archive.data();
         std::cout << "Matches found: ";
@@ -187,7 +185,6 @@ namespace OutputSystem {
                 std::cout << ", ";
             }
         }
-
     }
 
     template <typename T>

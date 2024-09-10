@@ -10,7 +10,6 @@
 
 int main() {
 
-
     int a, b;
     float result;
 
@@ -44,9 +43,8 @@ int main() {
         TPair<int, int> pair1(1, 4);
         TPair<int, int> pair2(10, 10);
         pair1.swap(pair2);
-        std::cout << "After swap: Pair1 = " << pair1 << ", Pair2 = " << pair2 << std::endl;
+        std::cout << "After swap: Pair1 = " <<
+            pair1 << ", Pair2 = " << pair2 << std::endl;
         return 0;
     }
 #endif // Pair
-
-

@@ -87,4 +87,11 @@ std::ostream& operator<< <T1, T2>
     return out;
 }
 
+template <typename T1, typename T2>
+std::istream& operator>>
+(std::istream& in, TPair<T1, T2>& obj) noexcept {
+    in >> obj._first >> obj._second;
+    return in;
+}
+
 #endif  // LIB_PAIR_PAIR_H_
