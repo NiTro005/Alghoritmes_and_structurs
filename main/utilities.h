@@ -152,15 +152,15 @@ namespace OutputSystem {
     static void getCursor(int* column, int* line) noexcept {
         CONSOLE_SCREEN_BUFFER_INFO csbi;
 
-        if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi)) {
+        if (GetConsoleScreenBufferInfo
+        (GetStdHandle(STD_OUTPUT_HANDLE), &csbi)) {
             if (column != nullptr) {
                 *column = csbi.dwCursorPosition.X;
             }
             if (line != nullptr) {
                 *line = csbi.dwCursorPosition.Y;
             }
-        }
-        else {
+        } else {
             if (column != nullptr) {
                 *column = 0;
             }
