@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include <stdexcept>
+#include <utility>
 
 template <class T1, class T2> class TPair;
 template <class T1, class T2>
@@ -18,7 +19,8 @@ class TPair {
     T2 _second;
  public:
     TPair() : _first(NULL), _second(NULL) { }
-    TPair(const T1& first, const T2& second) : _first(first), _second(second) { }
+    TPair(const T1& first, const T2& second)
+        : _first(first), _second(second) { }
     TPair(const TPair& pair) : _first(pair._first), _second(pair._second) { }
     ~TPair() { }
 
@@ -32,9 +34,10 @@ class TPair {
 
     void swap(TPair& pair)noexcept;
 
-    friend std::ostream& operator<< <T1, T2>(std::ostream& out, const TPair<T1, T2>& pair) noexcept;
-    friend std::istream& operator>><T1, T2>(std::istream& in, TPair<T1, T2>& obj) noexcept;
-
+    friend std::ostream& operator<< <T1, T2>(std::ostream& out,
+        const TPair<T1, T2>& pair) noexcept;
+    friend std::istream& operator>> <T1, T2>
+        (std::istream& in, TPair<T1, T2>& obj) noexcept;
 };
 
 
@@ -78,7 +81,8 @@ void TPair<T1, T2>::swap(TPair& pair) noexcept {
 }
 
 template <class T1, class T2>
-std::ostream& operator<< <T1, T2>(std::ostream& out, const TPair<T1, T2>& pair) noexcept {
+std::ostream& operator<< <T1, T2>
+(std::ostream& out, const TPair<T1, T2>& pair) noexcept {
     out << pair._first <<" "<< pair._second;
     return out;
 }

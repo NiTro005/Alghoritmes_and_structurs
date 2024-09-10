@@ -24,7 +24,7 @@ class TDMassive {
     size_t _size;
     size_t _deleted;
 
-    public:
+ public:
     TDMassive();
     TDMassive(const TDMassive& archive);
     TDMassive(const T* arr, size_t n);
@@ -74,7 +74,7 @@ class TDMassive {
 
     const T& operator[](size_t index) const;
 
-    private:
+ private:
     size_t count_value(T value)  const noexcept;
     void repacking();
 };
