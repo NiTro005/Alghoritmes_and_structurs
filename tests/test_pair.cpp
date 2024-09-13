@@ -17,3 +17,12 @@ TEST(TPairTest, AssignmentOperator) {
     EXPECT_EQ(pair2.second(), 2);
 }
 
+TEST(TPairTest, SwapMethod) {
+    TPair<int, int> pair1(1, 2);
+    TPair<int, int> pair2(3, 4);
+    pair1.swap(pair2);
+    EXPECT_EQ(pair1.first(), 3);
+    EXPECT_EQ(pair1.second(), 4);
+    EXPECT_EQ(pair2.first(), 1);
+    EXPECT_EQ(pair2.second(), 2);
+}
