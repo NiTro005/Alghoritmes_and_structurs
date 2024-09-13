@@ -9,7 +9,7 @@
 
 template <class T1, class T2> class TPair;
 template <class T1, class T2>
-std::ostream& operator<<(std::ostream& out, const TPair<T1, T2>& obj) noexcept;
+std::ostream& operator<<(std::ostream& out, const TPair<T1, T2>& pair) noexcept;
 template <class T1, class T2>
 std::istream& operator>>(std::istream& in, TPair<T1, T2>& obj) noexcept;
 
@@ -37,7 +37,7 @@ class TPair {
     friend std::ostream& operator<< <T1, T2>(std::ostream& out,
         const TPair<T1, T2>& pair) noexcept;
     friend std::istream& operator>> <T1, T2>
-        (std::istream& in, const TPair<T1, T2>& obj) noexcept;
+        (std::istream& in, TPair<T1,T2>& obj) noexcept;
 };
 
 
@@ -83,13 +83,13 @@ void TPair<T1, T2>::swap(TPair& pair) noexcept {
 template <class T1, class T2>
 std::ostream& operator<< <T1, T2>
 (std::ostream& out, const TPair<T1, T2>& pair) noexcept {
-    out << pair._first <<" "<< pair._second;
+    out << pair._first << " " << pair._second;
     return out;
 }
 
 template <typename T1, typename T2>
 std::istream& operator>>
-(std::istream& in, const TPair<T1, T2>& obj) noexcept {
+(std::istream& in, TPair<T1, T2>& obj) noexcept {
     in >> obj._first >> obj._second;
     return in;
 }
