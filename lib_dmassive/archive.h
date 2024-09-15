@@ -47,7 +47,7 @@ class TDMassive {
     TDMassive& assign(const TDMassive& archive);
 
     void clear();
-    void resize(size_t n);
+    void resize(size_t n, T value);
     void reserve(size_t n = 15);
 
     void push_back(T value);
@@ -71,7 +71,6 @@ class TDMassive {
     size_t find_last(T value) const;
 
     T& operator[](size_t index);
-
     const T& operator[](size_t index) const;
 
  private:
@@ -85,6 +84,7 @@ TDMassive<T>::TDMassive() {
     _capacity = STEP_CAPACITY;
     _data = new T[_capacity];
     _states = new State[_capacity];
+    _deleted = 0;
     for (size_t i = 0; i < STEP_CAPACITY; i++) {
         _states[i] = State::empty;
     }
@@ -199,7 +199,7 @@ void TDMassive<T>::clear() {
 }
 
 template <typename T>
-void TDMassive <T>::resize(size_t n) {
+void TDMassive <T>::resize(size_t n, T value) {
     if (n <= _size) {
         for (size_t i = _size; i >= n; i--) {
             _states[i] = State::empty;
@@ -209,6 +209,7 @@ void TDMassive <T>::resize(size_t n) {
         reserve(n);
         for (size_t i = _size; i < n; ++i) {
             _states[i] = State::busy;
+            _data[i] = value;
         }
         _size = n;
     }
