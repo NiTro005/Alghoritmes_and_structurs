@@ -70,3 +70,21 @@ TEST(Test_TDMassive, clear_function) {
     EXPECT_TRUE(m.empty());
     EXPECT_EQ(m.capacity(), 0);
 }
+
+TEST(Test_TDMassive, repacking_function) {
+    TDMassive<int> m;
+    m.push_front(1);
+    m.push_front(2);
+    m.push_front(3);
+    m.push_front(4);
+    m.push_front(5);
+    m.remove_by_index(1);
+    m.remove_by_index(3);
+
+    m.reserve();
+
+    EXPECT_EQ(m.size(), 3);
+    EXPECT_EQ(m.data()[0], 5);
+    EXPECT_EQ(m.data()[1], 3);
+    EXPECT_EQ(m.data()[2], 1);
+}
