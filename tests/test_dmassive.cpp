@@ -53,3 +53,12 @@ TEST(Test_TDMassive, swap_function) {
     EXPECT_EQ(m.capacity(), 15);
     EXPECT_EQ(d.capacity(), 30);
 }
+
+TEST(Test_TDMassive, assign_function) {
+    TDMassive<int> m(17, 5);
+    TDMassive<int> d(2, 7);
+    m.assign(d);
+    EXPECT_EQ(m.size(), 2);
+    EXPECT_EQ(m.data()[1], 7);
+    EXPECT_EQ(m.capacity(), 15);
+}

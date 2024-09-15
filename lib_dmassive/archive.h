@@ -180,13 +180,15 @@ void TDMassive <T>::swap(TDMassive& archive) {
 
 template <typename T>
 TDMassive<T>& TDMassive <T>::assign(const TDMassive& archive) {
+    delete[] _data;
+    delete[] _states;
     _size = archive._size;
     _capacity = archive._capacity;
     _data = new T[_capacity];
-    _states = new T[_capacity];
+    _states = new State[_capacity];
     for (int i = 0; i < _size; i++) {
         _data[i] = archive._data[i];
-        _states[i] = archive.data[i];
+        _states[i] = archive._states[i];
     }
     return *this;
 }
