@@ -62,3 +62,11 @@ TEST(Test_TDMassive, assign_function) {
     EXPECT_EQ(m.data()[1], 7);
     EXPECT_EQ(m.capacity(), 15);
 }
+
+TEST(Test_TDMassive, clear_function) {
+    TDMassive<int> m(17, 5);
+    m.resize(12);
+    m.clear();
+    EXPECT_TRUE(m.empty());
+    EXPECT_EQ(m.capacity(), 0);
+}

@@ -47,7 +47,7 @@ class TDMassive {
     TDMassive& assign(const TDMassive& archive);
 
     void clear();
-    void resize(size_t n, T value);
+    void resize(size_t n, T value = NULL);
     void reserve(size_t n = 15);
 
     void push_back(T value);
@@ -197,8 +197,11 @@ template <typename T>
 void TDMassive<T>::clear() {
     delete[] _data;
     delete[] _states;
+    _data = nullptr;
+    _states = nullptr;
     _size = 0;
     _capacity = 0;
+    _deleted = 0;
 }
 
 template <typename T>
