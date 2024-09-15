@@ -107,7 +107,7 @@ TDMassive<T>::TDMassive(const TDMassive& archive) {
 
 template <typename T>
 TDMassive<T>::TDMassive(const T* arr, size_t n) {
-    _capacity = n;
+    _capacity = (n / STEP_CAPACITY)* STEP_CAPACITY + STEP_CAPACITY;
     _size = n;
     _deleted = 0;
 
@@ -116,13 +116,13 @@ TDMassive<T>::TDMassive(const T* arr, size_t n) {
 
     for (size_t i = 0; i < _size; i++) {
         _data[i] = arr[i];
-        _states[i] = State::occupied;
+        _states[i] = State::busy;
     }
 }
 
 template <typename T>
 TDMassive<T>::TDMassive(size_t n, T value) {
-    _capacity = n;
+    _capacity = (n / STEP_CAPACITY)* STEP_CAPACITY + STEP_CAPACITY;
     _size = n;
     _deleted = 0;
 
@@ -137,7 +137,7 @@ TDMassive<T>::TDMassive(size_t n, T value) {
 
 template <typename T>
 TDMassive<T>::TDMassive(const TDMassive& archive, size_t pos, size_t n) {
-    _capacity = n;
+    _capacity = (n / STEP_CAPACITY)* STEP_CAPACITY + STEP_CAPACITY;
     _size = n;
     _deleted = 0;
 
@@ -175,6 +175,7 @@ void TDMassive <T>::swap(TDMassive& archive) {
     algorithm::swap(_capacity, archive._capacity);
     algorithm::swap(_data, archive._data);
     algorithm::swap(_states, archive._states);
+    algorithm::swap(_deleted, archive._deleted);
 }
 
 template <typename T>
