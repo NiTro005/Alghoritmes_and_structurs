@@ -3,17 +3,17 @@
 #include "../lib_dmassive/archive.h"
 
 TEST(Test_TDMassive, empty_function) {
-	TDMassive<int> m;
-	EXPECT_TRUE(m.empty());
-	m.push_front(1);
-	EXPECT_FALSE(m.empty());
+    TDMassive<int> m;
+    EXPECT_TRUE(m.empty());
+    m.push_front(1);
+    EXPECT_FALSE(m.empty());
 }
 
 TEST(Test_TDMassive, full_function) {
-	TDMassive<int> m;
+    TDMassive<int> m;
     EXPECT_FALSE(m.full());
-	m.resize(15, 'a');
-	EXPECT_TRUE(m.full());
+    m.resize(15, 'a');
+    EXPECT_TRUE(m.full());
 }
 
 TEST(Test_TDMassive, get_size_function) {
@@ -246,4 +246,68 @@ TEST(TDMassiveTest, RemoveLast) {
 
     mass.remove_last(1);
     EXPECT_EQ(mass.get_state(2), State::deleted);
+}
+
+TEST(TDMassiveTest, FindFirst) {
+    TDMassive<int> mass(10);
+    mass.push_back(1);
+    mass.push_back(2);
+    mass.push_back(1);
+    mass.push_back(3);
+
+    EXPECT_EQ(mass.find_first(1), 0);
+    EXPECT_EQ(mass.find_first(2), 1);
+    EXPECT_EQ(mass.find_first(3), 3);
+}
+
+TEST(TDMassiveTest, FindLast) {
+    TDMassive<int> mass(10);
+    mass.push_back(1);
+    mass.push_back(2);
+    mass.push_back(1);
+    mass.push_back(3);
+
+    EXPECT_EQ(mass.find_last(1), 2);
+    EXPECT_EQ(mass.find_last(2), 1);
+    EXPECT_EQ(mass.find_last(3), 3);
+}
+
+TEST(TDMassiveTest, FindAll) {
+    TDMassive<int> mass(10);
+    mass.push_back(1);
+    mass.push_back(2);
+    mass.push_back(1);
+    mass.push_back(3);
+
+    size_t* result = mass.find_all(1);
+    EXPECT_EQ(result[0], 2);
+    EXPECT_EQ(result[1], 0);
+    EXPECT_EQ(result[2], 2);
+    delete[] result;
+
+    result = mass.find_all(2);
+    EXPECT_EQ(result[0], 1);
+    EXPECT_EQ(result[1], 1);
+    delete[] result;
+
+    result = mass.find_all(3);
+    EXPECT_EQ(result[0], 1);
+    EXPECT_EQ(result[1], 3);
+    delete[] result;
+}
+
+TEST(TDMassiveTest, Replace) {
+    TDMassive<int> mass(10);
+    mass.push_back(1);
+    mass.push_back(2);
+    mass.push_back(3);
+
+    mass.replace(1, 10);
+    EXPECT_EQ(mass.data()[1], 10);
+    EXPECT_EQ(mass.get_state(1), State::busy);
+
+    mass.replace(0, 20);
+    EXPECT_EQ(mass.data()[0], 20);
+    EXPECT_EQ(mass.get_state(0), State::busy);
+    ASSERT_ANY_THROW(mass.replace(12, 2));
 }

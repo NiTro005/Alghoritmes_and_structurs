@@ -4,10 +4,10 @@
 
 template <typename T>
 class TStack {
-	TDMassive<T> _data;
+    TDMassive<T> _data;
 
  public:
-    TStack(size_t size = 20);
+     explicit TStack(size_t size = 20);
     ~TStack();
 
     inline size_t size() const noexcept;

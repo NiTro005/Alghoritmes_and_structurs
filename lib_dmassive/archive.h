@@ -507,12 +507,16 @@ size_t* TDMassive<T>::find_all(T value) const noexcept {
 
 template <typename T>
 TDMassive<T>& TDMassive<T>::replace(size_t pos, T new_value) {
-    if (_data[pos] != State::busy) {
+    if (_states[pos] != State::busy) {
         throw std::logic_error("Error in function" \
         "TArchive<T>& replace(size_t pos, T new_value)\":"
         "No mathes");
     }
-    if (_data[pos] )
+    if (pos >= _size) {
+        throw std::logic_error("Error in function" \
+        "TArchive<T>& replace(size_t pos, T new_value)\":" 
+        "Invalid position");
+    }
     _data[pos] = new_value;
     _states[pos] = State::busy;
     return *this;

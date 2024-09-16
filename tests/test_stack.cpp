@@ -4,30 +4,30 @@
 #include "../lib_stack/stack.h"
 
 TEST(Test_TStack, Constructor) {
-	TStack<int> st1;
-	EXPECT_EQ(st1.size(), 20);
+    TStack<int> st1;
+    EXPECT_EQ(st1.size(), 20);
 }
 
 TEST(Test_TStack, empty_metod) {
-	TStack<int> st1;
-	EXPECT_TRUE(st1.IsEmpty());
+    TStack<int> st1;
+    EXPECT_TRUE(st1.IsEmpty());
 }
 
 TEST(Test_TStack, PUSH_metod) {
-	TStack<int> st1(1);
-	st1.push(1);
-	ASSERT_ANY_THROW(st1.push(2));
-	EXPECT_EQ(st1.top(), 1);
+    TStack<int> st1(1);
+    st1.push(1);
+    ASSERT_ANY_THROW(st1.push(2));
+    EXPECT_EQ(st1.top(), 1);
 }
 
 TEST(Test_TStack, POP_metod) {
-	TStack<int> st1(5);
+    TStack<int> st1(5);
 
-	ASSERT_ANY_THROW(st1.pop());
+    ASSERT_ANY_THROW(st1.pop());
 
-	st1.push(1);
-	st1.push(2);
-	st1.push(3);
-	st1.pop();
-	EXPECT_EQ(st1.top(), 2);
+    st1.push(1);
+    st1.push(2);
+    st1.push(3);
+    st1.pop();
+    EXPECT_EQ(st1.top(), 2);
 }
