@@ -130,3 +130,65 @@ TEST(Test_TDMassive, insert_array) {
     EXPECT_EQ(m.data()[1], 2);
     EXPECT_EQ(m.data()[2], 3);
 }
+
+TEST(Test_TDMassive, PushBack) {
+    TDMassive<int> mass(10);
+    mass.push_back(1);
+    mass.push_back(2);
+    mass.push_back(3);
+
+    EXPECT_EQ(mass.data()[0], 1);
+    EXPECT_EQ(mass.data()[1], 2);
+    EXPECT_EQ(mass.data()[2], 3);
+    EXPECT_EQ(mass.size(), 3);
+}
+
+TEST(Test_TDMassive, PushFront) {
+    TDMassive<int> mass(10);
+    mass.push_front(1);
+    mass.push_front(2);
+    mass.push_front(3);
+
+    EXPECT_EQ(mass.data()[0], 3);
+    EXPECT_EQ(mass.data()[1], 2);
+    EXPECT_EQ(mass.data()[2], 1);
+    EXPECT_EQ(mass.size(), 3);
+}
+
+TEST(Test_TDMassive, PopFront) {
+    TDMassive<int> mass(10);
+    mass.push_back(1);
+    mass.push_back(2);
+    mass.push_back(3);
+
+    mass.pop_front();
+    EXPECT_EQ(mass.data()[0], 2);
+    EXPECT_EQ(mass.data()[1], 3);
+    EXPECT_EQ(mass.size(), 2);
+
+    mass.pop_front();
+    EXPECT_EQ(mass.data()[0], 3);
+    EXPECT_EQ(mass.size(), 1);
+
+    mass.pop_front();
+    EXPECT_EQ(mass.size(), 0);
+}
+
+TEST(Test_TDMassive, PopBack) {
+    TDMassive<int> mass(10);
+    mass.push_back(1);
+    mass.push_back(2);
+    mass.push_back(3);
+
+    mass.pop_back();
+    EXPECT_EQ(mass.data()[0], 1);
+    EXPECT_EQ(mass.data()[1], 2);
+    EXPECT_EQ(mass.size(), 2);
+
+    mass.pop_back();
+    EXPECT_EQ(mass.data()[0], 1);
+    EXPECT_EQ(mass.size(), 1);
+
+    mass.pop_back();
+    EXPECT_EQ(mass.size(), 0);
+}
