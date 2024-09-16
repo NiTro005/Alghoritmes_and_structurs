@@ -30,7 +30,7 @@ class TDMassive {
     TDMassive(const T* arr, size_t n);
     TDMassive(size_t n, T value);
     TDMassive(const TDMassive& archive, size_t pos, size_t n);
-    TDMassive(size_t n);
+    explicit TDMassive(size_t n);
 
     ~TDMassive();
 
@@ -514,7 +514,7 @@ TDMassive<T>& TDMassive<T>::replace(size_t pos, T new_value) {
     }
     if (pos >= _size) {
         throw std::logic_error("Error in function" \
-        "TArchive<T>& replace(size_t pos, T new_value)\":" 
+        "TArchive<T>& replace(size_t pos, T new_value)\":"
         "Invalid position");
     }
     _data[pos] = new_value;

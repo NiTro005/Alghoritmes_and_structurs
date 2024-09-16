@@ -193,7 +193,7 @@ TEST(Test_TDMassive, PopBack) {
     EXPECT_EQ(mass.size(), 0);
 }
 
-TEST(TDMassiveTest, RemoveByIndex) {
+TEST(Test_TDMassive, RemoveByIndex) {
     TDMassive<int> mass(10);
     mass.push_back(1);
     mass.push_back(2);
@@ -203,7 +203,7 @@ TEST(TDMassiveTest, RemoveByIndex) {
     EXPECT_EQ(mass.get_state(1), State::deleted);
 }
 
-TEST(TDMassiveTest, Erase) {
+TEST(Test_TDMassive, Erase) {
     TDMassive<int> mass(10);
     mass.push_back(1);
     mass.push_back(2);
@@ -214,7 +214,7 @@ TEST(TDMassiveTest, Erase) {
     EXPECT_EQ(mass.get_state(2), State::deleted);
 }
 
-TEST(TDMassiveTest, RemoveAll) {
+TEST(Test_TDMassive, RemoveAll) {
     TDMassive<int> mass(10);
     mass.push_back(1);
     mass.push_back(2);
@@ -226,7 +226,7 @@ TEST(TDMassiveTest, RemoveAll) {
     EXPECT_EQ(mass.get_state(2), State::deleted);
 }
 
-TEST(TDMassiveTest, RemoveFirst) {
+TEST(Test_TDMassive, RemoveFirst) {
     TDMassive<int> mass(10);
     mass.push_back(1);
     mass.push_back(2);
@@ -237,7 +237,7 @@ TEST(TDMassiveTest, RemoveFirst) {
     EXPECT_EQ(mass.get_state(0), State::deleted);
 }
 
-TEST(TDMassiveTest, RemoveLast) {
+TEST(Test_TDMassive, RemoveLast) {
     TDMassive<int> mass(10);
     mass.push_back(1);
     mass.push_back(2);
@@ -248,7 +248,7 @@ TEST(TDMassiveTest, RemoveLast) {
     EXPECT_EQ(mass.get_state(2), State::deleted);
 }
 
-TEST(TDMassiveTest, FindFirst) {
+TEST(Test_TDMassive, FindFirst) {
     TDMassive<int> mass(10);
     mass.push_back(1);
     mass.push_back(2);
@@ -260,7 +260,7 @@ TEST(TDMassiveTest, FindFirst) {
     EXPECT_EQ(mass.find_first(3), 3);
 }
 
-TEST(TDMassiveTest, FindLast) {
+TEST(Test_TDMassive, FindLast) {
     TDMassive<int> mass(10);
     mass.push_back(1);
     mass.push_back(2);
@@ -272,7 +272,7 @@ TEST(TDMassiveTest, FindLast) {
     EXPECT_EQ(mass.find_last(3), 3);
 }
 
-TEST(TDMassiveTest, FindAll) {
+TEST(Test_TDMassive, FindAll) {
     TDMassive<int> mass(10);
     mass.push_back(1);
     mass.push_back(2);
@@ -296,7 +296,7 @@ TEST(TDMassiveTest, FindAll) {
     delete[] result;
 }
 
-TEST(TDMassiveTest, Replace) {
+TEST(Test_TDMassive, Replace) {
     TDMassive<int> mass(10);
     mass.push_back(1);
     mass.push_back(2);
@@ -310,4 +310,23 @@ TEST(TDMassiveTest, Replace) {
     EXPECT_EQ(mass.data()[0], 20);
     EXPECT_EQ(mass.get_state(0), State::busy);
     ASSERT_ANY_THROW(mass.replace(12, 2));
+}
+
+TEST(Test_TDMassive, OperatorBrackets) {
+    TDMassive<int> mass(10);
+    mass.push_back(1);
+    mass.push_back(2);
+    mass.push_back(3);
+
+    EXPECT_EQ(mass[0], 1);
+    EXPECT_EQ(mass[1], 2);
+    EXPECT_EQ(mass[2], 3);
+
+    mass[0] = 10;
+    mass[1] = 20;
+    mass[2] = 30;
+
+    EXPECT_EQ(mass[0], 10);
+    EXPECT_EQ(mass[1], 20);
+    EXPECT_EQ(mass[2], 30);
 }

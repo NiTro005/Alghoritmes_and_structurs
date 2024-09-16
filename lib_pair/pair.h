@@ -37,7 +37,7 @@ class TPair {
     friend std::ostream& operator<< <T1, T2>(std::ostream& out,
         const TPair<T1, T2>& pair) noexcept;
     friend std::istream& operator>> <T1, T2>
-        (std::istream& in, TPair<T1,T2>& obj) noexcept;
+        (std::istream& in, TPair<T1, T2>& obj) noexcept;
 };
 
 
