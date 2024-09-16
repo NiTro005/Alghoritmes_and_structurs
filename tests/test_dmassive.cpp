@@ -78,13 +78,33 @@ TEST(Test_TDMassive, repacking_function) {
     m.push_front(3);
     m.push_front(4);
     m.push_front(5);
+
+    EXPECT_EQ(m.size(), 5);
     m.remove_by_index(1);
     m.remove_by_index(3);
+    EXPECT_EQ(m.size(), 5);
 
     m.reserve();
-
+    EXPECT_EQ(m.size(), 3);
     EXPECT_EQ(m.size(), 3);
     EXPECT_EQ(m.data()[0], 5);
     EXPECT_EQ(m.data()[1], 3);
     EXPECT_EQ(m.data()[2], 1);
+}
+
+TEST(Test_TDMassive, reserve_function) {
+    TDMassive<int> m;
+    m.resize(15, 5);
+    EXPECT_EQ(m.capacity(), 15);
+    m.push_front(1);
+    m.reserve();
+    EXPECT_EQ(m.capacity(), 30);
+}
+
+TEST(Test_TDMassive, resize_function) {
+    TDMassive<int> m;
+    m.resize(15, 5);
+    EXPECT_EQ(m.size(), 15);
+    m.resize(10);
+    EXPECT_EQ(m.size(), 10);
 }

@@ -212,7 +212,9 @@ void TDMassive <T>::resize(size_t n, T value) {
         }
         _size = n;
     } else {
-        reserve(n);
+        if (n > _capacity) {
+            reserve(n);
+        }
         for (size_t i = _size; i < n; ++i) {
             _states[i] = State::busy;
             _data[i] = value;
@@ -224,7 +226,7 @@ void TDMassive <T>::resize(size_t n, T value) {
 template <typename T>
 void TDMassive <T>::reserve(size_t n) {
     repacking();
-    if (n <= _capacity ||(_size < _capacity && n <= _capacity)) {
+    if (n < _capacity ||(_size < _capacity && n <= _capacity)) {
         return;
     }
     _capacity = (n / STEP_CAPACITY) * STEP_CAPACITY + STEP_CAPACITY;
