@@ -11,7 +11,7 @@ TEST(Test_TDMassive, empty_function) {
 
 TEST(Test_TDMassive, full_function) {
 	TDMassive<int> m;
-	EXPECT_FALSE(m.full());
+    EXPECT_FALSE(m.full());
 	m.resize(15, 'a');
 	EXPECT_TRUE(m.full());
 }
@@ -107,4 +107,26 @@ TEST(Test_TDMassive, resize_function) {
     EXPECT_EQ(m.size(), 15);
     m.resize(10);
     EXPECT_EQ(m.size(), 10);
+}
+
+TEST(Test_TDMassive, insert_single_value) {
+    TDMassive<int> m;
+    m.insert(1, 0);
+    EXPECT_EQ(m.size(), 1);
+    EXPECT_EQ(m.data()[0], 1);
+
+    m.insert(2, 1);
+    EXPECT_EQ(m.size(), 2);
+    EXPECT_EQ(m.data()[0], 1);
+    EXPECT_EQ(m.data()[1], 2);
+}
+
+TEST(Test_TDMassive, insert_array) {
+    TDMassive<int> m;
+    int arr[] = { 1, 2, 3 };
+    m.insert(arr, 3, 0);
+    EXPECT_EQ(m.size(), 3);
+    EXPECT_EQ(m.data()[0], 1);
+    EXPECT_EQ(m.data()[1], 2);
+    EXPECT_EQ(m.data()[2], 3);
 }

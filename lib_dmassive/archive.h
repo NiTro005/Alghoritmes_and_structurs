@@ -169,7 +169,7 @@ TDMassive<T>::TDMassive(const TDMassive& archive, size_t pos, size_t n) {
 }
 
 template <typename T>
-size_t TDMassive<T>::size() const noexcept{
+size_t TDMassive<T>::size() const noexcept {
     return _size;
 }
 template <typename T>
