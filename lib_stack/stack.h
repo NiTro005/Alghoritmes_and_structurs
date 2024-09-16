@@ -16,7 +16,7 @@ class TStack {
 	 inline bool IsFull() const noexcept;
 
 	 void push(T value);
-	// void pop();
+	 void pop();
 	 inline T top() const;
 };
 
@@ -46,7 +46,17 @@ void TStack<T>:: push(T value){
 	if (!IsFull()) {
 		_data.push_front(value);
 	} else {
-		throw std::logic_error("Error:Overlow stack");
+		throw std::out_of_range("Error:Overlow stack");
+	}
+}
+
+template<typename T>
+inline void TStack<T>::pop(){
+	if (!IsEmpty()) {
+		_data.pop_front();
+	}
+	else {
+		throw std::out_of_range("Stack is empty");
 	}
 }
 

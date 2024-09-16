@@ -39,8 +39,8 @@ class TDMassive {
     inline bool empty() const noexcept;
     inline bool full() const noexcept;
 
-    size_t size();
-    size_t capacity();
+    size_t size() const noexcept;
+    size_t capacity() const noexcept;
     const T* data() const;
 
     void swap(TDMassive& archive);
@@ -169,11 +169,11 @@ TDMassive<T>::TDMassive(const TDMassive& archive, size_t pos, size_t n) {
 }
 
 template <typename T>
-size_t TDMassive<T>::size() {
+size_t TDMassive<T>::size() const noexcept{
     return _size;
 }
 template <typename T>
-size_t TDMassive<T>::capacity() {
+size_t TDMassive<T>::capacity() const noexcept {
     return _capacity;
 }
 
