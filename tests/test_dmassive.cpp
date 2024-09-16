@@ -192,3 +192,58 @@ TEST(Test_TDMassive, PopBack) {
     mass.pop_back();
     EXPECT_EQ(mass.size(), 0);
 }
+
+TEST(TDMassiveTest, RemoveByIndex) {
+    TDMassive<int> mass(10);
+    mass.push_back(1);
+    mass.push_back(2);
+    mass.push_back(3);
+
+    mass.remove_by_index(1);
+    EXPECT_EQ(mass.get_state(1), State::deleted);
+}
+
+TEST(TDMassiveTest, Erase) {
+    TDMassive<int> mass(10);
+    mass.push_back(1);
+    mass.push_back(2);
+    mass.push_back(3);
+
+    mass.erase(1, 2);
+    EXPECT_EQ(mass.get_state(1), State::deleted);
+    EXPECT_EQ(mass.get_state(2), State::deleted);
+}
+
+TEST(TDMassiveTest, RemoveAll) {
+    TDMassive<int> mass(10);
+    mass.push_back(1);
+    mass.push_back(2);
+    mass.push_back(1);
+    mass.push_back(3);
+
+    mass.remove_all(1);
+    EXPECT_EQ(mass.get_state(0), State::deleted);
+    EXPECT_EQ(mass.get_state(2), State::deleted);
+}
+
+TEST(TDMassiveTest, RemoveFirst) {
+    TDMassive<int> mass(10);
+    mass.push_back(1);
+    mass.push_back(2);
+    mass.push_back(1);
+    mass.push_back(3);
+
+    mass.remove_first(1);
+    EXPECT_EQ(mass.get_state(0), State::deleted);
+}
+
+TEST(TDMassiveTest, RemoveLast) {
+    TDMassive<int> mass(10);
+    mass.push_back(1);
+    mass.push_back(2);
+    mass.push_back(1);
+    mass.push_back(3);
+
+    mass.remove_last(1);
+    EXPECT_EQ(mass.get_state(2), State::deleted);
+}
