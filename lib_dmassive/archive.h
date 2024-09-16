@@ -30,6 +30,7 @@ class TDMassive {
     TDMassive(const T* arr, size_t n);
     TDMassive(size_t n, T value);
     TDMassive(const TDMassive& archive, size_t pos, size_t n);
+    TDMassive(size_t n);
 
     ~TDMassive();
 
@@ -91,6 +92,18 @@ TDMassive<T>::TDMassive() {
 }
 
 template <typename T>
+TDMassive<T>::TDMassive(size_t n) {
+    _capacity = n;
+    _size = 0;
+    _deleted = 0;
+    _data = new T[_capacity];
+    _states = new State[_capacity];
+    for (size_t i = 0; i < _capacity; i++) {
+        _states[i] = State::empty;
+    }
+}
+
+template <typename T>
 TDMassive<T>::TDMassive(const TDMassive& archive) {
     _capacity = archive._capacity;
     _size = archive._size;
@@ -122,7 +135,7 @@ TDMassive<T>::TDMassive(const T* arr, size_t n) {
 
 template <typename T>
 TDMassive<T>::TDMassive(size_t n, T value) {
-    _capacity = (n / STEP_CAPACITY)* STEP_CAPACITY + STEP_CAPACITY;
+    _capacity = (n / STEP_CAPACITY) * STEP_CAPACITY + STEP_CAPACITY;
     _size = n;
     _deleted = 0;
 
