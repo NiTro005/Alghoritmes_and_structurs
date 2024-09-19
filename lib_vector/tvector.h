@@ -13,7 +13,7 @@ class TVector {
     TVector(const TVector& vec);
     TVector(const T* arr, size_t n, size_t start_index = 0);
     TVector(size_t n, T value, size_t start_index = 0);
-    TVector(const TVector& other, size_t pos, size_t n, size_t start_index = 0);
+    TVector(const TVector& vec, size_t pos, size_t n, size_t start_index = 0);
     explicit TVector(size_t n, size_t start_index = 0);
     ~TVector();
 
@@ -67,3 +67,24 @@ class TVector {
     bool operator==(const TVector& vec) const;
     bool operator!=(const TVector& vec) const;
 };
+
+template <typename T>
+TVector<T>::TVector(): _start_index(0) {}
+
+template <typename T>
+TVector<T>:: TVector(const TVector& vec) : _data(other._data), _start_index(other._start_index) {}
+
+template <typename T>
+TVector<T>::TVector(const T* arr, size_t n, size_t start_index) : _data(arr, n), _start_index(start_index) {}
+
+template <typename T>
+TVector<T>::TVector(size_t n, T value, size_t start_index) : _data(n, value), _start_index(start_index) {}
+
+template <typename T>
+TVector<T>::TVector(const TVector& vec, size_t pos, size_t n, size_t start_index) : _data(other._data, pos, n), _start_index(start_index) {}
+
+template <typename T>
+TVector<T>::TVector(size_t n, size_t start_index) : _data(n), _start_index(start_index) {}
+
+template <typename T>
+TVector<T>::~TVector() {}
