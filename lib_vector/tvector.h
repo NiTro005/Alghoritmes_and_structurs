@@ -11,9 +11,6 @@ class TVector {
  public:
     TVector();
     TVector(const TVector& vec);
-    TVector(const T* arr, size_t n, size_t start_index = 0);
-    TVector(size_t n, T value, size_t start_index = 0);
-    TVector(const TVector& vec, size_t pos, size_t n, size_t start_index = 0);
     explicit TVector(size_t n, size_t start_index = 0);
     ~TVector();
 
@@ -73,15 +70,6 @@ template <typename T>
 TVector<T>:: TVector(const TVector& vec) : _data(vec._data), _start_index(vec._start_index) {}
 
 template <typename T>
-TVector<T>::TVector(const T* arr, size_t n, size_t start_index) : _data(arr, n), _start_index(start_index) {}
-
-template <typename T>
-TVector<T>::TVector(size_t n, T value, size_t start_index) : _data(n, value), _start_index(start_index) {}
-
-template <typename T>
-TVector<T>::TVector(const TVector& vec, size_t pos, size_t n, size_t start_index) : _data(other._data, pos, n), _start_index(start_index) {}
-
-template <typename T>
 TVector<T>::TVector(size_t n, size_t start_index) : _data(n), _start_index(start_index) {}
 
 template <typename T>
@@ -113,4 +101,154 @@ size_t TVector<T>::size() const noexcept {
 template <typename T>
 size_t TVector<T>::start_index() const noexcept {
     return _start_index;
+}
+
+template <typename T>
+const T* TVector<T>::data() const {
+    return _data.data() + _start_index;
+}
+
+template <typename T>
+void TVector<T>::swap(TVector& vec) {
+    _data.swap(vec._data);
+    algorithm::swap(_start_index, vec._start_index);
+}
+
+template <typename T>
+TVector<T>& TVector<T>::assign(const TVector& vec) {
+    _data.assign(vec._data);
+    _start_index = vec._start_index;
+    return *this;
+}
+
+template <typename T>
+void TVector<T>::clear() {
+    _data.clear();
+    _start_index = 0;
+}
+
+template <typename T>
+void TVector<T>::resize(size_t n, T value) {
+    if(n + _start_index > _data.capacity()){
+        throw std::out_of_range("out of range. capacity < size");
+    }
+    _data.resize(n + _start_index, value);
+}
+
+template <typename T>
+void TVector<T>::reserve(size_t n) {
+    _data.reserve(n);
+}
+
+template <typename T>
+void TVector<T>::push_back(T value) {
+    if ((_start_index + _data.size() + 1) > _data.capacity()) {
+        throw std::out_of_range("out of range. capacity < size");
+    }
+    _data.push_back(value);
+}
+
+template <typename T>
+void TVector<T>::pop_back() {
+    _data.pop_back();
+}
+
+template <typename T>
+void TVector<T>::push_front(T value) {
+    _data.push_front(value);
+    ++_start_index;
+}
+
+template <typename T>
+void TVector<T>::pop_front() {
+    if (_start_index < _data.size()) {
+        ++_start_index;
+    }
+}
+
+template <typename T>
+TVector<T>& TVector<T>::insert(const T* arr, size_t n, size_t pos) {
+    _data.insert(arr, n, pos + _start_index);
+    return *this;
+}
+
+template <typename T>
+TVector<T>& TVector<T>::insert(T value, size_t pos) {
+    _data.insert(value, pos + _start_index);
+    return *this;
+}
+
+template <typename T>
+TVector<T>& TVector<T>::replace(size_t pos, T new_value) {
+    _data.replace(pos + _start_index, new_value);
+    return *this;
+}
+
+template <typename T>
+TVector<T>& TVector<T>::erase(size_t pos, size_t n) {
+    _data.erase(pos + _start_index, n);
+    return *this;
+}
+
+template <typename T>
+TVector<T>& TVector<T>::remove_all(T value) {
+    _data.remove_all(value);
+    return *this;
+}
+
+template <typename T>
+TVector<T>& TVector<T>::remove_first(T value) {
+    _data.remove_first(value);
+    return *this;
+}
+
+template <typename T>
+TVector<T>& TVector<T>::remove_last(T value) {
+    _data.remove_last(value);
+    return *this;
+}
+
+template <typename T>
+TVector<T>& TVector<T>::remove_by_index(size_t pos) {
+    _data.remove_by_index(pos + _start_index);
+    return *this;
+}
+
+template <typename T>
+size_t* TVector<T>::find_all(T value) const noexcept {
+    size_t* indices = _data.find_all(value);
+    for (size_t i = 0; i < _data.size(); ++i) {
+        if (indices[i] >= _start_index) {
+            indices[i] -= _start_index;
+        }
+    }
+    return indices;
+}
+
+template <typename T>
+size_t TVector<T>::find_first(T value) const {
+    size_t index = _data.find_first(value);
+    if (index != _data.size() && index >= _start_index) {
+        return index - _start_index;
+    }
+    return _data.size();
+}
+
+template <typename T>
+size_t TVector<T>::find_last(T value) const {
+    size_t index = _data.find_last(value);
+    if (index != _data.size() && index >= _start_index) {
+        return index - _start_index;
+    }
+    return _data.size();
+}
+
+template <typename T>
+T& TVector<T>::operator[](size_t index) {
+    return _data[index + _start_index];
+}
+
+template <typename T>
+const T& TVector<T>::operator[](size_t index) const {
+    return _data[index + _start_index];
 }
