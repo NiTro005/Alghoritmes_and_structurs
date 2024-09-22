@@ -4,6 +4,28 @@
 #include "../lib_dmassive/archive.h"
 #include <utility>
 
+namespace utility {
+    template<typename T>
+    inline T max(T val_1, T val_2) noexcept {
+        if (val_1 > val_2) {
+            return val_1;
+        } else {
+            return val_2;
+        }
+    }
+
+    template<typename T>
+    inline T min(T val_1, T val_2) noexcept {
+        if (val_1 < val_2) {
+            return val_1;
+        }
+        else {
+            return val_2;
+        }
+    }
+}
+
+
 template <typename T>
 class TVector {
     TDMassive<T> _data;
@@ -53,9 +75,9 @@ class TVector {
     const T& operator[](size_t index) const;
 
     TVector& operator=(const TVector& vec) noexcept;
-    TVector& operator+(const TVector& vec) const;
-    TVector& operator-(const TVector& vec) const;
-    TVector& operator*(T scalar) const;
+    TVector operator+(const TVector& vec) const;
+    TVector operator-(const TVector& vec) const;
+    TVector operator*(T scalar) const;
     TVector& operator+=(const TVector& vec) const;
     TVector& operator-=(const TVector& vec) const;
     TVector& operator*=(T scalar) const;
@@ -242,6 +264,6 @@ TVector<T>& TVector<T>::operator=(const TVector& vec) noexcept {
 
 template <typename T>
 TVector<T> TVector<T>::operator+(const TVector& vec) const {
-    
+    TVector result;
     return result;
 }
