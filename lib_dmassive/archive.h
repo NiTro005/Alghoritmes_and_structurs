@@ -43,6 +43,7 @@ class TDMassive {
     size_t capacity() const noexcept;
     State get_state(size_t index) const;
 
+    void set_size(size_t size) noexcept;
     const T* data() const;
 
     void swap(TDMassive& archive);
@@ -183,6 +184,12 @@ State TDMassive<T>::get_state(size_t index) const {
     return _states[index];
 }
 
+template<typename T>
+void TDMassive<T>::set_size(size_t size) noexcept
+{
+    _size = size;
+}
+
 template <typename T>
 const T* TDMassive<T> ::data() const {
     return _data;
@@ -309,6 +316,9 @@ TDMassive<T>& TDMassive<T>::insert(T value, size_t pos) {
     if (this->full()) {
         this->reserve();
     }
+    if (_capacity / 3 < _deleted) {
+        repacking();
+    }
     for (size_t i = _size; i > pos; i--) {
         _data[i] = _data[i - 1];
         _states[i] = _states[i - 1];
@@ -330,6 +340,9 @@ TDMassive<T>& TDMassive<T>::insert(const T* arr, size_t n, size_t pos) {
     if ((_capacity - _size) < n) {
         reserve(_size + n);
     }
+    if (_capacity / 3 < _deleted) {
+        repacking();
+    }
     for (size_t i = _size; i > pos; i--) {
         _data[i + n - 1] = _data[i - 1];
         _states[i + n - 1] = _states[i - 1];
@@ -347,6 +360,9 @@ void TDMassive<T>::push_back(T value) {
     if (this->full()) {
         this->reserve();
     }
+    if (_capacity / 3 < _deleted) {
+        repacking();
+    }
     _data[_size] = value;
     _states[_size] = State::busy;
     _size++;
@@ -356,6 +372,9 @@ template <typename T>
 void TDMassive<T>::push_front(T value) {
     if (this->full()) {
         this->reserve();
+    }
+    if (_capacity / 3 < _deleted) {
+        repacking();
     }
     for (size_t i = _size; i > 0; i--) {
         _data[i] = _data[i - 1];
@@ -412,10 +431,13 @@ TDMassive<T>& TDMassive<T>::erase(size_t pos, size_t n) {
         "TArchive<T>& TArchive<T>::erase(size_t pos, size_t n)\":"
         "wrong position value.");
     }
-    for (size_t i = pos; i < pos + n; i++) {
-        _states[i] = State::deleted;
+    for (size_t i = pos; i < pos + n && i < _capacity; i++) {
+        if (_states[i] != State::deleted) {
+            _states[i] = State::deleted;
+            _deleted++;
+        }
     }
-    _deleted = n;
+    return *this;
 }
 
 template <typename T>
@@ -431,6 +453,7 @@ TDMassive<T>& TDMassive<T>::remove_all(T value) {
             _deleted++;
         }
     }
+    return *this;
 }
 
 template <typename T>
@@ -447,6 +470,7 @@ TDMassive<T>& TDMassive<T>::remove_first(T value) {
         }
     }
     _deleted++;
+    return *this;
 }
 
 template <typename T>
@@ -463,6 +487,7 @@ TDMassive<T>& TDMassive<T>::remove_last(T value) {
         }
     }
     _deleted++;
+    return *this;
 }
 
 template <typename T>

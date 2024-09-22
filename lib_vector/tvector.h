@@ -33,8 +33,6 @@ class TVector {
 
     void push_back(T value);
     void pop_back();
-    void push_front(T value);
-    void pop_front();
 
     TVector& insert(const T* arr, size_t n, size_t pos);
     TVector& insert(T value, size_t pos);
@@ -70,7 +68,9 @@ template <typename T>
 TVector<T>:: TVector(const TVector& vec) : _data(vec._data), _start_index(vec._start_index) {}
 
 template <typename T>
-TVector<T>::TVector(size_t n, size_t start_index) : _data(n), _start_index(start_index) {}
+TVector<T>::TVector(size_t n, size_t start_index) : _data(n), _start_index(start_index) {
+    _data.set_size(start_index);
+}
 
 template <typename T>
 TVector<T>::~TVector() {}
@@ -85,7 +85,7 @@ void TVector<T>::print() const noexcept {
 
 template <typename T>
 inline bool TVector<T>::empty() const noexcept {
-    return _data.empty();
+    return (_data.size() - _start_index) == 0;
 }
 
 template <typename T>
@@ -105,7 +105,7 @@ size_t TVector<T>::start_index() const noexcept {
 
 template <typename T>
 const T* TVector<T>::data() const {
-    return _data.data() + _start_index;
+    return _data.data();
 }
 
 template <typename T>
@@ -129,7 +129,7 @@ void TVector<T>::clear() {
 
 template <typename T>
 void TVector<T>::resize(size_t n, T value) {
-    if(n + _start_index > _data.capacity()){
+    if(n > _data.capacity()){
         throw std::out_of_range("out of range. capacity < size");
     }
     _data.resize(n + _start_index, value);
@@ -142,7 +142,7 @@ void TVector<T>::reserve(size_t n) {
 
 template <typename T>
 void TVector<T>::push_back(T value) {
-    if ((_start_index + _data.size() + 1) > _data.capacity()) {
+    if ((_data.size() + 1) > _data.capacity()) {
         throw std::out_of_range("out of range. capacity < size");
     }
     _data.push_back(value);
@@ -154,26 +154,19 @@ void TVector<T>::pop_back() {
 }
 
 template <typename T>
-void TVector<T>::push_front(T value) {
-    _data.push_front(value);
-    ++_start_index;
-}
-
-template <typename T>
-void TVector<T>::pop_front() {
-    if (_start_index < _data.size()) {
-        ++_start_index;
-    }
-}
-
-template <typename T>
 TVector<T>& TVector<T>::insert(const T* arr, size_t n, size_t pos) {
+    if ((_data.size() + n) > _data.capacity()) {
+        throw std::out_of_range("out of range. capacity < size");
+    }
     _data.insert(arr, n, pos + _start_index);
     return *this;
 }
 
 template <typename T>
 TVector<T>& TVector<T>::insert(T value, size_t pos) {
+    if ((_data.size() + 1) > _data.capacity()) {
+        throw std::out_of_range("out of range. capacity < size");
+    }
     _data.insert(value, pos + _start_index);
     return *this;
 }
@@ -216,31 +209,17 @@ TVector<T>& TVector<T>::remove_by_index(size_t pos) {
 
 template <typename T>
 size_t* TVector<T>::find_all(T value) const noexcept {
-    size_t* indices = _data.find_all(value);
-    for (size_t i = 0; i < _data.size(); ++i) {
-        if (indices[i] >= _start_index) {
-            indices[i] -= _start_index;
-        }
-    }
-    return indices;
+    return _data.find_all(value);
 }
 
 template <typename T>
 size_t TVector<T>::find_first(T value) const {
-    size_t index = _data.find_first(value);
-    if (index != _data.size() && index >= _start_index) {
-        return index - _start_index;
-    }
-    return _data.size();
+    return _data.find_first(value);
 }
 
 template <typename T>
 size_t TVector<T>::find_last(T value) const {
-    size_t index = _data.find_last(value);
-    if (index != _data.size() && index >= _start_index) {
-        return index - _start_index;
-    }
-    return _data.size();
+    return _data.find_last(value);
 }
 
 template <typename T>

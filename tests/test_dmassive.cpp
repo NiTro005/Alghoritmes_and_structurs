@@ -119,6 +119,8 @@ TEST(Test_TDMassive, insert_single_value) {
     EXPECT_EQ(m.size(), 2);
     EXPECT_EQ(m.data()[0], 1);
     EXPECT_EQ(m.data()[1], 2);
+
+    ASSERT_NO_THROW(m.insert(0, 0));
 }
 
 TEST(Test_TDMassive, insert_array) {
@@ -204,12 +206,12 @@ TEST(Test_TDMassive, RemoveByIndex) {
 }
 
 TEST(Test_TDMassive, Erase) {
-    TDMassive<int> mass(10);
+    TDMassive<int> mass(3);
     mass.push_back(1);
     mass.push_back(2);
     mass.push_back(3);
 
-    mass.erase(1, 2);
+    mass.erase(1, 4);
     EXPECT_EQ(mass.get_state(1), State::deleted);
     EXPECT_EQ(mass.get_state(2), State::deleted);
 }
