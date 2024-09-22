@@ -76,6 +76,7 @@ class TDMassive {
 
     T& operator[](size_t index);
     const T& operator[](size_t index) const;
+    TDMassive& operator=(const TDMassive& other);
 
  private:
     size_t count_value(T value)  const noexcept;
@@ -185,8 +186,7 @@ State TDMassive<T>::get_state(size_t index) const {
 }
 
 template<typename T>
-void TDMassive<T>::set_size(size_t size) noexcept
-{
+void TDMassive<T>::set_size(size_t size) noexcept {
     _size = size;
 }
 
@@ -343,7 +343,7 @@ TDMassive<T>& TDMassive<T>::insert(const T* arr, size_t n, size_t pos) {
         " wrong position value.");
     }
     for (size_t i = pos; i < n + pos; ++i) {
-        if(_states[i] == State::deleted) {
+        if (_states[i] == State::deleted) {
             numbers++;
         }
     }
@@ -586,4 +586,23 @@ T& TDMassive<T>::operator[](size_t index) {
 template <typename T>
 const T& TDMassive<T>::operator[](size_t index) const {
     return _data[index];
+}
+
+template <typename T>
+TDMassive<T>& TDMassive<T>::operator=(const TDMassive& other) {
+    if (this == &other) {
+        return *this;
+    }
+    delete[] _data;
+    delete[] _states;
+    _capacity = other._capacity;
+    _size = other._size;
+    _deleted = other._deleted;
+
+    _data = new T[_capacity];
+    _states = new State[_capacity];
+
+    std::copy(other._data, other._data + _capacity, _data);
+    std::copy(other._states, other._states + _capacity, _states);
+    return *this;
 }

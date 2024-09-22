@@ -231,3 +231,16 @@ TEST(TVectorTest, OperatorAccess) {
     vec[0] = 3;
     EXPECT_EQ(vec[0], 3);
 }
+
+TEST(TVectorTest, OperatorAssignment) {
+    TVector<int> vec1;
+    vec1.push_back(1);
+    vec1.push_back(2);
+
+    TVector<int> vec2;
+    vec2 = vec1;
+
+    EXPECT_EQ(vec2.size(), 2);
+    EXPECT_EQ(vec2[0], 1);
+    EXPECT_EQ(vec2[1], 2);
+}
