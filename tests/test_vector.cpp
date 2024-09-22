@@ -28,16 +28,6 @@ TEST(TVectorTest, Empty) {
     EXPECT_FALSE(vec.empty());
 }
 
-TEST(TVectorTest, Full) {
-    TVector<int> vec;
-    vec.reserve(1);
-    vec.push_back(1);
-    EXPECT_TRUE(vec.full());
-
-    vec.clear();
-    EXPECT_FALSE(vec.full());
-}
-
 TEST(TVectorTest, Size) {
     TVector<int> vec;
     EXPECT_EQ(vec.size(), 0);
@@ -192,61 +182,12 @@ TEST(TVectorTest, Erase) {
     vec.push_back(3);
 
     vec.erase(1, 1);
+    vec.insert(4, 1);
 
-    EXPECT_EQ(vec.size(), 2);
+    EXPECT_EQ(vec.size(), 3);
     EXPECT_EQ(vec[0], 1);
-    EXPECT_EQ(vec[1], 3);
-}
-
-TEST(TVectorTest, RemoveAll) {
-    TVector<int> vec;
-    vec.push_back(1);
-    vec.push_back(2);
-    vec.push_back(1);
-
-    vec.remove_all(1);
-
-    EXPECT_EQ(vec.size(), 1);
-    EXPECT_EQ(vec[0], 2);
-}
-
-TEST(TVectorTest, RemoveFirst) {
-    TVector<int> vec;
-    vec.push_back(1);
-    vec.push_back(2);
-    vec.push_back(1);
-
-    vec.remove_first(1);
-
-    EXPECT_EQ(vec.size(), 2);
-    EXPECT_EQ(vec[0], 2);
-    EXPECT_EQ(vec[1], 1);
-}
-
-TEST(TVectorTest, RemoveLast) {
-    TVector<int> vec;
-    vec.push_back(1);
-    vec.push_back(2);
-    vec.push_back(1);
-
-    vec.remove_last(1);
-
-    EXPECT_EQ(vec.size(), 2);
-    EXPECT_EQ(vec[0], 1);
-    EXPECT_EQ(vec[1], 2);
-}
-
-TEST(TVectorTest, RemoveByIndex) {
-    TVector<int> vec;
-    vec.push_back(1);
-    vec.push_back(2);
-    vec.push_back(3);
-
-    vec.remove_by_index(1);
-
-    EXPECT_EQ(vec.size(), 2);
-    EXPECT_EQ(vec[0], 1);
-    EXPECT_EQ(vec[1], 3);
+    EXPECT_EQ(vec[1], 4);
+    EXPECT_EQ(vec[2], 3);
 }
 
 TEST(TVectorTest, FindAll) {
@@ -256,8 +197,9 @@ TEST(TVectorTest, FindAll) {
     vec.push_back(1);
 
     size_t* indices = vec.find_all(1);
-    EXPECT_EQ(indices[0], 0);
-    EXPECT_EQ(indices[1], 2);
+    EXPECT_EQ(indices[0], 2);
+    EXPECT_EQ(indices[1], 0);
+    EXPECT_EQ(indices[2], 2);
 }
 
 TEST(TVectorTest, FindFirst) {

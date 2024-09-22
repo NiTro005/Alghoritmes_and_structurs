@@ -313,6 +313,11 @@ TDMassive<T>& TDMassive<T>::insert(T value, size_t pos) {
                                "TArchive<T>& insert(T value, size_t pos)\":"
                                " wrong position value.");
     }
+    if (_states[pos] == State::deleted) {
+        _data[pos] = value;
+        _states[pos] = State::busy;
+        return *this;
+    }
     if (this->full()) {
         this->reserve();
     }
@@ -331,10 +336,16 @@ TDMassive<T>& TDMassive<T>::insert(T value, size_t pos) {
 
 template <typename T>
 TDMassive<T>& TDMassive<T>::insert(const T* arr, size_t n, size_t pos) {
+    size_t numbers = 0;
     if (_size < pos) {
         throw std::logic_error("Error in function" \
         "TArchive<T>& insert(T value, size_t pos)\":"
         " wrong position value.");
+    }
+    for (size_t i = pos; i < n + pos; ++i) {
+        if(_states[i] == State::deleted) {
+            numbers++;
+        }
     }
 
     if ((_capacity - _size) < n) {
@@ -351,7 +362,7 @@ TDMassive<T>& TDMassive<T>::insert(const T* arr, size_t n, size_t pos) {
         _data[pos + i] = arr[i];
         _states[pos + i] = State::busy;
     }
-    _size += n;
+    _size += n - numbers;
     return *this;
 }
 

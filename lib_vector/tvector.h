@@ -29,7 +29,6 @@ class TVector {
 
     void clear();
     void resize(size_t n, T value = T());
-    void reserve(size_t n = 15);
 
     void push_back(T value);
     void pop_back();
@@ -133,11 +132,6 @@ void TVector<T>::resize(size_t n, T value) {
         throw std::out_of_range("out of range. capacity < size");
     }
     _data.resize(n + _start_index, value);
-}
-
-template <typename T>
-void TVector<T>::reserve(size_t n) {
-    _data.reserve(n);
 }
 
 template <typename T>
