@@ -16,9 +16,13 @@ add_subdirectory(lib_pair)	      # подключаем дополнительн
 
 add_subdirectory(lib_dmassive)
 
+add_subdirectory(lib_string)
+
 add_subdirectory(lib_stack)
 
 add_subdirectory(lib_vector)
+
+add_subdirectory(lib_parser)
 
 add_subdirectory(main)                # подключаем дополнительный CMakeLists.txt из подкаталога с именем main
 
