@@ -50,6 +50,6 @@ TEST(IsCorrectTest, Wrong_brecket_in_start) {
 }
 
 TEST(IsCorrectTest, AbsoluteValue) {
-    CString str("|a+b|");
+    CString str("|a+b|*|a|");
     EXPECT_NO_THROW(IsCorrect(str));
 }
