@@ -3,6 +3,8 @@
 #include <iostream>
 #include <limits>
 #include <stdexcept>
+#include <utility>
+#include <algorithm>
 
 #define STEP_CAPACITY 15
 
@@ -16,24 +18,31 @@ namespace algorithms {
 
     template<typename T>
     T max(T val_1, T val_2) {
-        if (val_1 > val_2) return val_1;
-        else return val_2;
+        if (val_1 > val_2) {
+            return val_1;
+        } else { 
+            return val_2;
+        }
     }
 
     template<typename T>
     T min(T val_1, T val_2) {
-        if (val_1 < val_2) return val_1;
-        else return val_2;
+        if (val_1 < val_2) {
+            return val_1;
+        }
+        else {
+            return val_2;
+        }
     }
-}
+} // namespace algorithms
 
 class CString {
-    char* _data;                  // хранилище данных
-    size_t _size;                 // длина текста
-    size_t _capacity;             // размер хранилища
-    size_t _max_capacity = -1;    // максимально возможный размер хранилища
+    char* _data;
+    size_t _size;
+    size_t _capacity;
+    size_t _max_capacity = -1;
 
-public:
+ public:
     CString();
     CString(const CString& str);
     CString(const char* c_str);
@@ -62,54 +71,54 @@ public:
     CString& assign(size_t n, char c);
 
     int compare(const CString& str) const noexcept;
-    int compare(size_t pos, size_t len, const CString& str) const;
-    int compare(size_t pos, size_t len, const CString& str, size_t subpos, size_t sublen) const;
+    int compare(size_t pos, size_t len,
+        const CString& str) const;
+    int compare(size_t pos, size_t len, const CString& str,
+        size_t subpos, size_t sublen) const;
     int compare(const char* s) const;
     int compare(size_t pos, size_t len, const char* s) const;
-    int compare(size_t pos, size_t len, const char* s, size_t n) const;
+    int compare(size_t pos, size_t len,
+        const char* s, size_t n) const;
 
-    void clear() noexcept;                    // очистка строки
-    void resize(size_t n, char c = '\0');     // изменение длины строки
-    void reserve(size_t n = 0);               // увеличение хранилища
+    void clear() noexcept;
+    void resize(size_t n, char c = '\0');
+    void reserve(size_t n = 0);
 
-    void push_back(char c);                   // вставка символа (в конец)
-    void pop_back();                          // удаление символа (из конца)
+    void push_back(char c);
+    void pop_back();
 
-    CString& erase(size_t pos, size_t len);    // удаление участка
+    CString& erase(size_t pos, size_t len);
 
-    // вставка строки (в конец)
     CString& append(const CString& str);
     CString& append(const CString& str, size_t subpos, size_t sublen);
     CString& append(const char* s);
     CString& append(const char* s, size_t n);
     CString& append(size_t n, char c);
 
-    // вставка строки (после указанной позиции)
     CString& insert(size_t pos, const CString& str);
-    CString& insert(size_t pos, const CString& str, size_t subpos, size_t sublen);
+    CString& insert(size_t pos,
+        const CString& str, size_t subpos, size_t sublen);
     CString& insert(size_t pos, const char* s);
     CString& insert(size_t pos, const char* s, size_t n);
     CString& insert(size_t pos, size_t n, char c);
 
-    // замена участка заданной строкой
     CString& replace(size_t pos, size_t len, const CString& str);
-    CString& replace(size_t pos, size_t len, const CString& str, size_t subpos, size_t sublen);
-    CString& replace(size_t pos, size_t len, const char* s, size_t n);
+    CString& replace(size_t pos, size_t len,
+        const CString& str, size_t subpos, size_t sublen);
+    CString& replace(size_t pos, size_t len,
+        const char* s, size_t n);
     CString& replace(size_t pos, size_t len, size_t n, char c);
 
-    // поиск подстроки в строке начиная с некоторой позиции
     size_t find(const CString& str, size_t pos = 0) const;
     size_t find(const char* s, size_t pos = 0) const;
     size_t find(const char* s, size_t pos, size_t n) const;
     size_t find(char c, size_t pos = 0) const;
 
-    // поиск одного из перечисленных символов в строке начиная с некоторой позиции
     size_t find_first_of(const CString& str, size_t pos = 0) const;
     size_t find_first_of(const char* s, size_t pos = 0) const;
     size_t find_first_of(const char* s, size_t pos, size_t n) const;
     size_t find_first_of(char c, size_t pos = 0) const;
 
-    // поиск одного НЕ из перечисленных символов в строке начиная с некоторой позиции
     size_t find_first_not_of(const CString& str, size_t pos = 0) const;
     size_t find_first_not_of(const char* s, size_t pos = 0) const;
     size_t find_first_not_of(const char* s, size_t pos, size_t n) const;
