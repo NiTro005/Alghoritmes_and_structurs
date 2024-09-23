@@ -1078,3 +1078,18 @@ int CString::compare(size_t pos, size_t len, const char* s, size_t n) const {
 
     return std::strncmp(_data + pos, s, std::min(len, n));
 }
+
+char& CString::operator[](size_t index) {
+    if (index >= _size) {
+        throw std::out_of_range("Index out of range");
+    }
+    return _data[index];
+}
+
+// Константная версия оператора []
+const char& CString::operator[](size_t index) const {
+    if (index >= _size) {
+        throw std::out_of_range("Index out of range");
+    }
+    return _data[index];
+}
