@@ -1,8 +1,8 @@
 // Copyright 2024 Kita Trofimov
+#include <gtest.h>
 #include "../lib_string/cstring.h"
 #include "../lib_stack/stack.h"
 #include "../lib_parser/parser.h"
-#include <gtest.h>
 
 TEST(IsCorrectTest, CorrectString) {
     CString str("(a+b)*{c/[d-e]}");

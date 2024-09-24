@@ -25,15 +25,14 @@ bool IsCorrect(const CString& str) {
             } else {
                 throw std::logic_error("wrong bracket");
             }
-        }
-        else if (!(('0' <= s && s <= '9') || ('A' <= s && s <= 'Z') ||
+        } else if (!(('0' <= s && s <= '9') || ('A' <= s && s <= 'Z') ||
             ('a' <= s && s <= 'z') || s == '*' ||
             s == '+' || s == '-' || s == '/') || s == ' ') {
             throw std::logic_error("Unexpscted symbol");
         }
     }
     if (!stack.IsEmpty()) {
-	    throw std::logic_error("Stack not empty");
+        throw std::logic_error("Stack not empty");
     }
     return true;
 }

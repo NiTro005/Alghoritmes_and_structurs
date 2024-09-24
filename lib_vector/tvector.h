@@ -89,14 +89,11 @@ template <typename T>
 TVector<T>::TVector(): _start_index(0) {}
 
 template <typename T>
-TVector<T>:: TVector(const TVector& vec) : 
-    _data(vec._data), _start_index(vec._start_index) {}
+TVector<T>:: TVector(const TVector& vec) : {}
 
 template <typename T>
 TVector<T>::TVector(size_t n, size_t start_index) : 
-    _data(n), _start_index(start_index) {
-    _data.set_size(start_index);
-}
+    _data(n - start_index), _start_index(start_index) {}
 
 template <typename T>
 TVector<T>::~TVector() {}
@@ -111,7 +108,7 @@ void TVector<T>::print() const noexcept {
 
 template <typename T>
 inline bool TVector<T>::empty() const noexcept {
-    return (_data.size() - _start_index) == 0;
+    return _data.empty();
 }
 
 template <typename T>
@@ -121,7 +118,7 @@ inline bool TVector<T>::full() const noexcept {
 
 template <typename T>
 size_t TVector<T>::size() const noexcept {
-    return _data.size() - _start_index;
+    return _data.size();
 }
 
 template <typename T>
@@ -179,7 +176,7 @@ TVector<T>& TVector<T>::insert(const T* arr, size_t n, size_t pos) {
     if ((_data.size() + n) > _data.capacity()) {
         throw std::out_of_range("out of range. capacity < size");
     }
-    _data.insert(arr, n, pos + _start_index);
+    _data.insert(arr, n, pos);
     return *this;
 }
 
@@ -188,19 +185,19 @@ TVector<T>& TVector<T>::insert(T value, size_t pos) {
     if ((_data.size() + 1) > _data.capacity()) {
         throw std::out_of_range("out of range. capacity < size");
     }
-    _data.insert(value, pos + _start_index);
+    _data.insert(value, pos);
     return *this;
 }
 
 template <typename T>
 TVector<T>& TVector<T>::replace(size_t pos, T new_value) {
-    _data.replace(pos + _start_index, new_value);
+    _data.replace(pos, new_value);
     return *this;
 }
 
 template <typename T>
 TVector<T>& TVector<T>::erase(size_t pos, size_t n) {
-    _data.erase(pos + _start_index, n);
+    _data.erase(pos, n);
     return *this;
 }
 
@@ -224,7 +221,7 @@ TVector<T>& TVector<T>::remove_last(T value) {
 
 template <typename T>
 TVector<T>& TVector<T>::remove_by_index(size_t pos) {
-    _data.remove_by_index(pos + _start_index);
+    _data.remove_by_index(pos);
     return *this;
 }
 

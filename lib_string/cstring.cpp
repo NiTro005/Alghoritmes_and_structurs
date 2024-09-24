@@ -140,9 +140,13 @@ int CString::compare(const CString& str) const noexcept {
             return -1;
         }
     }
-    if (this->_size > str._size) { return 1; }
-    else if (this->_size < str._size) { return -1; }
-    else { return 0; }
+    if (this->_size > str._size) {
+        return 1; 
+    } else if (this->_size < str._size) {
+        return -1; 
+    } else {
+        return 0;
+    }
 }
 
 void CString:: clear() noexcept {
@@ -188,8 +192,8 @@ void CString::push_back(char c) {
 
 void CString::pop_back() {
     if (this->empty()) {
-        throw std::logic_error("Error in function \
-        \"void pop_back()\": source CString is empty");
+        throw std::logic_error("Error in function" \
+        "void pop_back()\": source CString is empty");
     }
     _data[--_size] = '\0';
 }

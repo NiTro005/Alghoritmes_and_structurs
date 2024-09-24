@@ -20,7 +20,7 @@ namespace algorithms {
     T max(T val_1, T val_2) {
         if (val_1 > val_2) {
             return val_1;
-        } else { 
+        } else {
             return val_2;
         }
     }
@@ -29,12 +29,11 @@ namespace algorithms {
     T min(T val_1, T val_2) {
         if (val_1 < val_2) {
             return val_1;
-        }
-        else {
+        } else {
             return val_2;
         }
     }
-} // namespace algorithms
+}  // namespace algorithms
 
 class CString {
     char* _data;
@@ -45,14 +44,14 @@ class CString {
  public:
     CString();
     CString(const CString& str);
-    CString(const char* c_str);
+    explicit CString(const char* c_str);
     CString(const char* c_str, size_t n);
     CString(size_t n, char c);
     CString(const CString& str, size_t pos, size_t len);
 
     ~CString();
 
-    void print(size_t pos = 0, size_t len = 0) const noexcept; 
+    void print(size_t pos = 0, size_t len = 0) const noexcept;
 
     bool empty() const noexcept;
     bool full() const noexcept;
