@@ -2,6 +2,7 @@
 #pragma once
 #include <iostream>
 #include <utility>
+#include <algorithm>
 #define STEP_CAPACITY 15
 #define MAX_CAPACITY 100000
 

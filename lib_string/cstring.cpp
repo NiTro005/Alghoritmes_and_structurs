@@ -141,9 +141,9 @@ int CString::compare(const CString& str) const noexcept {
         }
     }
     if (this->_size > str._size) {
-        return 1; 
+        return 1;
     } else if (this->_size < str._size) {
-        return -1; 
+        return -1;
     } else {
         return 0;
     }

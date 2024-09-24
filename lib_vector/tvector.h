@@ -60,6 +60,8 @@ class TVector {
     TVector& insert(T value, size_t pos);
 
     TVector& replace(size_t pos, T new_value);
+    void push_front(T value);
+    void pop_front();
 
     TVector& erase(size_t pos, size_t n);
     TVector& remove_all(T value);
@@ -89,7 +91,8 @@ template <typename T>
 TVector<T>::TVector(): _start_index(0) {}
 
 template <typename T>
-TVector<T>:: TVector(const TVector& vec) : {}
+TVector<T>:: TVector(const TVector& vec) : 
+    _data(vec._data), _start_index(vec._start_index) {}
 
 template <typename T>
 TVector<T>::TVector(size_t n, size_t start_index) : 
@@ -169,6 +172,19 @@ void TVector<T>::push_back(T value) {
 template <typename T>
 void TVector<T>::pop_back() {
     _data.pop_back();
+}
+
+template <typename T>
+void TVector<T>::push_front(T value) {
+    if ((_data.size() + 1) > _data.capacity()) {
+        throw std::out_of_range("out of range. capacity < size");
+    }
+    _data.push_front(value);
+}
+
+template <typename T>
+void TVector<T>::pop_front() {
+    _data.pop_front();
 }
 
 template <typename T>
@@ -261,6 +277,9 @@ TVector<T>& TVector<T>::operator=(const TVector& vec) noexcept {
 
 template <typename T>
 TVector<T> TVector<T>::operator+(const TVector& vec) const {
-    TVector result;
+    TVector<T> result(_data.capacity(), utility::max(start_index(), vec.start_index()));
+    for (size_t i = 0; i < utility::max(size(), vec.size()); i++) {
+        result.push_back(_data[i] + vec._data[i]);
+    }
     return result;
 }

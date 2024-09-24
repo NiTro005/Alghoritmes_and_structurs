@@ -244,3 +244,37 @@ TEST(TVectorTest, OperatorAssignment) {
     EXPECT_EQ(vec2[0], 1);
     EXPECT_EQ(vec2[1], 2);
 }
+
+TEST(TVectorTest, OperatorAddition) {
+    TVector<int> vec1;
+    vec1.push_back(1);
+    vec1.push_back(2);
+
+    TVector<int> vec2;
+    vec2.push_back(3);
+    vec2.push_back(4);
+
+    TVector<int> vec3 = vec1 + vec2;
+
+    EXPECT_EQ(vec3.size(), 2);
+    EXPECT_EQ(vec3[0], 4);
+    EXPECT_EQ(vec3[1], 6);
+}
+
+TEST(TVectorTest, OperatorAdditionDifferentSizes) {
+    TVector<int> vec1;
+    vec1.push_back(1);
+    vec1.push_back(2);
+    vec1.push_back(3);
+
+    TVector<int> vec2;
+    vec2.push_back(4);
+    vec2.push_back(5);
+
+    TVector<int> vec3 = vec1 + vec2;
+
+    EXPECT_EQ(vec3.size(), 3);
+    EXPECT_EQ(vec3[0], 5);
+    EXPECT_EQ(vec3[1], 7);
+    EXPECT_EQ(vec3[2], 3);
+}
