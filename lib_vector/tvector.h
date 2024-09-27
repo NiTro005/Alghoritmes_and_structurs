@@ -285,11 +285,11 @@ TVector<T> TVector<T>::operator+(const TVector& vec) const {
         T value2;
         if (i >= _start_index) {
             value1 = (i < size() + _start_index) ? (*this)[i] : T();
-        } else { T(); }
+        } else { value1 = 0; }
         if (i >= vec._start_index) {
             value2 = (i < vec.size() + vec._start_index) ? vec[i] : T();
         }
-        else { T(); }
+        else { value1 = 0; }
         result.push_back(value1 + value2);
     }
     return result;
