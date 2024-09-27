@@ -151,7 +151,7 @@ TEST(TVectorTest, InsertArray) {
 }
 
 TEST(TVectorTest, InsertValue) {
-    TVector<int> vec;
+    TVector<int> vec(4, 1);
     vec.push_back(1);
     vec.push_back(2);
 
@@ -277,4 +277,23 @@ TEST(TVectorTest, OperatorAdditionDifferentSizes) {
     EXPECT_EQ(vec3[0], 5);
     EXPECT_EQ(vec3[1], 7);
     EXPECT_EQ(vec3[2], 3);
+}
+
+TEST(TVectorTest, OperatorAdditionDiffrentStart_index) {
+    TVector<int> vec1(7, 1);
+    vec1.push_back(1);
+    vec1.push_back(2);
+    vec1.push_back(3);
+
+    TVector<int> vec2;
+    vec2.push_back(4);
+    vec2.push_back(5);
+
+    TVector<int> vec3 = vec1 + vec2;
+
+    EXPECT_EQ(vec3.size(), 4);
+    EXPECT_EQ(vec3[0], 4);
+    EXPECT_EQ(vec3[1], 6);
+    EXPECT_EQ(vec3[2], 7);
+    EXPECT_EQ(vec3[3], 3);
 }

@@ -258,12 +258,12 @@ size_t TVector<T>::find_last(T value) const {
 
 template <typename T>
 T& TVector<T>::operator[](size_t index) {
-    return _data[index + _start_index];
+    return _data[index];
 }
 
 template <typename T>
 const T& TVector<T>::operator[](size_t index) const {
-    return _data[index + _start_index];
+    return _data[index];
 }
 
 template <typename T>
@@ -277,9 +277,11 @@ TVector<T>& TVector<T>::operator=(const TVector& vec) noexcept {
 
 template <typename T>
 TVector<T> TVector<T>::operator+(const TVector& vec) const {
-    TVector<T> result(_data.capacity(), utility::max(start_index(), vec.start_index()));
+    TVector<T> result(_data.capacity(), utility::min(start_index(), vec.start_index()));
     for (size_t i = 0; i < utility::max(size(), vec.size()); i++) {
-        result.push_back(_data[i] + vec._data[i]);
+        T value1 = (i < this->size()) ? (*this)[i] : T();
+        T value2 = (i < vec.size()) ? vec[i] : T();
+        result.push_back(value1 + value2);
     }
     return result;
 }
