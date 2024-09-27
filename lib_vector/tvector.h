@@ -1,8 +1,8 @@
 // Copyright 2024 Kita Trofimov
 #pragma once
 #include <iostream>
-#include "../lib_dmassive/archive.h"
 #include <utility>
+#include "../lib_dmassive/archive.h"
 
 namespace utility {
     template<typename T>
@@ -18,12 +18,11 @@ namespace utility {
     inline T min(T val_1, T val_2) noexcept {
         if (val_1 < val_2) {
             return val_1;
-        }
-        else {
+        } else {
             return val_2;
         }
     }
-}
+}  // namespace utility
 
 
 template <typename T>
@@ -91,11 +90,11 @@ template <typename T>
 TVector<T>::TVector(): _start_index(0) {}
 
 template <typename T>
-TVector<T>:: TVector(const TVector& vec) : 
+TVector<T>:: TVector(const TVector& vec) :
     _data(vec._data), _start_index(vec._start_index) {}
 
 template <typename T>
-TVector<T>::TVector(size_t n, size_t start_index) : 
+TVector<T>::TVector(size_t n, size_t start_index) :
     _data(n - start_index), _start_index(start_index) {}
 
 template <typename T>
@@ -258,12 +257,12 @@ size_t TVector<T>::find_last(T value) const {
 
 template <typename T>
 T& TVector<T>::operator[](size_t index) {
-    return _data[index];
+    return _data[index - _start_index];
 }
 
 template <typename T>
 const T& TVector<T>::operator[](size_t index) const {
-    return _data[index];
+    return _data[index - _start_index];
 }
 
 template <typename T>
@@ -277,10 +276,20 @@ TVector<T>& TVector<T>::operator=(const TVector& vec) noexcept {
 
 template <typename T>
 TVector<T> TVector<T>::operator+(const TVector& vec) const {
-    TVector<T> result(_data.capacity(), utility::min(start_index(), vec.start_index()));
-    for (size_t i = 0; i < utility::max(size(), vec.size()); i++) {
-        T value1 = (i < this->size()) ? (*this)[i] : T();
-        T value2 = (i < vec.size()) ? vec[i] : T();
+    size_t result_capacity = utility::max(_data.capacity(), vec._data.capacity());
+    size_t result_start_index = utility::min(start_index(), vec.start_index());
+    TVector<T> result(result_capacity, result_start_index);
+    size_t len = utility::max(size() + start_index(), vec.size() + vec.start_index());
+    for (size_t i = 0; i < len; i++) {
+        T value1;
+        T value2;
+        if (i >= _start_index) {
+            value1 = (i < size() + _start_index) ? (*this)[i] : T();
+        } else { T(); }
+        if (i >= vec._start_index) {
+            value2 = (i < vec.size() + vec._start_index) ? vec[i] : T();
+        }
+        else { T(); }
         result.push_back(value1 + value2);
     }
     return result;
