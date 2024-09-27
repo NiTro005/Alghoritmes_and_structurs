@@ -20,6 +20,8 @@ add_subdirectory(lib_string)
 
 add_subdirectory(lib_stack)
 
+add_subdirectory(lib_queue)
+
 add_subdirectory(lib_vector)
 
 add_subdirectory(lib_parser)
