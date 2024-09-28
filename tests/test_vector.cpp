@@ -367,3 +367,31 @@ TEST(TVectorTest, OperatorAddition_Assigment) {
     EXPECT_EQ(vec[2], 7);
     EXPECT_EQ(vec[3], 9);
 }
+
+TEST(TVectorTest, OperatorSub_Assigment) {
+    TVector<int> vec(7, 1);
+    TVector<int> vec1(7, 2);
+    vec.push_back(1);
+    vec.push_back(2);
+    vec.push_back(3);
+
+    vec1.push_back(4);
+    vec1.push_back(5);
+    vec1.push_back(6);
+    vec -= vec1;
+    EXPECT_EQ(vec.size(), 3);
+    EXPECT_EQ(vec[1], 1);
+    EXPECT_EQ(vec[2], -2);
+    EXPECT_EQ(vec[3], -2);
+}
+TEST(TVectorTest, OperatorMulty_Assigment) {
+    TVector<int> vec(7, 1);
+    vec.push_back(1);
+    vec.push_back(2);
+    vec.push_back(3);
+    vec *= 5;
+    EXPECT_EQ(vec.size(), 3);
+    EXPECT_EQ(vec[1], 5);
+    EXPECT_EQ(vec[2], 10);
+    EXPECT_EQ(vec[3], 15);
+}

@@ -341,7 +341,31 @@ TVector<T>& TVector<T>::operator+=(const TVector& vec) {
         if (_start_index <= vec._start_index + i) {
             replace(pos - 1, _data[pos++] + vec._data[i - pos2]);
         }
+    }
+    return *this;
+}
 
+template<typename T>
+TVector<T>& TVector<T>::operator-=(const TVector& vec) {
+    size_t pos = 0;
+    size_t pos2 = 0;
+    for (size_t i = 0; i < size(); i++) {
+        if (_start_index + i < vec._start_index) {
+            pos++;
+            pos2++;
+            continue;
+        }
+        if (_start_index <= vec._start_index + i) {
+            replace(pos - 1, _data[pos++] - vec._data[i - pos2]);
+        }
+    }
+    return *this;
+}
+
+template<typename T>
+TVector<T>& TVector<T>::operator*=(T scalar) {
+    for (size_t i = 0; i < size(); i++) {
+        replace(i, _data[i] * scalar);
     }
     return *this;
 }
