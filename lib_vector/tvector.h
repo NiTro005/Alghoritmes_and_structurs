@@ -371,6 +371,32 @@ TVector<T>& TVector<T>::operator*=(T scalar) {
 }
 
 template<typename T>
+bool TVector<T>::operator==(const TVector& vec) const {
+    if ((_start_index != vec._start_index) || (size() != vec.size())) {
+        return false;
+    }
+    for (size_t i = 0; i < size(); i++) {
+        if (_data[i] != vec._data[i]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+template<typename T>
+bool TVector<T>::operator!=(const TVector& vec) const {
+    if ((_start_index != vec._start_index) || (size() != vec.size())) {
+        return true;
+    }
+    for (size_t i = 0; i < size(); i++) {
+        if (_data[i] != vec._data[i]) {
+            return true;
+        }
+    }
+    return false;
+}
+
+template<typename T>
 TVector<T> operator*(T scalar, const TVector<T>& vec) {
     return vec * scalar;
 }

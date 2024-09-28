@@ -384,6 +384,7 @@ TEST(TVectorTest, OperatorSub_Assigment) {
     EXPECT_EQ(vec[2], -2);
     EXPECT_EQ(vec[3], -2);
 }
+
 TEST(TVectorTest, OperatorMulty_Assigment) {
     TVector<int> vec(7, 1);
     vec.push_back(1);
@@ -395,3 +396,72 @@ TEST(TVectorTest, OperatorMulty_Assigment) {
     EXPECT_EQ(vec[2], 10);
     EXPECT_EQ(vec[3], 15);
 }
+
+TEST(TVectorTest, OperatorEqual) {
+    TVector<int> vec1(3, 0);
+    vec1.push_back(1);
+    vec1.push_back(2);
+    vec1.push_back(3);
+
+    TVector<int> vec2(3, 0);
+    vec2.push_back(1);
+    vec2.push_back(2);
+    vec2.push_back(3);
+
+    EXPECT_TRUE(vec1 == vec2);
+
+    TVector<int> vec3(3, 0);
+    vec3.push_back(4);
+    vec3.push_back(5);
+    vec3.push_back(6);
+
+    EXPECT_FALSE(vec1 == vec3);
+
+    TVector<int> vec4(4, 1);
+    vec4.push_back(1);
+    vec4.push_back(2);
+    vec4.push_back(3);
+
+    EXPECT_FALSE(vec1 == vec4);
+
+    TVector<int> vec5(2, 0);
+    vec5.push_back(1);
+    vec5.push_back(2);
+
+    EXPECT_FALSE(vec1 == vec5);
+}
+
+TEST(TVectorTest, OperatorNotEqual) {
+    TVector<int> vec1(3, 0);
+    vec1.push_back(1);
+    vec1.push_back(2);
+    vec1.push_back(3);
+
+    TVector<int> vec2(3, 0);
+    vec2.push_back(1);
+    vec2.push_back(2);
+    vec2.push_back(3);
+
+    EXPECT_FALSE(vec1 != vec2);
+
+    TVector<int> vec3(3, 0);
+    vec3.push_back(4);
+    vec3.push_back(5);
+    vec3.push_back(6);
+
+    EXPECT_TRUE(vec1 != vec3);
+
+    TVector<int> vec4(4, 1);
+    vec4.push_back(1);
+    vec4.push_back(2);
+    vec4.push_back(3);
+
+    EXPECT_TRUE(vec1 != vec4);
+
+    TVector<int> vec5(2, 0);
+    vec5.push_back(1);
+    vec5.push_back(2);
+
+    EXPECT_TRUE(vec1 != vec5);
+}
+
