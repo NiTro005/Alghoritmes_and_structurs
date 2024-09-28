@@ -79,9 +79,10 @@ class TVector {
     TVector operator+(const TVector& vec) const;
     TVector operator-(const TVector& vec) const;
     TVector operator*(T scalar) const;
-    TVector& operator+=(const TVector& vec) const;
-    TVector& operator-=(const TVector& vec) const;
-    TVector& operator*=(T scalar) const;
+    friend TVector operator*(T scalar, const TVector& vec);
+    TVector& operator+=(const TVector& vec);
+    TVector& operator-=(const TVector& vec);
+    TVector& operator*=(T scalar);
     bool operator==(const TVector& vec) const;
     bool operator!=(const TVector& vec) const;
 };
@@ -281,8 +282,7 @@ TVector<T> TVector<T>::operator+(const TVector& vec) const {
     TVector<T> result(result_capacity, result_start_index);
     size_t len = utility::max(size() + start_index(), vec.size() + vec.start_index());
     for (size_t i = 0; i < len; i++) {
-        T value1;
-        T value2;
+        T value1, value2;
         if (i >= _start_index) {
             value1 = (i < size() + _start_index) ? (*this)[i] : T();
         } else { value1 = 0; }
@@ -293,4 +293,60 @@ TVector<T> TVector<T>::operator+(const TVector& vec) const {
         result.push_back(value1 + value2);
     }
     return result;
+}
+
+template <typename T>
+TVector<T> TVector<T>::operator-(const TVector& vec) const {
+    size_t result_capacity = utility::max(_data.capacity(), vec._data.capacity());
+    size_t result_start_index = utility::min(start_index(), vec.start_index());
+    TVector<T> result(result_capacity, result_start_index);
+    size_t len = utility::max(size() + start_index(), vec.size() + vec.start_index());
+    for (size_t i = 0; i < len; i++) {
+        T value1, value2;
+        T res = 0;
+        if (i >= _start_index) {
+            value1 = (i < size() + _start_index) ? (*this)[i] : T();
+            res += value1;
+        }
+        if (i >= vec._start_index) {
+            value2 = (i < vec.size() + vec._start_index) ? vec[i] : T();
+            if (res != 0) {
+                res -= value2;
+            } else { res += value2; }
+        }
+        result.push_back(res);
+    }
+    return result;
+}
+
+template<typename T>
+TVector<T> TVector<T>::operator*(T scalar) const {
+    TVector<T> result(_data.capacity(), _start_index);
+    for (size_t i = 0; i < size(); i++) {
+        result.push_back((*this)[i] * scalar);
+    }
+    return result;
+}
+
+template<typename T>
+TVector<T>& TVector<T>::operator+=(const TVector& vec) {
+    size_t pos = 0;
+    size_t pos2 = 0;
+    for (size_t i = 0; i < size(); i++) {
+        if (_start_index + i < vec._start_index) {
+            pos++;
+            pos2++;
+            continue;
+        }
+        if (_start_index <= vec._start_index + i) {
+            replace(pos - 1, _data[pos++] + vec._data[i - pos2]);
+        }
+
+    }
+    return *this;
+}
+
+template<typename T>
+TVector<T> operator*(T scalar, const TVector<T>& vec) {
+    return vec * scalar;
 }
