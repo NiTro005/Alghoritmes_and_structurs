@@ -344,7 +344,7 @@ TEST(TVectorTest, OperatorMultiply) {
     vec1.push_back(1);
     vec1.push_back(2);
     vec1.push_back(3);
-    TVector<int> vec = vec1 * 4;
+    TVector<int> vec = 4 * vec1;
     EXPECT_EQ(vec.size(), 3);
     EXPECT_EQ(vec[0], 4);
     EXPECT_EQ(vec[1], 8);

@@ -23,7 +23,11 @@ namespace utility {
         }
     }
 }  // namespace utility
-
+template <typename T> class TVector;
+template <typename T>
+TVector<T> operator*(const TVector<T>& vec, T scalar);
+template <typename T>
+TVector<T> operator*(T scalar, const TVector<T>& vec);
 
 template <typename T>
 class TVector {
@@ -78,8 +82,8 @@ class TVector {
     TVector& operator=(const TVector& vec) noexcept;
     TVector operator+(const TVector& vec) const;
     TVector operator-(const TVector& vec) const;
-    TVector operator*(T scalar) const;
-    friend TVector operator*(T scalar, const TVector& vec);
+    friend TVector<T> operator*<T>(const TVector<T>& vec, T scalar);
+    friend TVector<T> operator*<T>(T scalar, const TVector<T>& vec);
     TVector& operator+=(const TVector& vec);
     TVector& operator-=(const TVector& vec);
     TVector& operator*=(T scalar);
@@ -319,14 +323,6 @@ TVector<T> TVector<T>::operator-(const TVector& vec) const {
     return result;
 }
 
-template<typename T>
-TVector<T> TVector<T>::operator*(T scalar) const {
-    TVector<T> result(_data.capacity(), _start_index);
-    for (size_t i = 0; i < size(); i++) {
-        result.push_back((*this)[i] * scalar);
-    }
-    return result;
-}
 
 template<typename T>
 TVector<T>& TVector<T>::operator+=(const TVector& vec) {
@@ -397,6 +393,15 @@ bool TVector<T>::operator!=(const TVector& vec) const {
 }
 
 template<typename T>
-TVector<T> operator*(T scalar, const TVector<T>& vec) {
+TVector<T> operator*<T>(const TVector<T>& vec, T scalar) {
+    TVector<T> result(vec._data.capacity(), vec._start_index);
+    for (size_t i = 0; i < vec.size(); i++) {
+        result.push_back(vec[i] * scalar);
+    }
+    return result;
+}
+
+template<typename T>
+TVector<T> operator*<T>(T scalar, const TVector<T>& vec) {
     return vec * scalar;
 }
