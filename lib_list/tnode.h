@@ -7,11 +7,11 @@ class TNode {
     T _value;
     TNode<T>* pnext;
 public:
-    TNode(T value, const TNode* nod = nullptr);
+    TNode(T value, TNode* nod = nullptr);
     TNode(const TNode& nod);
 
     TNode<T>* next();
-    void next(const TNode<T>* nod);
+    void next(TNode<T>* nod);
     T value();
 
     TNode<T>& operator=(const TNode& nod);
@@ -19,7 +19,7 @@ public:
 };
 
 template <typename T>
-TNode<T>::TNode(T value, const TNode* nod) : _value(value), pnext(nod) {}
+TNode<T>::TNode(T value, TNode* nod) : _value(value), pnext(nod) {}
 
 template <typename T>
 TNode<T>::TNode(const TNode& nod) : _value(nod._value), pnext(nod.pnext) {}
@@ -28,20 +28,17 @@ template <typename T>
 inline TNode<T>* TNode<T>::next() { return pnext; }
 
 template<typename T>
-inline void TNode<T>::next(const TNode<T>* nod){ _pnext = nod; }
+inline void TNode<T>::next(TNode<T>* nod){ pnext = nod; }
 
 template <typename T>
 inline T TNode<T>:: value() { return _value; }
 
 template <typename T>
-TNode<T>& TNode<T>:: operator=(const TNode& nod) {
-    if (this != nod) {
-        _value = nod._value;
-        pnext = nod.pnext;
-    }
+TNode<T>& TNode<T>:: operator=(const TNode<T>& nod) {
+    _value = nod._value;
+    pnext = nod.pnext;
+    return *this;
 }
 
 template <typename T>
-inline bool TNode<T>:: operator==(T value) {
-    return _value == value;
-}
+inline bool TNode<T>:: operator==(T value) { return _value == value; }
