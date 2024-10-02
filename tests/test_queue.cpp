@@ -49,3 +49,14 @@ TEST(TQueueTest, TopEmpty) {
     TQueue<int> queue(2);
     EXPECT_THROW(queue.top(), std::out_of_range);
 }
+
+TEST(TQueueTest, Overflow) {
+    TQueue<int> queue(5);
+    queue.push(1);
+    queue.push(2);
+    queue.push(1);
+    queue.push(2);
+    queue.push(1);
+    queue.pop();
+    ASSERT_NO_THROW(queue.push(1));
+}
