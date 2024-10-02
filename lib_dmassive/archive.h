@@ -426,7 +426,7 @@ void TDMassive<T>::pop_back() {
 
 template <typename T>
 TDMassive<T>& TDMassive<T> ::remove_by_index(size_t pos) {
-    if (_size <= pos || pos < 0) {
+    if (_size <= pos || pos < 0 || _states[pos] == State::deleted) {
         throw std::logic_error("Error in function" \
                                "void TArchive<T>::pop_back()\":"
                                " archive clear");
@@ -438,7 +438,7 @@ TDMassive<T>& TDMassive<T> ::remove_by_index(size_t pos) {
 
 template <typename T>
 TDMassive<T>& TDMassive<T>::erase(size_t pos, size_t n) {
-    if (_size < pos) {
+    if (_size < pos || empty()) {
         throw std::logic_error("Error in function"\
         "TArchive<T>& TArchive<T>::erase(size_t pos, size_t n)\":"
         "wrong position value.");
@@ -447,6 +447,8 @@ TDMassive<T>& TDMassive<T>::erase(size_t pos, size_t n) {
         if (_states[i] != State::deleted) {
             _states[i] = State::deleted;
             _deleted++;
+        } else {
+            n++;
         }
     }
     return *this;
@@ -581,12 +583,20 @@ size_t TDMassive<T>::count_value(T value) const noexcept {
 
 template <typename T>
 T& TDMassive<T>::operator[](size_t index) {
-    return _data[index];
+    for (int i = index; i < _size; i++) {
+        if (_states[i] == State::busy) {
+            return _data[i];
+        }
+    }
 }
 
 template <typename T>
 const T& TDMassive<T>::operator[](size_t index) const {
-    return _data[index];
+    for (int i = index; i < _size; i++) {
+        if (_states[i] == State::busy) {
+            return _data[i];
+        }
+    }
 }
 
 template <typename T>

@@ -123,6 +123,12 @@ TEST(Test_TDMassive, insert_single_value) {
     ASSERT_NO_THROW(m.insert(0, 0));
 }
 
+TEST(Test_TDMassive, insert_any_throw_single_value) {
+    TDMassive<int> m;
+    m.insert(1, 0);
+    ASSERT_ANY_THROW(m.insert(0, 2));
+}
+
 TEST(Test_TDMassive, insert_array) {
     TDMassive<int> m;
     int arr[] = { 1, 2, 3 };
@@ -131,6 +137,13 @@ TEST(Test_TDMassive, insert_array) {
     EXPECT_EQ(m.data()[0], 1);
     EXPECT_EQ(m.data()[1], 2);
     EXPECT_EQ(m.data()[2], 3);
+}
+
+TEST(Test_TDMassive, insert_array_any_throw) {
+    TDMassive<int> m;
+    int arr[] = { 1, 2, 3 };
+    ASSERT_ANY_THROW(m.insert(arr, 3, 1));
+
 }
 
 TEST(Test_TDMassive, PushBack) {
@@ -176,6 +189,13 @@ TEST(Test_TDMassive, PopFront) {
     EXPECT_EQ(mass.size(), 0);
 }
 
+TEST(Test_TDMassive, PopFront_any_throw) {
+    TDMassive<int> mass(10);
+    mass.push_back(1);
+    ASSERT_NO_THROW(mass.pop_front());
+    ASSERT_ANY_THROW(mass.pop_front());
+    
+}
 TEST(Test_TDMassive, PopBack) {
     TDMassive<int> mass(10);
     mass.push_back(1);
@@ -195,6 +215,14 @@ TEST(Test_TDMassive, PopBack) {
     EXPECT_EQ(mass.size(), 0);
 }
 
+TEST(Test_TDMassive, PopBack_any_throw) {
+    TDMassive<int> mass(10);
+    mass.push_back(1);
+    ASSERT_NO_THROW(mass.pop_back());
+    ASSERT_ANY_THROW(mass.pop_back());
+
+}
+
 TEST(Test_TDMassive, RemoveByIndex) {
     TDMassive<int> mass(10);
     mass.push_back(1);
@@ -205,6 +233,16 @@ TEST(Test_TDMassive, RemoveByIndex) {
     EXPECT_EQ(mass.get_state(1), State::deleted);
 }
 
+TEST(Test_TDMassive, RemoveByIndex_any_throw) {
+    TDMassive<int> mass(10);
+    mass.push_back(1);
+    ASSERT_NO_THROW(mass.remove_by_index(0));
+    ASSERT_ANY_THROW(mass.remove_by_index(0));
+    ASSERT_ANY_THROW(mass.remove_by_index(3));
+
+}
+
+
 TEST(Test_TDMassive, Erase) {
     TDMassive<int> mass(3);
     mass.push_back(1);
@@ -214,6 +252,11 @@ TEST(Test_TDMassive, Erase) {
     mass.erase(1, 4);
     EXPECT_EQ(mass.get_state(1), State::deleted);
     EXPECT_EQ(mass.get_state(2), State::deleted);
+}
+
+TEST(Test_TDMassive, Erase_any_throw) {
+    TDMassive<int> mass(3);
+    ASSERT_ANY_THROW(mass.erase(0, 5));
 }
 
 TEST(Test_TDMassive, RemoveAll) {
@@ -228,6 +271,11 @@ TEST(Test_TDMassive, RemoveAll) {
     EXPECT_EQ(mass.get_state(2), State::deleted);
 }
 
+TEST(Test_TDMassive, RemoveAll_any_throw) {
+    TDMassive<int> mass(3);
+    ASSERT_ANY_THROW(mass.remove_all(0));
+}
+
 TEST(Test_TDMassive, RemoveFirst) {
     TDMassive<int> mass(10);
     mass.push_back(1);
@@ -239,6 +287,11 @@ TEST(Test_TDMassive, RemoveFirst) {
     EXPECT_EQ(mass.get_state(0), State::deleted);
 }
 
+TEST(Test_TDMassive, RemoveFirst_any_throw) {
+    TDMassive<int> mass(3);
+    ASSERT_ANY_THROW(mass.remove_first(0));
+}
+
 TEST(Test_TDMassive, RemoveLast) {
     TDMassive<int> mass(10);
     mass.push_back(1);
@@ -248,6 +301,11 @@ TEST(Test_TDMassive, RemoveLast) {
 
     mass.remove_last(1);
     EXPECT_EQ(mass.get_state(2), State::deleted);
+}
+
+TEST(Test_TDMassive, RemoveLast_any_throw) {
+    TDMassive<int> mass(3);
+    ASSERT_ANY_THROW(mass.remove_last(0));
 }
 
 TEST(Test_TDMassive, FindFirst) {
@@ -262,6 +320,16 @@ TEST(Test_TDMassive, FindFirst) {
     EXPECT_EQ(mass.find_first(3), 3);
 }
 
+TEST(Test_TDMassive, FindFirst_any_throw) {
+    TDMassive<int> mass(10);
+    mass.push_back(1);
+    mass.push_back(2);
+    mass.push_back(1);
+    mass.push_back(3);
+
+    ASSERT_ANY_THROW(mass.find_first(0));
+}
+
 TEST(Test_TDMassive, FindLast) {
     TDMassive<int> mass(10);
     mass.push_back(1);
@@ -272,6 +340,16 @@ TEST(Test_TDMassive, FindLast) {
     EXPECT_EQ(mass.find_last(1), 2);
     EXPECT_EQ(mass.find_last(2), 1);
     EXPECT_EQ(mass.find_last(3), 3);
+}
+
+TEST(Test_TDMassive, FindLast_any_throw) {
+    TDMassive<int> mass(10);
+    mass.push_back(1);
+    mass.push_back(2);
+    mass.push_back(1);
+    mass.push_back(3);
+
+    ASSERT_ANY_THROW(mass.find_last(0));
 }
 
 TEST(Test_TDMassive, FindAll) {
