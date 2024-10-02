@@ -162,7 +162,7 @@ void TVector<T>::resize(size_t n, T value) {
     if (n > _data.capacity()) {
         throw std::out_of_range("out of range. capacity < size");
     }
-    _data.resize(n + _start_index, value);
+    _data.resize(n, value);
 }
 
 template <typename T>

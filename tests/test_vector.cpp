@@ -105,22 +105,24 @@ TEST(TVectorTest, Clear) {
 
 TEST(TVectorTest, Resize) {
     TVector<int> vec;
-    vec.resize(5, 0);
+    vec.resize(4, 0);
 
-    EXPECT_EQ(vec.size(), 5);
+    EXPECT_EQ(vec.size(), 4);
     for (size_t i = 0; i < vec.size(); ++i) {
         EXPECT_EQ(vec[i], 0);
     }
+    ASSERT_ANY_THROW(vec.resize(16));
 }
 
 TEST(TVectorTest, PushBack) {
-    TVector<int> vec;
+    TVector<int> vec(2);
     vec.push_back(1);
     vec.push_back(2);
 
     EXPECT_EQ(vec.size(), 2);
     EXPECT_EQ(vec[0], 1);
     EXPECT_EQ(vec[1], 2);
+    ASSERT_ANY_THROW(vec.push_back(2));
 }
 
 TEST(TVectorTest, PopBack) {
@@ -135,7 +137,7 @@ TEST(TVectorTest, PopBack) {
 }
 
 TEST(TVectorTest, InsertArray) {
-    TVector<int> vec;
+    TVector<int> vec(5);
     vec.push_back(1);
     vec.push_back(2);
 
@@ -148,6 +150,7 @@ TEST(TVectorTest, InsertArray) {
     EXPECT_EQ(vec[2], 4);
     EXPECT_EQ(vec[3], 5);
     EXPECT_EQ(vec[4], 2);
+    ASSERT_ANY_THROW(vec.insert(arr, 3, 1));
 }
 
 TEST(TVectorTest, InsertValue) {
@@ -161,6 +164,7 @@ TEST(TVectorTest, InsertValue) {
     EXPECT_EQ(vec[1], 1);
     EXPECT_EQ(vec[2], 3);
     EXPECT_EQ(vec[3], 2);
+    ASSERT_ANY_THROW(vec.insert(2, 2));
 }
 
 TEST(TVectorTest, Replace) {
