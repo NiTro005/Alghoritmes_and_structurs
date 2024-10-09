@@ -13,6 +13,7 @@ public:
     TNode<T>* next();
     void next(TNode<T>* nod);
     T value();
+    void set_value(T value);
 
     TNode<T>& operator=(const TNode& nod);
     bool operator==(T value);
@@ -32,6 +33,9 @@ inline void TNode<T>::next(TNode<T>* nod){ pnext = nod; }
 
 template <typename T>
 inline T TNode<T>:: value() { return _value; }
+
+template <typename T>
+inline void TNode<T>::set_value(T value) { _value = value; }
 
 template <typename T>
 TNode<T>& TNode<T>:: operator=(const TNode<T>& nod) {

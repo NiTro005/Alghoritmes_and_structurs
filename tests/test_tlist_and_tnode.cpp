@@ -137,3 +137,54 @@ TEST(TListTest, TListFind_method) {
     EXPECT_EQ(find->next(), list->head->next()->next()->next());
 }
 
+TEST(TListTest, TListPopBack_method) {
+    TList<int>* list = createList<int>(4);
+    EXPECT_EQ(list->last->value(), 3);
+    list->pop_back();
+    EXPECT_EQ(list->last->value(), 2);
+}
+
+TEST(TListTest, TListPopFront_method) {
+    TList<int>* list = createList<int>(4);
+    EXPECT_EQ(list->head->value(), 0);
+    list->pop_front();
+    EXPECT_EQ(list->head->value(), 1);
+}
+
+TEST(TListTest, TListEraseLink_method) {
+    TList<int>* list = createList<int>(4);
+    EXPECT_EQ(list->head->next()->value(), 1);
+    EXPECT_EQ(list->head->next()->next()->value(), 2);
+    list->erase(list->head->next());
+    EXPECT_EQ(list->head->next()->value(), 1);
+    EXPECT_EQ(list->head->next()->next()->value(), 3);
+}
+
+
+TEST(TListTest, TListErasePos_method) {
+    TList<int>* list = createList<int>(4);
+    EXPECT_EQ(list->head->next()->value(), 1);
+    EXPECT_EQ(list->head->next()->next()->value(), 2);
+    list->erase(1);
+    EXPECT_EQ(list->head->next()->value(), 1);
+    EXPECT_EQ(list->head->next()->next()->value(), 3);
+}
+
+TEST(TListTest, TListReplaceLink_method) {
+    TList<int>* list = createList<int>(4);
+    EXPECT_EQ(list->head->next()->value(), 1);
+    EXPECT_EQ(list->head->next()->next()->value(), 2);
+    list->replace(list->head->next(), 4);
+    EXPECT_EQ(list->head->next()->value(), 4);
+    EXPECT_EQ(list->head->next()->next()->value(), 2);
+}
+
+
+TEST(TListTest, TListReplacePos_method) {
+    TList<int>* list = createList<int>(4);
+    EXPECT_EQ(list->head->next()->value(), 1);
+    EXPECT_EQ(list->head->next()->next()->value(), 2);
+    list->replace(1, 5);
+    EXPECT_EQ(list->head->next()->value(), 5);
+    EXPECT_EQ(list->head->next()->next()->value(), 2);
+}

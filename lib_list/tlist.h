@@ -27,8 +27,8 @@ class TList {
      void erase(TNode<T>* node);
      void erase(size_t pos);
 
-     void replace(TNode<T>* node);
-     void replace(size_t pos);
+     void replace(TNode<T>* node, const T& value);
+     void replace(size_t pos, const T& value);
 
      void asort(TList<T>& list) noexcept;
 };
@@ -115,4 +115,73 @@ TNode<T>* TList<T>::find(const T& value) const noexcept {
         cur = cur->next();
     } while (cur != last);
     return nullptr;
+}
+
+template<typename T>
+inline bool TList<T>::isEmpty() { return head = nullptr; }
+
+template<typename T>
+void TList<T>::pop_front() {
+    if (head == nullptr) { throw std::runtime_error("List is empty"); }
+    TNode<T>* temp = head;
+    head = head->next();
+    delete temp;
+}
+
+template<typename T>
+void TList<T>::pop_back() {
+    if (head == nullptr) { throw std::runtime_error("List is empty"); }
+    if (head == last) {
+        delete head;
+        head = nullptr;
+        last = nullptr;
+        return;
+    }
+    TNode<T>* current = head;
+    while (current->next() != last) {
+        current = current->next();
+    }
+    delete last;
+    last = current;
+    last->next(nullptr);
+}
+
+template<typename T>
+void TList<T>::erase(TNode<T>* node) {
+    if (node == nullptr) {
+        throw std::invalid_argument("Node pointer is nullptr");
+    }
+    if (node == head) { pop_front(); return; }
+    if (node == last) { pop_back(); return; }
+    TNode<T>* link = node->next();
+    node->next(node->next()->next());
+    delete link;
+}
+
+template<typename T>
+void TList<T>::erase(size_t pos) {
+    TNode<T>* cur = head;
+    if (pos == 0) { pop_front(); return; }
+    for (size_t i = 0; i != pos; i++) {
+        cur = cur->next();
+        if (cur == nullptr) { throw std::logic_error("Out of range"); }
+    }
+    if (cur->next() == nullptr) { pop_back(); return; }
+    erase(cur);
+}
+
+template<typename T>
+void TList<T>::replace(TNode<T>* node, const T& value) {
+    if (node == nullptr) { throw std::logic_error("link is null"); }
+    node->set_value(value);
+}
+
+template<typename T>
+void TList<T>::replace(size_t pos, const T& value) {
+    TNode<T>* cur = head;
+    for (size_t i = 0; i != pos; i++) {
+        cur = cur->next();
+        if (cur == nullptr) { throw std::logic_error("Out of range"); }
+    }
+    replace(cur, value);
 }
