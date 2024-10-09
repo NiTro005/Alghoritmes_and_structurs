@@ -30,7 +30,7 @@ class TList {
      void replace(TNode<T>* node, const T& value);
      void replace(size_t pos, const T& value);
 
-     void asort(TList<T>& list) noexcept;
+     friend void asort(TList<T>& list) noexcept;
 };
 
 

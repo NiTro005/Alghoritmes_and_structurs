@@ -142,6 +142,10 @@ TEST(TListTest, TListPopBack_method) {
     EXPECT_EQ(list->last->value(), 3);
     list->pop_back();
     EXPECT_EQ(list->last->value(), 2);
+    list->pop_front();
+    list->pop_front();
+    list->pop_front();
+    ASSERT_ANY_THROW(list->pop_back());
 }
 
 TEST(TListTest, TListPopFront_method) {
@@ -149,6 +153,10 @@ TEST(TListTest, TListPopFront_method) {
     EXPECT_EQ(list->head->value(), 0);
     list->pop_front();
     EXPECT_EQ(list->head->value(), 1);
+    list->pop_front();
+    list->pop_front();
+    list->pop_front();
+    ASSERT_ANY_THROW(list->pop_front());
 }
 
 TEST(TListTest, TListEraseLink_method) {
@@ -158,6 +166,7 @@ TEST(TListTest, TListEraseLink_method) {
     list->erase(list->head->next());
     EXPECT_EQ(list->head->next()->value(), 1);
     EXPECT_EQ(list->head->next()->next()->value(), 3);
+    ASSERT_ANY_THROW(list->erase(nullptr));
 }
 
 
@@ -168,6 +177,7 @@ TEST(TListTest, TListErasePos_method) {
     list->erase(1);
     EXPECT_EQ(list->head->next()->value(), 1);
     EXPECT_EQ(list->head->next()->next()->value(), 3);
+    ASSERT_ANY_THROW(list->erase(7));
 }
 
 TEST(TListTest, TListReplaceLink_method) {
@@ -177,6 +187,8 @@ TEST(TListTest, TListReplaceLink_method) {
     list->replace(list->head->next(), 4);
     EXPECT_EQ(list->head->next()->value(), 4);
     EXPECT_EQ(list->head->next()->next()->value(), 2);
+
+    ASSERT_ANY_THROW(list->replace(nullptr, 5));
 }
 
 
@@ -187,4 +199,24 @@ TEST(TListTest, TListReplacePos_method) {
     list->replace(1, 5);
     EXPECT_EQ(list->head->next()->value(), 5);
     EXPECT_EQ(list->head->next()->next()->value(), 2);
+
+    ASSERT_ANY_THROW(list->replace(7, 5));
+}
+
+TEST(TListTest, TListAssort) {
+    TList<int>* list = new TList<int>();
+    list->push_back(5);
+    list->push_back(1);
+    list->push_back(8);
+    list->push_back(9);
+    list->push_back(2);
+
+   /* asort(*list);*/
+
+    EXPECT_EQ(list->head->value(), 1);
+    EXPECT_EQ(list->head->next()->value(), 2);
+    EXPECT_EQ(list->head->next()->next()->value(), 5);
+    EXPECT_EQ(list->head->next()->next()->next()->value(), 8);
+    EXPECT_EQ(list->head->next()->next()->next()->next()->value(), 9);
+    EXPECT_EQ(list->last->value(), 9);
 }
