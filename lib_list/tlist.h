@@ -104,3 +104,15 @@ void TList<T>::insert(size_t pos, const T& value) {
     }
     insert(cur, value);
 }
+
+template<typename T>
+TNode<T>* TList<T>::find(const T& value) const noexcept {
+    TNode<T>* cur(head);
+    do {
+        if (cur->value() == value) {
+            return cur;
+        }
+        cur = cur->next();
+    } while (cur != last);
+    return nullptr;
+}

@@ -128,3 +128,12 @@ TEST(TListTest, TListDestructor) {
     TList<int>* list = createList<int>(10);
     delete list;
 }
+
+TEST(TListTest, TListFind_method) {
+    TList<int>* list = createList<int>(10);
+    TNode<int>* find;
+    find = list->find(2);
+    EXPECT_EQ(find->value(), 2);
+    EXPECT_EQ(find->next(), list->head->next()->next()->next());
+}
+
