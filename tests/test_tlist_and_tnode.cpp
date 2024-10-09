@@ -1,6 +1,16 @@
 // Copyright 2024 Kita Trofimov
 #include <gtest.h>
 #include "../lib_list/tnode.h"
+#include "../lib_list/tlist.h"
+
+template <typename T>
+TList<T>* createList(int size) {
+    TList<T>* list = new TList<T>();
+    for (int i = 0; i < size; ++i) {
+        list->push_back(i);
+    }
+    return list;
+}
 
 TEST(TNodeTest, DefaultConstructor) {
     TNode<int> node(5);
@@ -46,4 +56,75 @@ TEST(TNodeTest, EqualityOperator) {
     TNode<int> node2(5);
     EXPECT_TRUE(node1 == 5);
     EXPECT_TRUE(node2 == 5);
+}
+
+TEST(TListTest, PushFront) {
+    TList<int> list;
+    list.push_front(1);
+    list.push_front(2);
+    list.push_front(3);
+
+    EXPECT_EQ(list.head->value(), 3);
+    EXPECT_EQ(list.head->next()->value(), 2);
+    EXPECT_EQ(list.head->next()->next()->value(), 1);
+    EXPECT_EQ(list.head->next()->next()->next(), nullptr);
+    EXPECT_EQ(list.last->value(), 1);
+}
+
+TEST(TListTest, PushBack) {
+    TList<int> list;
+    list.push_back(1);
+    list.push_back(2);
+    list.push_back(3);
+
+    EXPECT_EQ(list.head->value(), 1);
+    EXPECT_EQ(list.head->next()->value(), 2);
+    EXPECT_EQ(list.head->next()->next()->next(), nullptr);
+    EXPECT_EQ(list.last->value(), 3);
+}
+
+TEST(TListTest, InsertNode) {
+    TList<int> list;
+    list.push_back(1);
+    list.push_back(2);
+    list.push_back(3);
+
+    list.insert(list.head->next(), 4);
+
+    EXPECT_EQ(list.head->value(), 1);
+    EXPECT_EQ(list.head->next()->value(), 2);
+    EXPECT_EQ(list.head->next()->next()->value(), 4);
+    EXPECT_EQ(list.head->next()->next()->next()->value(), 3);
+    EXPECT_EQ(list.head->next()->next()->next()->next(), nullptr);
+    EXPECT_EQ(list.last->value(), 3);
+}
+
+TEST(TListTest, InsertPosition) {
+    TList<int> list;
+    list.push_back(1);
+    list.push_back(2);
+    list.push_back(3);
+
+    list.insert(1, 4);
+
+    EXPECT_EQ(list.head->value(), 1);
+    EXPECT_EQ(list.head->next()->value(), 2);
+    EXPECT_EQ(list.head->next()->next()->value(), 4);
+    EXPECT_EQ(list.head->next()->next()->next()->value(), 3);
+    EXPECT_EQ(list.head->next()->next()->next()->next(), nullptr);
+    EXPECT_EQ(list.last->value(), 3);
+}
+
+TEST(TListTest, InsertPositionOutOfRange) {
+    TList<int> list;
+    list.push_back(1);
+    list.push_back(2);
+    list.push_back(3);
+
+    EXPECT_THROW(list.insert(4, 4), std::logic_error);
+}
+
+TEST(TListTest, TListDestructor) {
+    TList<int>* list = createList<int>(10);
+    delete list;
 }

@@ -6,9 +6,10 @@
 
 template <typename T>
 class TList {
-    TNode<T>* head;
-    TNode<T>* last;
  public:
+     TNode<T>* head = nullptr;
+     TNode<T>* last = nullptr;
+
      TList() = default;
      TList(const TList& list);
      ~TList();
@@ -39,7 +40,7 @@ TList<T>::TList<T>(const TList<T>& list) : head(list.head), last(list.last) {}
 template<typename T>
 TList<T>::~TList(){
     while (head != nullptr) {
-        Node<T>* link = head;
+        TNode<T>* link = head;
         head = head->next();
         delete link;
     }
@@ -58,11 +59,14 @@ void TList<T>::push_front(const T& value) noexcept {
 
 template<typename T>
 void TList<T>::push_back(const T& value) noexcept {
+    TNode<T>* link = new TNode<T>(value);
     if (last == nullptr) {
-        head = new TNode<T>(value);
+        head = link;
         last = head;
+    } else if (last == head) {
+        head->next(link);
+        last = link;
     } else {
-        TNode<T>* link = new TNode<T>(value);
         last->next(link);
         last = link;
     }
@@ -100,5 +104,3 @@ void TList<T>::insert(size_t pos, const T& value) {
     }
     insert(cur, value);
 }
-
-
