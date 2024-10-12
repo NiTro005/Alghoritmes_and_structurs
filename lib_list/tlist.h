@@ -4,6 +4,9 @@
 #include <utility>
 #include "../lib_list/tnode.h"
 
+template <typename T> class TList;
+template <typename T>
+void asort(TList<T>& list) noexcept;
 template <typename T>
 class TList {
  public:
@@ -30,7 +33,7 @@ class TList {
      void replace(TNode<T>* node, const T& value);
      void replace(size_t pos, const T& value);
 
-     friend void asort(TList<T>& list) noexcept;
+     friend void asort<T>(TList<T>& list) noexcept;
 };
 
 
@@ -118,7 +121,7 @@ TNode<T>* TList<T>::find(const T& value) const noexcept {
 }
 
 template<typename T>
-inline bool TList<T>::isEmpty() { return head = nullptr; }
+inline bool TList<T>::isEmpty() { return head == nullptr; }
 
 template<typename T>
 void TList<T>::pop_front() {
@@ -184,4 +187,38 @@ void TList<T>::replace(size_t pos, const T& value) {
         if (cur == nullptr) { throw std::logic_error("Out of range"); }
     }
     replace(cur, value);
+}
+
+template<typename T>
+void asort<T>(TList<T>& list) noexcept {
+    if (list.head == nullptr || list.head->next() == nullptr) {
+        return;
+    }
+
+    TNode<T>* sorted = nullptr;
+    TNode<T>* current = list.head;
+    while (current != nullptr) {
+        TNode<T>* next = current->next();
+        if (sorted == nullptr || sorted->value() >= current->value()) {
+            current->next(sorted);
+            sorted = current;
+        }
+        else {
+            TNode<T>* search = sorted;
+            while (search->next() != nullptr && search->next()->value() < current->value()) {
+                search = search->next();
+            }
+            current->next(search->next());
+            search->next(current);
+        }
+        current = next;
+    }
+
+    list.head = sorted;
+
+    TNode<T>* temp = list.head;
+    while (temp != nullptr && temp->next() != nullptr) {
+        temp = temp->next();
+    }
+    list.last = temp;
 }

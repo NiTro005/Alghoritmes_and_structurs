@@ -211,7 +211,7 @@ TEST(TListTest, TListAssort) {
     list->push_back(9);
     list->push_back(2);
 
-   /* asort(*list);*/
+    asort(*list);
 
     EXPECT_EQ(list->head->value(), 1);
     EXPECT_EQ(list->head->next()->value(), 2);
