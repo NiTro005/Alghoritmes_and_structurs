@@ -31,6 +31,17 @@ TEST(TNodeTest, NextMethod) {
     EXPECT_EQ(node2.next(), &node1);
 }
 
+TEST(TNodeTest, PrevMethod) {
+    TNode<int> node1(5);
+    TNode<int> node2(10, &node1);
+    TNode<int> node3(10, &node2);
+    node2.prev(&node3);
+    node1.prev(&node2);
+    EXPECT_EQ(node2.prev(), &node3);
+    EXPECT_EQ(node1.prev(), &node2);
+    EXPECT_EQ(node3.prev(), nullptr);
+}
+
 TEST(TNodeTest, SetNextMethod) {
     TNode<int> node1(5);
     TNode<int> node2(10);
@@ -135,6 +146,12 @@ TEST(TListTest, TListFind_method) {
     find = list->find(2);
     EXPECT_EQ(find->value(), 2);
     EXPECT_EQ(find->next(), list->head->next()->next()->next());
+    EXPECT_EQ(list->find(16), nullptr);
+}
+
+TEST(TListTest, TListFind_method_in_Emptylist) {
+    TList<int>* list = new TList<int>();
+    EXPECT_EQ(list->find(2), nullptr);
 }
 
 TEST(TListTest, TListPopBack_method) {

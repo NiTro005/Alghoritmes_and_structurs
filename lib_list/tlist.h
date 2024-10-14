@@ -23,7 +23,7 @@ class TList {
      void insert(size_t pos, const T& value);
 
      TNode<T>* find(const T& value) const noexcept;
-     bool isEmpty();
+     bool isEmpty() const noexcept;
 
      void pop_front();
      void pop_back();
@@ -81,9 +81,7 @@ void TList<T>::insert(TNode<T>* node, const T& value) {
         throw std::invalid_argument("Node pointer is nullptr");
     }
     if (node->next() == nullptr) {
-        TNode<T>* newNode = new TNode<T>(value);
-        node->next(newNode);
-        last = newNode;
+        push_back(value);
     } else {
         TNode<T>* newNode = new TNode<T>(value, node->next());
         node->next(newNode);
@@ -101,27 +99,25 @@ void TList<T>::insert(size_t pos, const T& value) {
         cur = cur->next();
         if (cur == nullptr) { throw std::logic_error("Out of range"); }
     }
-    if (cur->next() == nullptr) { 
-        push_back(value); 
-        return;
-    }
     insert(cur, value);
 }
 
 template<typename T>
 TNode<T>* TList<T>::find(const T& value) const noexcept {
-    TNode<T>* cur(head);
-    do {
-        if (cur->value() == value) {
-            return cur;
-        }
-        cur = cur->next();
-    } while (cur != last);
+    if (!isEmpty()) {
+        TNode<T>* cur(head);
+        do {
+            if (cur->value() == value) {
+                return cur;
+            }
+            cur = cur->next();
+        } while (cur != last);
+    }
     return nullptr;
 }
 
 template<typename T>
-inline bool TList<T>::isEmpty() { return head == nullptr; }
+inline bool TList<T>::isEmpty() const noexcept { return head == nullptr; }
 
 template<typename T>
 void TList<T>::pop_front() {
@@ -129,11 +125,16 @@ void TList<T>::pop_front() {
     TNode<T>* temp = head;
     head = head->next();
     delete temp;
+
+    /*if (isEmpty()) { throw std::runtime_error("List is empty"); }
+    head = head->next();
+    delete head->prev();
+    head->prev(nullptr);*/
 }
 
 template<typename T>
 void TList<T>::pop_back() {
-    if (head == nullptr) { throw std::runtime_error("List is empty"); }
+    if (isEmpty()) { throw std::runtime_error("List is empty"); }
     if (head == last) {
         delete head;
         head = nullptr;

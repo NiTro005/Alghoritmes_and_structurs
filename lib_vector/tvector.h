@@ -285,15 +285,14 @@ TVector<T> TVector<T>::operator+(const TVector& vec) const {
     size_t result_start_index = utility::min(start_index(), vec.start_index());
     TVector<T> result(result_capacity, result_start_index);
     size_t len = utility::max(size() + start_index(), vec.size() + vec.start_index());
-    for (size_t i = 0; i < len; i++) {
-        T value1, value2;
+    for (size_t i = result_start_index; i < len; i++) {
+        T value1 = 0, value2 = 0;
         if (i >= _start_index) {
-            value1 = (i < size() + _start_index) ? (*this)[i] : T();
-        } else { value1 = 0; }
-        if (i >= vec._start_index) {
-            value2 = (i < vec.size() + vec._start_index) ? vec[i] : T();
+            if (i < size() + _start_index) value1 = (*this)[i];
         }
-        else { value1 = 0; }
+        if (i >= vec._start_index) {
+            if (i < vec.size() + vec._start_index) value2 = vec[i];
+        }
         result.push_back(value1 + value2);
     }
     return result;
@@ -306,18 +305,18 @@ TVector<T> TVector<T>::operator-(const TVector& vec) const {
     TVector<T> result(result_capacity, result_start_index);
     size_t len = utility::max(size() + start_index(), vec.size() + vec.start_index());
     for (size_t i = 0; i < len; i++) {
-        T value1, value2;
+        T value1 = 0, value2 = 0;
         T res = 0;
         if (i >= _start_index) {
-            value1 = (i < size() + _start_index) ? (*this)[i] : T();
-            res += value1;
+            if (i < size() + _start_index) value1 = (*this)[i];
+            res = value1;
         }
         if (i >= vec._start_index) {
-            value2 = (i < vec.size() + vec._start_index) ? vec[i] : T();
-            if (res != 0) {
-                res -= value2;
-            } else { res += value2; }
+            if (i < vec.size() + vec._start_index) value2 = vec[i];
         }
+        if (res != 0 && (*this)[i] != 0) {
+            res -= value2;
+        } else { res += value2; }
         result.push_back(res);
     }
     return result;

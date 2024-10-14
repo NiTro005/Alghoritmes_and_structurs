@@ -32,13 +32,13 @@ template <typename T>
 inline TNode<T>* TNode<T>::next() { return pnext; }
 
 template <typename T>
-inline TNode<T>* TNode<T>::prev() { return prev; }
+inline TNode<T>* TNode<T>::prev() { return pprev; }
 
 template<typename T>
 inline void TNode<T>::next(TNode<T>* nod){ pnext = nod; }
 
 template<typename T>
-inline void TNode<T>::next(TNode<T>* nod) { pprev = prev; }
+inline void TNode<T>::prev(TNode<T>* nod) { pprev = nod; }
 
 template <typename T>
 inline T TNode<T>:: value() { return _value; }

@@ -356,20 +356,22 @@ TEST(TVectorTest, OperatorMultiply) {
 }
 
 TEST(TVectorTest, OperatorAddition_Assigment) {
-    TVector<int> vec(7, 1);
-    TVector<int> vec1(7, 1);
-    vec.push_back(1);
-    vec.push_back(2);
-    vec.push_back(3);
+    TVector<int> vec1(15, 2);
+    vec1.push_back(1);
+    vec1.push_back(2);
+    vec1.push_back(3);
 
-    vec1.push_back(4);
-    vec1.push_back(5);
-    vec1.push_back(6);
-    vec += vec1;
-    EXPECT_EQ(vec.size(), 3);
-    EXPECT_EQ(vec[1], 5);
-    EXPECT_EQ(vec[2], 7);
-    EXPECT_EQ(vec[3], 9);
+    TVector<int> vec2;
+    vec2.push_back(4);
+    vec2.push_back(5);
+    vec2.push_back(6);
+
+    vec1 += vec2;
+
+    EXPECT_EQ(vec1.size(), 3);
+    EXPECT_EQ(vec1[2], 7);
+    EXPECT_EQ(vec1[3], 2);
+    EXPECT_EQ(vec1[4], 3);
 }
 
 TEST(TVectorTest, OperatorSub_Assigment) {
