@@ -4,6 +4,19 @@
 #include "../lib_stack/stack.h"
 #include "../lib_parser/parser.h"
 
+#include "../lib_list/tlist.h"
+#include "../lib_list/tnode.h"
+
+
+template <typename T>
+TList<T>* createList(int size) {
+    TList<T>* list = new TList<T>();
+    for (int i = 0; i < size; ++i) {
+        list->push_back(i);
+    }
+    return list;
+}
+
 TEST(IsCorrectTest, CorrectString) {
     CString str("(a+b)*{c/[d-e]}");
     EXPECT_NO_THROW(IsCorrect(str));
@@ -55,5 +68,21 @@ TEST(IsCorrectTest, AbsoluteValue) {
 }
 
 TEST(ListCycle, Rabbit_and_turtle_function) {
+    TList<int>* list = createList<int>(20);
+    EXPECT_FALSE(RabbitTurtleCycleList(*list));
 
+    TNode<int>* nod = list->find(14);
+    nod->next(list->head->next());
+
+    EXPECT_TRUE(RabbitTurtleCycleList(*list));
+}
+
+TEST(ListCycle, UpheavalPointer_function) {
+    TList<int>* list = createList<int>(20);
+    EXPECT_FALSE(UpheavalPointerCycleList(*list));
+
+    TNode<int>* nod = list->find(14);
+    nod->next(list->head->next());
+
+    EXPECT_TRUE(UpheavalPointerCycleList(*list));
 }

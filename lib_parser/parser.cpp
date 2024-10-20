@@ -42,15 +42,32 @@ bool IsCorrect(const CString& str) {
 
 template<typename T>
 bool RabbitTurtleCycleList(const TList<T>& list) {
-    TNode<T>* rab = list->head;
-    TNode<T>* turt = list->head;
-    bool noexit = true;
-    while ((rab->next() || turt->next()) != last){
+    TNode<T>* rab = list.head;
+    TNode<T>* turt = list.head;
+
+    while (rab != nullptr && rab->next() != nullptr
+        && turt != nullptr && turt->next() != nullptr) {
         rab = rab->next()->next();
-        turt = turt-> next();
-        if (rab->next() == turt->next()) {
-            return true
+        turt = turt->next();
+
+        if (rab == turt) {
+            return true;
         }
+    }
+    return false;
+}
+
+template<typename T>
+bool UpheavalPointerCycleList(const TList<T>& list) {
+    TList<T> _list(list);
+    TNode<T>* nod = _list.head;
+    while (nod != nullptr && nod->next()
+        != nullptr){
+        TNode<T>* temp = nod;
+        nod = nod->next();
+        nod->next(temp);
+        if (nod->next() == _list.head) return false;
+        if (nod->next() == _list.last) return true;
     }
     return false;
 }
