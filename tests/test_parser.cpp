@@ -53,3 +53,7 @@ TEST(IsCorrectTest, AbsoluteValue) {
     CString str("|a+b|*|a|");
     EXPECT_NO_THROW(IsCorrect(str));
 }
+
+TEST(ListCycle, Rabbit_and_turtle_function) {
+
+}

@@ -3,3 +3,5 @@
 #include "../lib_string/cstring.h"
 #include "../lib_stack/stack.h"
 bool IsCorrect(const CString& str);
+template<typename T>
+bool RabbitTurtleCycleList(const TList<T>& list);

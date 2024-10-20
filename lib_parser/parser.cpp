@@ -3,6 +3,9 @@
 #include "../lib_stack/stack.h"
 #include "../lib_parser/parser.h"
 
+#include "../lib_list/tlist.h"
+#include "../lib_list/tnode.h"
+
 bool IsCorrect(const CString& str) {
     TStack<char> stack(str.size());
     char s1 = ' ';
@@ -37,3 +40,17 @@ bool IsCorrect(const CString& str) {
     return true;
 }
 
+template<typename T>
+bool RabbitTurtleCycleList(const TList<T>& list) {
+    TNode<T>* rab = list->head;
+    TNode<T>* turt = list->head;
+    bool noexit = true;
+    while ((rab->next() || turt->next()) != last){
+        rab = rab->next()->next();
+        turt = turt-> next();
+        if (rab->next() == turt->next()) {
+            return true
+        }
+    }
+    return false;
+}

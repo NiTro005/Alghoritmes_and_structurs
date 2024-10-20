@@ -7,4 +7,6 @@
 template<typename T>
 class TMatrix {
     TVector<TVector<T>> matrix;
+ public:
+     TMatrix();
 };
