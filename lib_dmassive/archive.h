@@ -9,12 +9,12 @@
 enum State { empty, busy, deleted };
 
 namespace algorithm {
-    template<typename T>
-    inline void swap(T& val_1, T& val_2) noexcept {
-        T tmp = val_1;
-        val_1 = val_2;
-        val_2 = tmp;
-    }
+template<typename T>
+inline void swap(T& val_1, T& val_2) noexcept {
+    T tmp = val_1;
+    val_1 = val_2;
+    val_2 = tmp;
+}
 }
 
 template <typename T>
@@ -530,7 +530,9 @@ size_t TDMassive<T>::find_last(T value) const {
 template <typename T>
 size_t* TDMassive<T>::find_all(T value) const noexcept {
     size_t count = this->count_value(value);
-    if (count == 0) { return nullptr; }
+    if (count == 0) {
+        return nullptr;
+    }
     size_t* found_positions = new size_t[count + 1];
     found_positions[0] = count;
     size_t found_count = 0;

@@ -13,7 +13,7 @@ bool IsCorrect(const CString& str) {
         char s = str[i];
         if (s == '(' || s == '{' || s == '[' || (s == '|' && s1 != '|')) {
             stack.push(s);
-            if (s == '|') { s1 = s; }
+            if (s == '|') s1 = s;
         } else if (s == ')' || s == '}' || s == ']' || s == '|') {
             if (stack.IsEmpty()) {
                 throw std::out_of_range("No bracket in stack");
@@ -61,13 +61,15 @@ template<typename T>
 bool UpheavalPointerCycleList(const TList<T>& list) {
     TList<T> _list(list);
     TNode<T>* nod = _list.head;
-    while (nod != nullptr && nod->next()
-        != nullptr){
-        TNode<T>* temp = nod;
-        nod = nod->next();
-        nod->next(temp);
-        if (nod->next() == _list.head) return false;
-        if (nod->next() == _list.last) return true;
+    TNode<T>* next = _list.head->next();
+    _list.head->next(nullptr);
+    while (next != nullptr) {
+        TNode<T>* prev = nod;
+        nod = next;
+        next = next->next();
+        nod->next(prev);
+        if (next == list.head) return false;
+        if (next == list.last) return true;
     }
     return false;
 }

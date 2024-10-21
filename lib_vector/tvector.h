@@ -2,26 +2,29 @@
 #pragma once
 #include <iostream>
 #include <utility>
+#include <algorithm>
 #include "../lib_dmassive/archive.h"
 
 namespace utility {
-    template<typename T>
-    inline T max(T val_1, T val_2) noexcept {
-        if (val_1 > val_2) {
-            return val_1;
-        } else {
-            return val_2;
-        }
+template<typename T>
+inline T max(T val_1, T val_2) noexcept {
+    if (val_1 > val_2) {
+        return val_1;
     }
+    else {
+        return val_2;
+    }
+}
 
-    template<typename T>
-    inline T min(T val_1, T val_2) noexcept {
-        if (val_1 < val_2) {
-            return val_1;
-        } else {
-            return val_2;
-        }
+template<typename T>
+inline T min(T val_1, T val_2) noexcept {
+    if (val_1 < val_2) {
+        return val_1;
     }
+    else {
+        return val_2;
+    }
+}
 }  // namespace utility
 template <typename T> class TVector;
 template <typename T>
@@ -280,18 +283,23 @@ TVector<T>& TVector<T>::operator=(const TVector& vec) noexcept {
 }
 
 template <typename T>
-TVector<T> TVector<T>::operator+(const TVector& vec) const {
-    size_t result_capacity = utility::max(_data.capacity(), vec._data.capacity());
-    size_t result_start_index = utility::min(start_index(), vec.start_index());
+TVector<T> TVector<T>::operator+
+(const TVector& vec) const {
+    size_t result_capacity = utility::max
+    (_data.capacity(), vec._data.capacity());
+    size_t result_start_index = utility::min
+    (start_index(), vec.start_index());
     TVector<T> result(result_capacity, result_start_index);
-    size_t len = utility::max(size() + start_index(), vec.size() + vec.start_index());
+    size_t len = utility::max
+    (size() + start_index(), vec.size() + vec.start_index());
     for (size_t i = result_start_index; i < len; i++) {
         T value1 = 0, value2 = 0;
         if (i >= _start_index) {
             if (i < size() + _start_index) value1 = (*this)[i];
         }
         if (i >= vec._start_index) {
-            if (i < vec.size() + vec._start_index) value2 = vec[i];
+            if (i < vec.size() +
+                vec._start_index) value2 = vec[i];
         }
         result.push_back(value1 + value2);
     }
@@ -299,11 +307,15 @@ TVector<T> TVector<T>::operator+(const TVector& vec) const {
 }
 
 template <typename T>
-TVector<T> TVector<T>::operator-(const TVector& vec) const {
-    size_t result_capacity = utility::max(_data.capacity(), vec._data.capacity());
-    size_t result_start_index = utility::min(start_index(), vec.start_index());
+TVector<T> TVector<T>::operator-
+(const TVector& vec) const {
+    size_t result_capacity = utility::max
+    (_data.capacity(), vec._data.capacity());
+    size_t result_start_index = utility::min
+    (start_index(), vec.start_index());
     TVector<T> result(result_capacity, result_start_index);
-    size_t len = utility::max(size() + start_index(), vec.size() + vec.start_index());
+    size_t len = utility::max(size() +
+        start_index(), vec.size() + vec.start_index());
     for (size_t i = 0; i < len; i++) {
         T value1 = 0, value2 = 0;
         T res = 0;
@@ -316,7 +328,9 @@ TVector<T> TVector<T>::operator-(const TVector& vec) const {
         }
         if (res != 0 && (*this)[i] != 0) {
             res -= value2;
-        } else { res += value2; }
+        } else {
+            res += value2;
+        }
         result.push_back(res);
     }
     return result;

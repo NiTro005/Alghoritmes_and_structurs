@@ -41,7 +41,7 @@ template<typename T>
 TList<T>::TList<T>(const TList<T>& list) : head(list.head), last(list.last) {}
 
 template<typename T>
-TList<T>::~TList(){
+TList<T>::~TList() {
     while (head != nullptr) {
         TNode<T>* link = head;
         head = head->next();
@@ -97,7 +97,7 @@ void TList<T>::insert(size_t pos, const T& value) {
     }
     for (size_t i = 0; i != pos; i++) {
         cur = cur->next();
-        if (cur == nullptr) { throw std::logic_error("Out of range"); }
+        if (cur == nullptr) throw std::logic_error("Out of range");
     }
     insert(cur, value);
 }
@@ -121,20 +121,15 @@ inline bool TList<T>::isEmpty() const noexcept { return head == nullptr; }
 
 template<typename T>
 void TList<T>::pop_front() {
-    if (head == nullptr) { throw std::runtime_error("List is empty"); }
+    if (head == nullptr) throw std::runtime_error("List is empty");
     TNode<T>* temp = head;
     head = head->next();
     delete temp;
-
-    /*if (isEmpty()) { throw std::runtime_error("List is empty"); }
-    head = head->next();
-    delete head->prev();
-    head->prev(nullptr);*/
 }
 
 template<typename T>
 void TList<T>::pop_back() {
-    if (isEmpty()) { throw std::runtime_error("List is empty"); }
+    if (isEmpty()) throw std::runtime_error("List is empty");
     if (head == last) {
         delete head;
         head = nullptr;
@@ -155,8 +150,14 @@ void TList<T>::erase(TNode<T>* node) {
     if (node == nullptr) {
         throw std::invalid_argument("Node pointer is nullptr");
     }
-    if (node == head) { pop_front(); return; }
-    if (node == last) { pop_back(); return; }
+    if (node == head) {
+        pop_front();
+        return;
+    }
+    if (node == last) {
+        pop_back();
+        return;
+    }
     TNode<T>* link = node->next();
     node->next(node->next()->next());
     delete link;
@@ -165,18 +166,24 @@ void TList<T>::erase(TNode<T>* node) {
 template<typename T>
 void TList<T>::erase(size_t pos) {
     TNode<T>* cur = head;
-    if (pos == 0) { pop_front(); return; }
+    if (pos == 0) {
+        pop_front();
+        return;
+    }
     for (size_t i = 0; i != pos; i++) {
         cur = cur->next();
         if (cur == nullptr) { throw std::logic_error("Out of range"); }
     }
-    if (cur->next() == nullptr) { pop_back(); return; }
+    if (cur->next() == nullptr) {
+        pop_back();
+        return;
+    }
     erase(cur);
 }
 
 template<typename T>
 void TList<T>::replace(TNode<T>* node, const T& value) {
-    if (node == nullptr) { throw std::logic_error("link is null"); }
+    if (node == nullptr) throw std::logic_error("link is null");
     node->set_value(value);
 }
 
@@ -185,7 +192,7 @@ void TList<T>::replace(size_t pos, const T& value) {
     TNode<T>* cur = head;
     for (size_t i = 0; i != pos; i++) {
         cur = cur->next();
-        if (cur == nullptr) { throw std::logic_error("Out of range"); }
+        if (cur == nullptr) throw std::logic_error("Out of range");
     }
     replace(cur, value);
 }
@@ -200,13 +207,15 @@ void asort<T>(TList<T>& list) noexcept {
     TNode<T>* current = list.head;
     while (current != nullptr) {
         TNode<T>* next = current->next();
-        if (sorted == nullptr || sorted->value() >= current->value()) {
+        if (sorted == nullptr ||
+            sorted->value() >= current->value()) {
             current->next(sorted);
             sorted = current;
         }
         else {
             TNode<T>* search = sorted;
-            while (search->next() != nullptr && search->next()->value() < current->value()) {
+            while (search->next() != nullptr &&
+                search->next()->value() < current->value()) {
                 search = search->next();
             }
             current->next(search->next());

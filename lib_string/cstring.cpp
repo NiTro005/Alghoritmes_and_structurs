@@ -1,5 +1,8 @@
 // Copyright 2024 Kita Trofimov
 #include "../lib_string/cstring.h"
+#include <iostream>
+#include <string>
+#include <algorithm>
 
 CString::CString() {
     _size = 0;

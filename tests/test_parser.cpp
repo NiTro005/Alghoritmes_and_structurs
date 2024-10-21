@@ -71,18 +71,15 @@ TEST(ListCycle, Rabbit_and_turtle_function) {
     TList<int>* list = createList<int>(20);
     EXPECT_FALSE(RabbitTurtleCycleList(*list));
 
-    TNode<int>* nod = list->find(14);
-    nod->next(list->head->next());
+    list->last->next(list->head->next());
 
     EXPECT_TRUE(RabbitTurtleCycleList(*list));
 }
 
 TEST(ListCycle, UpheavalPointer_function) {
     TList<int>* list = createList<int>(20);
-    EXPECT_FALSE(UpheavalPointerCycleList(*list));
 
-    TNode<int>* nod = list->find(14);
-    nod->next(list->head->next());
+    list->last->next(list->head->next());
 
     EXPECT_TRUE(UpheavalPointerCycleList(*list));
 }

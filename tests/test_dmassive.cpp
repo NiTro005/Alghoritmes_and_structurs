@@ -143,7 +143,6 @@ TEST(Test_TDMassive, insert_array_any_throw) {
     TDMassive<int> m;
     int arr[] = { 1, 2, 3 };
     ASSERT_ANY_THROW(m.insert(arr, 3, 1));
-
 }
 
 TEST(Test_TDMassive, PushBack) {
@@ -194,7 +193,6 @@ TEST(Test_TDMassive, PopFront_any_throw) {
     mass.push_back(1);
     ASSERT_NO_THROW(mass.pop_front());
     ASSERT_ANY_THROW(mass.pop_front());
-    
 }
 TEST(Test_TDMassive, PopBack) {
     TDMassive<int> mass(10);
@@ -220,7 +218,6 @@ TEST(Test_TDMassive, PopBack_any_throw) {
     mass.push_back(1);
     ASSERT_NO_THROW(mass.pop_back());
     ASSERT_ANY_THROW(mass.pop_back());
-
 }
 
 TEST(Test_TDMassive, RemoveByIndex) {
@@ -239,7 +236,6 @@ TEST(Test_TDMassive, RemoveByIndex_any_throw) {
     ASSERT_NO_THROW(mass.remove_by_index(0));
     ASSERT_ANY_THROW(mass.remove_by_index(0));
     ASSERT_ANY_THROW(mass.remove_by_index(3));
-
 }
 
 
