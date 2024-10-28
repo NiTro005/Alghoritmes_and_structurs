@@ -83,8 +83,8 @@ const InputSystem::InsertMode& mode) noexcept {
         std::cout << "2 - several values.\n";
         std::cout << "Your choose: ";
         std::cin >> user;
-        if (user == 1) { mode = OneValue; }
-        if (user == 2) { mode = SeveralValues; }
+        if (user == 1) mode = OneValue;
+        if (user == 2) mode = SeveralValues;
     }
     if (mode == Back || mode == Front || mode == OneValue) {
         n = 1;
@@ -184,7 +184,7 @@ template <typename T>
 static void find(size_t* values,
 const InputSystem::FindMode mode,
 const TDMassive<T>& archive,
-    size_t count) noexcept {
+size_t count) noexcept {
     system("cls");
     const auto& data = archive.data();
     std::cout << "Matches found: ";
