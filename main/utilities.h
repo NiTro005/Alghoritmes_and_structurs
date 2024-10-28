@@ -11,7 +11,7 @@ enum FindMode{FAll, FFirst, FLast};
 
 template <typename T>
 T* remove(const size_t& n, const size_t& pos,
-    const InputSystem::RemoveMode& mode) noexcept {
+const InputSystem::RemoveMode& mode) noexcept {
     T* value = nullptr;
     mode = Back1;
     int user;
@@ -22,8 +22,10 @@ T* remove(const size_t& n, const size_t& pos,
     std::cout << "4 - at given position.\n";
     std::cout << "Your choose: ";
     std::cin >> user;
-    if (user == 1) { mode = Back1; }
-    if (user == 2) { mode = Front1; }
+    if (user == 1) {
+        mode = Back1;
+    }
+    if (user == 2) mode = Front1;
     if (user == 3) {
         std::cout << "Remove by value:\n";
         std::cout << "1 - first coincidence,\n";
@@ -63,7 +65,7 @@ T* remove(const size_t& n, const size_t& pos,
 
 template <typename T>
 T* insert(const size_t& n, const size_t& pos,
-    const InputSystem::InsertMode& mode) noexcept {
+const InputSystem::InsertMode& mode) noexcept {
     T* value = nullptr;
     mode = Back;
     int user;
@@ -73,8 +75,8 @@ T* insert(const size_t& n, const size_t& pos,
     std::cout << "3 - at given position.\n";
     std::cout << "Your choose: ";
     std::cin >> user;
-    if (user == 1) { mode = Back; }
-    if (user == 2) { mode = Front; }
+    if (user == 1) mode = Back;
+    if (user == 2) mode = Front;
     if (user == 3) {
         std::cout << "How many values need to insert:\n";
         std::cout << "1 - one value,\n";
@@ -117,9 +119,9 @@ T* find(const InputSystem::FindMode& mode) noexcept {
     std::cout << "3 - find last.\n";
     std::cout << "Your choose: ";
     std::cin >> user;
-    if (user == 1) { mode = FAll; }
-    if (user == 2) { mode = FFirst; }
-    if (user == 3) { mode = FLast; }
+    if (user == 1) mode = FAll;
+    if (user == 2) mode = FFirst;
+    if (user == 3) mode = FLast;
     if (mode == FFirst || mode == FLast) {
         value = new T;
         std::cout << "Input value for find: ";
@@ -161,8 +163,7 @@ static void getCursor(int* column, int* line) noexcept {
         if (line != nullptr) {
             *line = csbi.dwCursorPosition.Y;
         }
-    }
-    else {
+    } else {
         if (column != nullptr) {
             *column = 0;
         }
@@ -181,8 +182,8 @@ static void remove() noexcept {
 
 template <typename T>
 static void find(size_t* values,
-    const InputSystem::FindMode mode,
-    const TDMassive<T>& archive,
+const InputSystem::FindMode mode,
+const TDMassive<T>& archive,
     size_t count) noexcept {
     system("cls");
     const auto& data = archive.data();
