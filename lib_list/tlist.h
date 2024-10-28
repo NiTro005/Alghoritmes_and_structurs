@@ -33,7 +33,8 @@ class TList {
      void replace(TNode<T>* node, const T& value);
      void replace(size_t pos, const T& value);
 
-     friend void asort<T>(TList<T>& list) noexcept;  // NOLINT(runtime/references)
+     friend void asort<T>
+         (TList<T>& list) noexcept;  // NOLINT(runtime/references)
 };
 
 

@@ -20,8 +20,6 @@ add_subdirectory(lib_string)
 
 add_subdirectory(lib_list)
 
-add_subdirectory(lib_matrix)
-
 add_subdirectory(lib_stack)
 
 add_subdirectory(lib_queue)

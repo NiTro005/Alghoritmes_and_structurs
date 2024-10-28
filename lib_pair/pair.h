@@ -12,7 +12,8 @@ template <class T1, class T2> class TPair;
 template <class T1, class T2>
 std::ostream& operator<<(std::ostream& out, const TPair<T1, T2>& pair) noexcept;
 template <class T1, class T2>
-std::istream& operator>>(std::istream& in, TPair<T1, T2>& obj) noexcept;  // NOLINT(runtime/references)
+std::istream& operator>>(std::istream& in,
+    TPair<T1, T2>& obj) noexcept;  // NOLINT(runtime/references)
 
 template <class T1, class T2>
 class TPair {
@@ -38,7 +39,8 @@ class TPair {
     friend std::ostream& operator<< <T1, T2>(std::ostream& out,
         const TPair<T1, T2>& pair) noexcept;
     friend std::istream& operator>> <T1, T2>
-        (std::istream& in, TPair<T1, T2>& obj) noexcept;
+        (std::istream& in,
+            TPair<T1, T2>& obj) noexcept;  // NOLINT(runtime/references)
 };
 
 
