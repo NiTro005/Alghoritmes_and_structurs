@@ -10,8 +10,7 @@ template<typename T>
 inline T max(T val_1, T val_2) noexcept {
     if (val_1 > val_2) {
         return val_1;
-    }
-    else {
+    } else {
         return val_2;
     }
 }
@@ -20,8 +19,7 @@ template<typename T>
 inline T min(T val_1, T val_2) noexcept {
     if (val_1 < val_2) {
         return val_1;
-    }
-    else {
+    } else {
         return val_2;
     }
 }

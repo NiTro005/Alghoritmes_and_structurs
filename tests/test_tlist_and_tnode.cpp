@@ -54,8 +54,8 @@ TEST(TNodeTest, AssignmentOperator) {
 TEST(TNodeTest, EqualityOperator) {
     TNode<int> node1(5);
     TNode<int> node2(5);
-    EXPECT_TRUE(node1 == 5);
-    EXPECT_TRUE(node2 == 5);
+    EXPECT_EQ(node1.value(), 5);
+    EXPECT_EQ(node2.value(), 5);
 }
 
 TEST(TListTest, PushFront) {

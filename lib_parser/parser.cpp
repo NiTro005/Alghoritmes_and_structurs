@@ -62,6 +62,7 @@ bool UpheavalPointerCycleList(const TList<T>& list) {
     TList<T> _list(list);
     TNode<T>* nod = _list.head;
     TNode<T>* next = _list.head->next();
+    size_t index = 0;
     _list.head->next(nullptr);
     while (next != nullptr) {
         TNode<T>* prev = nod;

@@ -7,7 +7,7 @@ class TNode {
     T _value;
     TNode<T>* pnext;
  public:
-    TNode(T value, TNode* next = nullptr);
+    explicit TNode(T value, TNode* next = nullptr);
     explicit TNode(const TNode& nod);
 
     TNode<T>* next();
