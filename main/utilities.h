@@ -33,9 +33,9 @@ const InputSystem::RemoveMode& mode) noexcept {
         std::cout << "3 - all coincidence.\n";
         std::cout << "Your choose: ";
         std::cin >> user;
-        if (user == 1) { mode = First; }
-        if (user == 2) { mode = Last; }
-        if (user == 3) { mode = All; }
+        if (user == 1) mode = First;
+        if (user == 2) mode = Last;
+        if (user == 3) mode = All;
     }
     if (user == 4) {
         std::cout << "How many values need to be removed:\n";
@@ -43,8 +43,8 @@ const InputSystem::RemoveMode& mode) noexcept {
         std::cout << "2 - several values.\n";
         std::cout << "Your choose: ";
         std::cin >> user;
-        if (user == 1) { mode = OneValue1; }
-        if (user == 2) { mode = SeveralValues1; }
+        if (user == 1) mode = OneValue1;
+        if (user == 2) mode = SeveralValues1;
     }
     if (mode == First || mode == Last || mode == All) {
         n = 1;
