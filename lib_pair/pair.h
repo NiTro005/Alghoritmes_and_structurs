@@ -19,6 +19,7 @@ template <class T1, class T2>
 class TPair {
     T1 _first;
     T2 _second;
+
  public:
     TPair() : _first(NULL), _second(NULL) { }
     TPair(const T1& first, const T2& second)
