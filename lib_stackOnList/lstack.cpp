@@ -1,3 +1,2 @@
 // Copyright 2024 Kita Trofimov
-
-#include "../lib_stack/stack.h"
+#include "../lib_stackOnList/lstack.h"

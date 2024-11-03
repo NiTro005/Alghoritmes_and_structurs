@@ -46,8 +46,7 @@ inline bool LStack<T>:: IsEmpty() const noexcept {
 }
 
 template<typename T>
-inline bool LStack<T>::IsFull() const noexcept
-{
+inline bool LStack<T>::IsFull() const noexcept {
     return _size >= _capacity;
 }
 
