@@ -24,7 +24,7 @@ class TList {
 
      TNode<T>* find(const T& value) const noexcept;
      bool isEmpty() const noexcept;
-
+     size_t size() const noexcept;
      void pop_front();
      void pop_back();
      void erase(TNode<T>* node);
@@ -119,6 +119,16 @@ TNode<T>* TList<T>::find(const T& value) const noexcept {
 
 template<typename T>
 inline bool TList<T>::isEmpty() const noexcept { return head == nullptr; }
+
+template<typename T>
+inline size_t TList<T>::size() const noexcept {
+    size_t count = 0;
+    TNode<T>* current = head;
+    while (current->next() != last) {
+        count++;
+    }
+    return count;
+}
 
 template<typename T>
 void TList<T>::pop_front() {
