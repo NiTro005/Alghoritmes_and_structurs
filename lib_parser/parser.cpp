@@ -6,6 +6,7 @@
 #include "../lib_list/tlist.h"
 #include "../lib_list/tnode.h"
 
+
 bool IsCorrect(const CString& str) {
     TStack<char> stack(str.size());
     char s1 = ' ';
@@ -58,19 +59,32 @@ bool RabbitTurtleCycleList(const TList<T>& list) {
 }
 
 template<typename T>
-bool UpheavalPointerCycleList(const TList<T>& list) {
+void RecoveryList(const TList<T>& list) {
+
+}
+
+
+template<typename T>
+CicleErr<T> UpheavalPointerCycleList(const TList<T>& list) {
+    CicleErr<T> cicle;
     TList<T> _list(list);
     TNode<T>* nod = _list.head;
     TNode<T>* next = _list.head->next();
     size_t index = 0;
     _list.head->next(nullptr);
+
     while (next != nullptr) {
         TNode<T>* prev = nod;
         nod = next;
         next = next->next();
         nod->next(prev);
-        if (next == list.head) return false;
-        if (next == list.last) return true;
+        if (next == list.head && next->next() == nullptr) {
+            cicle.has_cicle = true;
+            return cicle;
+        }
+        if (next == list.last && next->next() == nullptr) {
+            cicle.has_cicle = false;
+            return cicle;
+        }
     }
-    return false;
 }

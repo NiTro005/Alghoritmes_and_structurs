@@ -77,9 +77,9 @@ TEST(ListCycle, Rabbit_and_turtle_function) {
 }
 
 TEST(ListCycle, UpheavalPointer_function) {
+    CicleErr<int> cicle;
     TList<int>* list = createList<int>(20);
-
     list->last->next(list->head->next());
-
-    EXPECT_TRUE(UpheavalPointerCycleList(*list));
+    cicle = UpheavalPointerCycleList(*list);
+    EXPECT_TRUE(cicle.has_cicle);
 }
