@@ -1,12 +1,12 @@
 // Copyright 2024 Kita Trofimov
+#include <iostream>
+#include <vector>
 #include "../lib_string/cstring.h"
 #include "../lib_stack/stack.h"
 #include "../lib_parser/parser.h"
 
 #include "../lib_list/tlist.h"
 #include "../lib_list/tnode.h"
-#include <iostream>
-#include <vector>
 
 
 bool IsCorrect(const CString& str) {
@@ -84,7 +84,7 @@ void RecoveryList(const TList<T>& list, size_t size, size_t index) {
 }
 
 template<typename T>
-CicleErr<T> UpheavalPointerCycleList(TList<T>& _list) {
+CicleErr<T> UpheavalPointerCycleList(TList<T>& _list) {  // NOLINT(runtime/references)
     CicleErr<T> cicle;
     TNode<T>* nod = _list.head;
     TNode<T>* next = _list.head->next();
@@ -97,7 +97,8 @@ CicleErr<T> UpheavalPointerCycleList(TList<T>& _list) {
         TNode<T>* prev = nod;
         nod = next;
         next = next->next();
-        if (std::find(find_index_err.begin(), find_index_err.end(), nod) != find_index_err.end() && find) {
+        if (std::find(find_index_err.begin(),
+            find_index_err.end(), nod) != find_index_err.end() && find) {
             index = size;
             find = false;
         }
