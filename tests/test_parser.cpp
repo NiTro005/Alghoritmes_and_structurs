@@ -82,4 +82,5 @@ TEST(ListCycle, UpheavalPointer_function) {
     list->last->next(list->head->next());
     cicle = UpheavalPointerCycleList(*list);
     EXPECT_TRUE(cicle.has_cicle);
+    EXPECT_EQ(cicle.index_err, 1);
 }

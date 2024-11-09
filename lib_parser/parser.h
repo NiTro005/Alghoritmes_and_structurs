@@ -12,19 +12,19 @@ template bool RabbitTurtleCycleList<int>(const TList<int>& list);
 template<typename T>
 struct CicleErr {
     bool has_cicle;
-    TNode<T>* node = nullptr;
+    size_t index_err;
 
     CicleErr() = default;
 
     CicleErr<T>& operator=(const CicleErr<T>& other) {
         if (this != &other) {
             has_cicle = other.has_cicle;
-            node = other.node;
+            index_err = other.index_err;
         }
         return *this;
     }
 };
 
 template<typename T>
-CicleErr<T> UpheavalPointerCycleList(const TList<T>& list);
-template CicleErr<int> UpheavalPointerCycleList<int>(const TList<int>& list);
+CicleErr<T> UpheavalPointerCycleList(TList<T>& list);
+template CicleErr<int> UpheavalPointerCycleList<int>(TList<int>& list);
