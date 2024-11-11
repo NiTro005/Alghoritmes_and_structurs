@@ -113,6 +113,7 @@ CicleErr<T> UpheavalPointerCycleList(TList<T>& _list) {  // NOLINT(runtime/refer
             return cicle;
         }
         if (next == _list.last && next->next() == nullptr) {
+            RecoveryList(_list, size, 0);
             cicle.has_cicle = false;
             return cicle;
         }
