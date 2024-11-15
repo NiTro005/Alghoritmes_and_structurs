@@ -1,6 +1,6 @@
 // Copyright 2024 Marina Usova
 
-#define LIST
+#define DMASSIVE
 #ifdef EASY_EXAMPLE
 #include <iostream>
 #include <iomanip>
@@ -64,4 +64,20 @@ int main() {
         std::cout << std::endl;
         return 0;
     }
-#endif  // Pair
+#endif  // List
+
+#ifdef DMASSIVE
+#include "../lib_dmassive/archive.h"
+    int main() {
+        TDMassive<int> mas;
+        mas.push_back(4);
+        mas.push_back(5);
+        mas.push_back(6);
+
+        for (auto it = mas.begin(); it != mas.end(); ++it) {
+            std::cout << *it << " ";
+        }
+        std::cout << std::endl;
+        return 0;
+    }
+#endif  // DMassive

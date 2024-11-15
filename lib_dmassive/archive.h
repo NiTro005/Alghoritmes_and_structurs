@@ -19,13 +19,17 @@ inline void swap(T& val_1, T& val_2) noexcept {
 
 template <typename T>
 class TDMassive {
+    class Iterator;
+
     T* _data;
     State* _states;
     size_t _capacity;
     size_t _size;
     size_t _deleted;
 
+
  public:
+    typedef Iterator iterator;
     TDMassive();
     TDMassive(const TDMassive& archive);
     TDMassive(const T* arr, size_t n);
@@ -78,10 +82,53 @@ class TDMassive {
     T& operator[](size_t index);
     const T& operator[](size_t index) const;
     TDMassive& operator=(const TDMassive& other);
+    iterator begin() {
+        return iterator(_data);
+    }
+
+    iterator end() {
+        return iterator(_data + _size);
+    }
 
  private:
     size_t count_value(T value)  const noexcept;
     void repacking();
+
+    class Iterator {
+        T* _ptr;
+
+     public:
+         Iterator() = default;
+         Iterator(const Iterator& it) : _ptr(it._ptr) {}
+         Iterator(T* ptr) : _ptr(ptr) {}
+
+         Iterator& operator++() {
+             ++_ptr;
+             return *this;
+         }
+
+         Iterator operator++(int) {
+             Iterator temp = *this;
+             ++_ptr;
+             return temp;
+         }
+
+         bool operator!=(const Iterator& other) const {
+             return _ptr != other._ptr;
+         }
+
+         bool operator==(const Iterator& other) const {
+             return _ptr == other._ptr;
+         }
+
+         T& operator*() {
+             return *_ptr;
+         }
+
+         const T& operator*() const {
+             return *_ptr;
+         }
+    };
 };
 
 template <typename T>

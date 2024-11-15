@@ -9,7 +9,7 @@ template <typename T>
 void asort(TList<T>& list) noexcept;  // NOLINT(runtime/references)
 template <typename T>
 class TList {
-    template <class T>
+    template<class T>
     class TIterator;
  public:
      TNode<T>* head = nullptr;
