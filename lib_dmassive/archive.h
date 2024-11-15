@@ -100,7 +100,7 @@ class TDMassive {
      public:
          Iterator() = default;
          Iterator(const Iterator& it) : _ptr(it._ptr) {}
-         Iterator(T* ptr) : _ptr(ptr) {}
+         explicit Iterator(T* ptr) : _ptr(ptr) {}
 
          Iterator& operator++() {
              ++_ptr;

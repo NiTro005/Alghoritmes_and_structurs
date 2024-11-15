@@ -84,7 +84,8 @@ void RecoveryList(const TList<T>& list, size_t size, size_t index) {
 }
 
 template<typename T>
-CicleErr<T> UpheavalPointerCycleList(TList<T>& _list) {  // NOLINT(runtime/references)
+CicleErr<T> UpheavalPointerCycleList
+(TList<T>& _list) {  // NOLINT(runtime/references)
     CicleErr<T> cicle;
     TNode<T>* nod = _list.head;
     TNode<T>* next = _list.head->next();

@@ -50,10 +50,10 @@ class TList {
      template <class T>
      class TIterator {
          TNode<T>* pCur;
-          
+
       public:
           TIterator() = default;
-          TIterator(TNode<T>* nod) : pCur(nod) {}
+          explicit TIterator(TNode<T>* nod) : pCur(nod) {}
           TIterator(const TIterator<T>& iter) : pCur(iter.pCur) {}
           TIterator<T>& operator++() {
               pCur = pCur->next();
@@ -77,7 +77,6 @@ class TList {
           const T& operator*() const {
               return pCur->value();
           }
-
      };
 };
 

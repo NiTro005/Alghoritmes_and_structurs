@@ -26,5 +26,7 @@ struct CicleErr {
 };
 
 template<typename T>
-CicleErr<T> UpheavalPointerCycleList(TList<T>& list);  // NOLINT(runtime/references)
-template CicleErr<int> UpheavalPointerCycleList<int>(TList<int>& list);  // NOLINT(runtime/references)
+CicleErr<T> UpheavalPointerCycleList
+(TList<T>& list);  // NOLINT(runtime/references)
+template CicleErr<int> UpheavalPointerCycleList
+<int>(TList<int>& list);  // NOLINT(runtime/references)
