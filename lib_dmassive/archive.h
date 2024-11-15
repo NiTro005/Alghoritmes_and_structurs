@@ -192,7 +192,7 @@ void TDMassive<T>::set_size(size_t size) noexcept {
 }
 
 template <typename T>
-const T* TDMassive<T> ::data() const {
+const T* TDMassive<T>::data() const {
     return _data;
 }
 
@@ -585,7 +585,7 @@ size_t TDMassive<T>::count_value(T value) const noexcept {
 
 template <typename T>
 T& TDMassive<T>::operator[](size_t index) {
-    for (int i = index; i < _size; i++) {
+    for (size_t i = index; i < _size; i++) {
         if (_states[i] == State::busy) {
             return _data[i];
         }
@@ -594,7 +594,7 @@ T& TDMassive<T>::operator[](size_t index) {
 
 template <typename T>
 const T& TDMassive<T>::operator[](size_t index) const {
-    for (int i = index; i < _size; i++) {
+    for (size_t i = index; i < _size; i++) {
         if (_states[i] == State::busy) {
             return _data[i];
         }

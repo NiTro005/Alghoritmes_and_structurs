@@ -9,13 +9,23 @@ template <typename T>
 void asort(TList<T>& list) noexcept;  // NOLINT(runtime/references)
 template <typename T>
 class TList {
+    template <class T>
+    class TIterator;
  public:
      TNode<T>* head = nullptr;
      TNode<T>* last = nullptr;
+     typedef TIterator<T> iterator;
 
      TList() = default;
      TList(const TList& list);
      ~TList();
+     iterator begin() {
+         return iterator(head);
+     }
+
+     iterator end() {
+         return iterator(last->next());
+     }
 
      void push_front(const T& value) noexcept;
      void push_back(const T& value) noexcept;
@@ -35,6 +45,40 @@ class TList {
 
      friend void asort<T>
          (TList<T>& list) noexcept;  // NOLINT(runtime/references)
+
+ private:
+     template <class T>
+     class TIterator {
+         TNode<T>* pCur;
+          
+      public:
+          TIterator() = default;
+          TIterator(TNode<T>* nod) : pCur(nod) {}
+          TIterator(const TIterator<T>& iter) : pCur(iter.pCur) {}
+          TIterator<T>& operator++() {
+              pCur = pCur->next();
+              return *this;
+          }
+
+          TIterator<T> operator++(int) {
+              TIterator<T> temp = *this;
+              pCur = pCur->next();
+              return temp;
+          }
+          bool operator!=(const TIterator<T>& other) const {
+              return pCur != other.pCur;
+          }
+
+          bool operator==(const TIterator<T>& other) const {
+              return pCur == other.pCur;
+          }
+          T operator*() { return pCur->value(); }
+
+          const T& operator*() const {
+              return pCur->value();
+          }
+
+     };
 };
 
 
