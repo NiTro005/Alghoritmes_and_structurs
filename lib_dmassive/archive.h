@@ -653,8 +653,7 @@ const T& TDMassive<T>::operator[](size_t index) const {
     for (size_t i = 0; i < _size + del; i++) {
         if (_states[i] == State::deleted) {
             del++;
-        }
-        else if (_states[i] == State::busy) {
+        } else if (_states[i] == State::busy) {
             if (index == cur) break;
             cur++;
         }
