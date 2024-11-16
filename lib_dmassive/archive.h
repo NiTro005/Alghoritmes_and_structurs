@@ -451,13 +451,14 @@ void TDMassive<T>::pop_front() {
                                "void TArchive<T>::pop_front()\":"
                                "archive clear");
     }
-    for (size_t i = 1; i < _size; i++) {
-        _data[i - 1] = _data[i];
-        _states[i - 1] = _states[i];
+    for (size_t i = 0; i < _size; i++) {
+        if (_states[i] != State::deleted) {
+            _states[i] = State::deleted;
+            break;
+        }
     }
-    _states[_size - 1] = State::deleted;
-    _deleted++;
     _size--;
+    _deleted++;
 }
 
 template <typename T>
@@ -632,20 +633,33 @@ size_t TDMassive<T>::count_value(T value) const noexcept {
 
 template <typename T>
 T& TDMassive<T>::operator[](size_t index) {
-    for (size_t i = index; i < _size; i++) {
-        if (_states[i] == State::busy) {
-            return _data[i];
+    size_t del = 0;
+    size_t cur = 0;
+    for (size_t i = 0; i < _size + del; i++) {
+        if (_states[i] == State::deleted) {
+            del++;
+        } else if (_states[i] == State::busy) {
+            if (index == cur) break;
+            cur++;
         }
     }
+    return _data[index + del];
 }
 
 template <typename T>
 const T& TDMassive<T>::operator[](size_t index) const {
-    for (size_t i = index; i < _size; i++) {
-        if (_states[i] == State::busy) {
-            return _data[i];
+    size_t del = 0;
+    size_t cur = 0;
+    for (size_t i = 0; i < _size + del; i++) {
+        if (_states[i] == State::deleted) {
+            del++;
+        }
+        else if (_states[i] == State::busy) {
+            if (index == cur) break;
+            cur++;
         }
     }
+    return _data[index + del];
 }
 
 template <typename T>

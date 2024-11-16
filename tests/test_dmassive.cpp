@@ -176,12 +176,12 @@ TEST(Test_TDMassive, PopFront) {
     mass.push_back(3);
 
     mass.pop_front();
-    EXPECT_EQ(mass.data()[0], 2);
-    EXPECT_EQ(mass.data()[1], 3);
+    EXPECT_EQ(mass[0], 2);
+    EXPECT_EQ(mass[1], 3);
     EXPECT_EQ(mass.size(), 2);
 
     mass.pop_front();
-    EXPECT_EQ(mass.data()[0], 3);
+    EXPECT_EQ(mass[0], 3);
     EXPECT_EQ(mass.size(), 1);
 
     mass.pop_front();

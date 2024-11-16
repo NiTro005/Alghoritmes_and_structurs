@@ -65,5 +65,5 @@ inline T TQueue<T>::top() const {
     if (IsEmpty()) {
         throw std::out_of_range("Stack is empty");
     }
-    return _data.data()[0];
+    return _data[0];
 }
