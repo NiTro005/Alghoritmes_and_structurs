@@ -451,7 +451,7 @@ void TDMassive<T>::pop_front() {
                                "void TArchive<T>::pop_front()\":"
                                "archive clear");
     }
-    for (size_t i = 0; i < _size; i++) {
+    for (size_t i = 0; i < _size + _deleted; i++) {
         if (_states[i] != State::deleted) {
             _states[i] = State::deleted;
             break;
@@ -474,12 +474,18 @@ void TDMassive<T>::pop_back() {
 
 template <typename T>
 TDMassive<T>& TDMassive<T> ::remove_by_index(size_t pos) {
-    if (_size <= pos || pos < 0 || _states[pos] == State::deleted) {
+    if (_size + _deleted <= pos || pos < 0) {
         throw std::logic_error("Error in function" \
                                "void TArchive<T>::pop_back()\":"
                                " archive clear");
     }
-    _states[pos] = State::deleted;
+    for (size_t i = pos; i < _size + _deleted; i++) {
+        if (_states[i] != State::deleted) {
+            _states[i] = State::deleted;
+            break;
+        }
+    }
+    _size--;
     _deleted++;
     return *this;
 }

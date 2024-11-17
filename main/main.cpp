@@ -68,16 +68,89 @@ int main() {
 
 #ifdef DMASSIVE
 #include "../lib_dmassive/archive.h"
-    int main() {
-        TDMassive<int> mas;
-        mas.push_back(4);
-        mas.push_back(5);
-        mas.push_back(6);
+#include <stdlib.h>
+#include <time.h>
+#include <ctime>
 
-        for (auto it = mas.begin(); it != mas.end(); ++it) {
-            std::cout << *it << " ";
+    int main() {
+        srand(time(NULL));
+        int size;
+        std::cout << "Enter the size of the array: ";
+        std::cin >> size;
+        TDMassive<int> mas(size);
+        TDMassive<int> mas1(size);
+        TDMassive<int> mas2(size);
+
+        double timespent[10];
+        clock_t start = clock();
+        for (size_t i = 0; i < size - 3; i++) {
+            mas.push_back(0 + rand() % 1000);
         }
+        clock_t end = clock();
+        timespent[0] = (double)(end - start);
+        mas.push_back(1);
+        mas.insert(2, size/2);
+        mas.push_front(3);
+
+        start = clock();
+        mas.find_first(1);
+        end = clock();
+        timespent[6] = (double)(end - start);
+
+        start = clock();
+        mas.find_first(3);
+        end = clock();
+        timespent[7] = (double)(end - start);
+        std::cout << "Time spent find method in massive: " << timespent[6] << " ms" << std::endl;
+        std::cout << "Time spent find method in massive: " << timespent[7] << " ms" << std::endl;
+
+        start = clock();
+        for (size_t i = 0; i < size; i++) {
+            mas1.push_front(0 + rand() % 1000);
+        }
+        end = clock();
+        timespent[1] = (double)(end - start);
+
+        start = clock();
+        for (size_t i = 0; i < size; i++) {
+            mas2.insert(0 + rand() % 1000, i);
+        }
+        end = clock();
+        timespent[2] = (double)(end - start);
         std::cout << std::endl;
+        std::cout << "Time spent push_back method in massive: " << timespent[0] << " ms" << std::endl;
+        std::cout << "Time spent push_front method in massive: " << timespent[1] << " ms" << std::endl;
+        std::cout << "Time spent insert method in massive: " << timespent[2] << " ms" << std::endl;
+
+        start = clock();
+        for (size_t i = 0; i < size; i++) {
+            mas.pop_back();
+        }
+        end = clock();
+        timespent[3] = (double)(end - start);
+
+        start = clock();
+        for (size_t i = 0; i < size; i++) {
+            mas1.pop_front();
+        }
+        end = clock();
+        timespent[4] = (double)(end - start);
+
+        start = clock();
+        for (size_t i = 0; i < size; i++) {
+            mas2.remove_by_index(i);
+        }
+        end = clock();
+        timespent[5] = (double)(end - start);
+
+        /*for (auto it = mas.begin(); it != mas.end(); ++it) {
+            std::cout << *it << " ";
+        }*/
+
+        std::cout << std::endl;
+        std::cout << "Time spent pop_back method in massive: " << timespent[3] << " ms" << std::endl;
+        std::cout << "Time spent pop_front method in massive: " << timespent[4] << " ms" << std::endl;
+        std::cout << "Time spent remove_by_index method in massive: " << timespent[5] << " ms" << std::endl;
         return 0;
     }
 #endif  // DMassive
