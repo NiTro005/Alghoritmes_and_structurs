@@ -6,6 +6,7 @@
 template <typename T>
 class TQueue {
     TDMassive<T> _data;
+    size_t deleted = 0;
 
  public:
     explicit TQueue(size_t size = 20);
@@ -44,7 +45,7 @@ inline bool TQueue<T>::IsFull() const noexcept {
 
 template<typename T>
 void TQueue<T>::push(T value) {
-    if (!IsFull()) {
+    if (!IsFull() || deleted > 0) {
         _data.push_back(value);
     } else {
         throw std::out_of_range("Error:Overlow stack");
@@ -55,6 +56,7 @@ template<typename T>
 inline void TQueue<T>::pop() {
     if (!IsEmpty()) {
         _data.pop_front();
+        deleted++;
     } else {
         throw std::out_of_range("Stack is empty");
     }

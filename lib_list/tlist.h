@@ -24,7 +24,7 @@ class TList {
      }
 
      iterator end() {
-         return iterator(last->next());
+         return iterator(nullptr);
      }
 
      void push_front(const T& value) noexcept;
@@ -91,6 +91,8 @@ TList<T>::~TList() {
         head = head->next();
         delete link;
     }
+    head = nullptr;
+    last = nullptr;
 }
 
 template<typename T>
@@ -234,7 +236,9 @@ void TList<T>::erase(size_t pos) {
         pop_back();
         return;
     }
-    erase(cur);
+    TNode<T>* link = cur->next();
+    cur->next(cur->next()->next());
+    delete link;
 }
 
 template<typename T>

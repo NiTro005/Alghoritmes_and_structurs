@@ -346,7 +346,7 @@ TDMassive<T>::~TDMassive() {
 
 template <typename T>
 inline bool TDMassive<T>::empty() const noexcept {
-    return _size == 0;
+    return _size - _deleted == 0;
 }
 
 template <typename T>
@@ -446,18 +446,17 @@ void TDMassive<T>::push_front(T value) {
 
 template <typename T>
 void TDMassive<T>::pop_front() {
-    if (_size <= 0) {
+    if (_size - _deleted <= 0) {
         throw std::logic_error("Error in function" \
                                "void TArchive<T>::pop_front()\":"
                                "archive clear");
     }
-    for (size_t i = 0; i < _size + _deleted; i++) {
+    for (size_t i = 0; i < _size; i++) {
         if (_states[i] != State::deleted) {
             _states[i] = State::deleted;
             break;
         }
     }
-    _size--;
     _deleted++;
 }
 
@@ -474,20 +473,21 @@ void TDMassive<T>::pop_back() {
 
 template <typename T>
 TDMassive<T>& TDMassive<T> ::remove_by_index(size_t pos) {
-    if (_size + _deleted <= pos || pos < 0) {
+    if (pos >= _size || pos < 0) {
         throw std::logic_error("Error in function" \
                                "void TArchive<T>::pop_back()\":"
                                " archive clear");
     }
-    for (size_t i = pos; i < _size + _deleted; i++) {
+    for (size_t i = pos; i < _size; i++) {
         if (_states[i] != State::deleted) {
             _states[i] = State::deleted;
-            break;
+            _deleted++;
+            return *this;
         }
     }
-    _size--;
-    _deleted++;
-    return *this;
+    throw std::logic_error("Error in function" \
+        "void TArchive<T>::pop_back()\":"
+        " archive clear");
 }
 
 template <typename T>
@@ -565,8 +565,7 @@ size_t TDMassive<T>::find_first(T value) const {
             return i;
         }
     }
-    throw std::logic_error("Error in function" \
-    "size_t TArchive<T>::find_first(T value)\":No mathes");
+    return -1;
 }
 
 
@@ -577,8 +576,7 @@ size_t TDMassive<T>::find_last(T value) const {
             return i;
         }
     }
-    throw std::logic_error("Error in function" \
-    "size_t TArchive<T>::find_first(T value)\":No mathes");
+    return -1;
 }
 
 template <typename T>
