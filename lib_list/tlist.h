@@ -121,29 +121,28 @@ void TList<T>::push_back(const T& value) noexcept {
     }
 }
 
-template<typename T>
+template <typename T>
 void TList<T>::insert(TNode<T>* node, const T& value) {
     if (node == nullptr) {
         throw std::invalid_argument("Node pointer is nullptr");
     }
-    if (node->next() == nullptr) {
-        push_back(value);
-    } else {
-        TNode<T>* newNode = new TNode<T>(value, node->next());
-        node->next(newNode);
+    TNode<T>* newNode = new TNode<T>(value, node->next());
+    node->next(newNode);
+    if (newNode->next() == nullptr) {
+        last = newNode;
     }
 }
 
-template<typename T>
+template <typename T>
 void TList<T>::insert(size_t pos, const T& value) {
-    TNode<T>* cur = head;
     if (pos == 0) {
         push_front(value);
         return;
     }
-    for (size_t i = 0; i != pos; i++) {
-        cur = cur->next();
+    TNode<T>* cur = head;
+    for (size_t i = 0; i < pos - 1; ++i) {
         if (cur == nullptr) throw std::logic_error("Out of range");
+        cur = cur->next();
     }
     insert(cur, value);
 }
