@@ -96,8 +96,8 @@ TEST(Test_TDMassive, reserve_function) {
     TDMassive<int> m;
     m.resize(15, 5);
     EXPECT_EQ(m.capacity(), 15);
+    EXPECT_EQ(m.size(), 15);
     m.push_front(1);
-    m.reserve();
     EXPECT_EQ(m.capacity(), 30);
 }
 

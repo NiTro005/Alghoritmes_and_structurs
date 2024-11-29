@@ -4,7 +4,7 @@
 #include <utility>
 #include <algorithm>
 #define STEP_CAPACITY 15
-#define MAX_CAPACITY 100000
+#define MAX_CAPACITY 10000000
 
 enum State { empty, busy, deleted };
 
@@ -57,7 +57,7 @@ class TDMassive {
 
     void clear();
     void resize(size_t n, T value = NULL);
-    void reserve(size_t n = 15);
+    void reserve(size_t n = 0);
 
     void push_back(T value);
     void pop_back();
@@ -300,10 +300,10 @@ void TDMassive <T>::resize(size_t n, T value) {
 template <typename T>
 void TDMassive <T>::reserve(size_t n) {
     repacking();
-    if (n < _capacity ||(_size < _capacity && n <= _capacity)) {
+    if (_size + n < _capacity) {
         return;
     }
-    _capacity = (n / STEP_CAPACITY) * STEP_CAPACITY + STEP_CAPACITY;
+    _capacity = ((_capacity + n) / STEP_CAPACITY) * STEP_CAPACITY + STEP_CAPACITY;
     if (_capacity > MAX_CAPACITY) {
         throw std::logic_error("Error in function" \
                                "void TArchive<T>::reserve(size_t n)\":"

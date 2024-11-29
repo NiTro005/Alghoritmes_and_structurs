@@ -5,7 +5,7 @@
 #include <ctime>
 #include <cstdint>
 #include <random>
-#define LIST
+#define DMASSIVE
 #ifdef EASY_EXAMPLE
 #include <iomanip>
 #include "../lib_easy_example/easy_example.h"
