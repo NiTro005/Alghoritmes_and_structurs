@@ -214,9 +214,9 @@ int main() {
         end = clock();
         timespent[5] = static_cast<double>(end - start);
 
-        for (auto it = mas.begin(); it != mas.end(); ++it) {
+        /*for (auto it = mas.begin(); it != mas.end(); ++it) {
             std::cout << *it << " ";
-        }
+        }*/
 
         std::cout << std::endl;
         std::cout << "Time spent pop_back method in massive: "
