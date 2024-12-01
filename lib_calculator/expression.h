@@ -43,6 +43,10 @@ public:
 private:
     void delete_spaces(std::string* exp);
     void parse(std::string exp);
+    void parse_bracket(std::string& exp, int& curr_pos);
+    void parse_variable_or_function(std::string& exp, int& curr_pos);
+    void parse_operation(std::string& exp, int& curr_pos);
+    void parse_number(std::string& exp, int& curr_pos);
     //void check();
     //void build_polish_record();
 };

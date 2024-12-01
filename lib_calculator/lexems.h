@@ -5,6 +5,8 @@
 #include <cmath>
 #include "expression.h"
 
+enum TypeBrackets { open, close};
+
 class FloatConst : public Lexem {
     float _value;
  public:
@@ -28,4 +30,49 @@ class FloatConst : public Lexem {
         }
         _value = result;
     }
+};
+
+class IntConst : public Lexem {
+    int _value;
+public:
+    IntConst(std::string name) : Lexem(name, INT_CONST) {
+        _value = std::stoi(name);
+    }
+
+    int value() const { return _value; }
+};
+
+class Bracket : public Lexem {
+    TypeBrackets type;
+    int priority;
+public:
+    Bracket(std::string name) : Lexem(name, BRACKET) {
+        if (name[0] == '(') {
+            type = TypeBrackets::open;
+        } else {
+            type = TypeBrackets::close;
+        }
+    }
+    void setPriority(int priority) { this->priority = priority; }
+};
+
+class Variable : public Lexem {
+    int value;
+public:
+    Variable(std::string name) : Lexem(name, VARIABLE) {}
+    void setValue(int value) { this->value = value; }
+};
+
+class Operation : public Lexem {
+    int priority;
+public:
+    Operation(std::string name) : Lexem(name, OPERATION) {}
+    void setPriority(int priority) { this->priority = priority; }
+};
+
+class Function : public Lexem {
+    int priority;
+public:
+    Function(std::string name) : Lexem(name, FUNCTION) {}
+    void setPriority(int priority) { this->priority = priority; }
 };
