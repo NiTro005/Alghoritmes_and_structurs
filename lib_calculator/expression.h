@@ -47,6 +47,6 @@ private:
     void parse_variable_or_function(std::string& exp, int& curr_pos);
     void parse_operation(std::string& exp, int& curr_pos);
     void parse_number(std::string& exp, int& curr_pos);
-    //void check();
+    void check();
     //void build_polish_record();
 };

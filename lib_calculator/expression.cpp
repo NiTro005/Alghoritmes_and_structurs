@@ -115,3 +115,48 @@ void Expression::parse_number(std::string& exp, int& curr_pos) {
         _expression.push_back(new_lexem);
     }
 }
+
+void Expression::check() {
+    int bracket_count = 0;
+    bool last_was_operation = false;
+    bool last_was_function = false;
+
+    for (auto it = _expression.begin(); it != _expression.end(); ++it) {
+        if ((*it).type() == LexemType::BRACKET) {
+            if ((*it).name() == "(") {
+                bracket_count++;
+            }
+            else if ((*it).name() == ")") {
+                bracket_count--;
+            }
+            last_was_operation = false;
+            last_was_function = false;
+        }
+        else if ((*it).type() == LexemType::OPERATION) {
+            if (last_was_operation || last_was_function) {
+                throw std::runtime_error("Invalid expression: consecutive operations or function followed by operation");
+            }
+            last_was_operation = true;
+            last_was_function = false;
+        }
+        else if ((*it).type() == LexemType::FUNCTION) {
+            if (last_was_operation || last_was_function) {
+                throw std::runtime_error("Invalid expression: consecutive functions or operation followed by function");
+            }
+            last_was_operation = false;
+            last_was_function = true;
+        }
+        else {
+            last_was_operation = false;
+            last_was_function = false;
+        }
+    }
+
+    if (bracket_count != 0) {
+        throw std::runtime_error("Invalid expression: unbalanced brackets");
+    }
+
+    if (last_was_operation) {
+        throw std::runtime_error("Invalid expression: ends with an operation");
+    }
+}

@@ -5,7 +5,7 @@
 #include <ctime>
 #include <cstdint>
 #include <random>
-#define DMASSIVE
+#define   DMASSIVE
 #ifdef EASY_EXAMPLE
 #include <iomanip>
 #include "../lib_easy_example/easy_example.h"
@@ -152,7 +152,7 @@ int main() {
         double timespent[10];
         clock_t start = clock();
         for (size_t i = 0; i < size; i++) {
-            mas.push_back(i);
+            mas.push_back(0 + gen() % size);
         }
         clock_t end = clock();
         timespent[0] = static_cast<double>(end - start);
@@ -168,7 +168,7 @@ int main() {
         mas.find_first(0 + gen() % size);
         mas.find_first(0 + gen() % size);
         end = clock();
-        timespent[6] = static_cast<double>(end - start) / 6;
+        timespent[6] = static_cast<double>(end - start) / 7;
         std::cout << "Time spent find method in massive: "
             << timespent[6] << " ms" << std::endl;
 

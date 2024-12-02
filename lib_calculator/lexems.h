@@ -46,7 +46,7 @@ class Bracket : public Lexem {
     TypeBrackets type;
     int priority;
 public:
-    Bracket(std::string name) : Lexem(name, BRACKET) {
+    Bracket(std::string name) : Lexem(name, BRACKET), priority(0) {
         if (name[0] == '(') {
             type = TypeBrackets::open;
         } else {
@@ -59,20 +59,20 @@ public:
 class Variable : public Lexem {
     int value;
 public:
-    Variable(std::string name) : Lexem(name, VARIABLE) {}
+    Variable(std::string name) : Lexem(name, VARIABLE), value(0) {}
     void setValue(int value) { this->value = value; }
 };
 
 class Operation : public Lexem {
     int priority;
 public:
-    Operation(std::string name) : Lexem(name, OPERATION) {}
+    Operation(std::string name) : Lexem(name, OPERATION), priority(0) {}
     void setPriority(int priority) { this->priority = priority; }
 };
 
 class Function : public Lexem {
     int priority;
 public:
-    Function(std::string name) : Lexem(name, FUNCTION) {}
+    Function(std::string name) : Lexem(name, FUNCTION), priority(0) {}
     void setPriority(int priority) { this->priority = priority; }
 };
