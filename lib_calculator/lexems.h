@@ -3,7 +3,7 @@
 
 #include <string>
 #include <cmath>
-#include "expression.h"
+#include "../lib_calculator/expression.h"
 
 enum TypeBrackets {
     OPEN,
@@ -13,7 +13,7 @@ enum TypeBrackets {
 class FloatConst : public Lexem {
     float _value;
  public:
-    FloatConst(std::string exp) : Lexem(exp, FLOAT_CONST) {
+    explicit FloatConst(std::string exp) : Lexem(exp, FLOAT_CONST) {
         int curr_pos = 0;
         float result = 0;
         while (is_number(exp[curr_pos])) {
@@ -38,7 +38,7 @@ class FloatConst : public Lexem {
 class IntConst : public Lexem {
     int _value;
  public:
-    IntConst(std::string name) : Lexem(name, INT_CONST) {
+    explicit IntConst(std::string name) : Lexem(name, INT_CONST) {
         _value = std::stoi(name);
     }
 
@@ -49,7 +49,7 @@ class Bracket : public Lexem {
     TypeBrackets type;
     int priority;
  public:
-    Bracket(std::string name) : Lexem(name, BRACKET), priority(0) {
+    explicit Bracket(std::string name) : Lexem(name, BRACKET), priority(0) {
         if (name[0] == '(') {
             type = TypeBrackets::OPEN;
         } else {
@@ -62,20 +62,20 @@ class Bracket : public Lexem {
 class Variable : public Lexem {
     int value;
  public:
-    Variable(std::string name) : Lexem(name, VARIABLE), value(0) {}
+    explicit Variable(std::string name) : Lexem(name, VARIABLE), value(0) {}
     void setValue(int value) { this->value = value; }
 };
 
 class Operation : public Lexem {
     int priority;
  public:
-    Operation(std::string name) : Lexem(name, OPERATION), priority(0) {}
+    explicit Operation(std::string name) : Lexem(name, OPERATION), priority(0) {}
     void setPriority(int priority) { this->priority = priority; }
 };
 
 class Function : public Lexem {
     int priority;
  public:
-    Function(std::string name) : Lexem(name, FUNCTION), priority(0) {}
+    explicit Function(std::string name) : Lexem(name, FUNCTION), priority(0) {}
     void setPriority(int priority) { this->priority = priority; }
 };

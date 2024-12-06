@@ -1,6 +1,8 @@
 // Copyright 2024 Kita Trofimov
-#include "expression.h"
-#include "lexems.h"
+#include "../lib_calculator/expression.h"
+#include "../lib_calculator/lexems.h"
+#include <iostream>
+#include <string>
 
 bool is_number(char symbol) {
     return symbol >= '0' && symbol <= '9';
@@ -64,14 +66,14 @@ void Expression::parse(std::string exp) {
     }
 }
 
-void Expression::parse_bracket(std::string& exp, int& curr_pos) {
+void Expression::parse_bracket(const std::string& exp, int& curr_pos) {
     Bracket new_lexem(exp.substr(curr_pos, 1));
     _expression.push_back(new_lexem);
     curr_pos++;
 }
 
 void Expression::parse_variable_or_function
-(std::string& exp, int& curr_pos) {
+(const std::string& exp, int& curr_pos) {
     int start_pos = curr_pos;
     while (curr_pos < exp.size() && (is_alpha(exp[curr_pos])
         || is_number(exp[curr_pos]))) {
@@ -88,13 +90,15 @@ void Expression::parse_variable_or_function
     }
 }
 
-void Expression::parse_operation(std::string& exp, int& curr_pos) {
+void Expression::parse_operation
+(const std::string& exp, int& curr_pos) {
     Operation new_lexem(exp.substr(curr_pos, 1));
     _expression.push_back(new_lexem);
     curr_pos++;
 }
 
-void Expression::parse_number(std::string& exp, int& curr_pos) {
+void Expression::parse_number
+(const std::string& exp, int& curr_pos) {
     int start_pos = curr_pos;
     while (curr_pos < exp.size() && is_number(exp[curr_pos])) {
         curr_pos++;

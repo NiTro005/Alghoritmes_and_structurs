@@ -303,7 +303,8 @@ void TDMassive <T>::reserve(size_t n) {
     if (_size + n < _capacity) {
         return;
     }
-    _capacity = ((_capacity + n) / STEP_CAPACITY) * STEP_CAPACITY + STEP_CAPACITY;
+    _capacity = ((_capacity + n) /
+        STEP_CAPACITY) * STEP_CAPACITY + STEP_CAPACITY;
     if (_capacity > MAX_CAPACITY) {
         throw std::logic_error("Error in function" \
                                "void TArchive<T>::reserve(size_t n)\":"

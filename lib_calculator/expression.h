@@ -35,8 +35,8 @@ class Lexem {
 class Expression {
     TList<Lexem> _expression;
     // <what type?> polish_record;
- public:
-    Expression(std::string exp);
+public:
+    explicit Expression(std::string exp);
     //void set_vars_values();
     //void calculate();
     void print();
@@ -44,9 +44,9 @@ class Expression {
 
  private:
     void parse(std::string exp);
-    void parse_bracket(std::string& exp, int& curr_pos);
-    void parse_variable_or_function(std::string& exp, int& curr_pos);
-    void parse_operation(std::string& exp, int& curr_pos);
-    void parse_number(std::string& exp, int& curr_pos);
+    void parse_bracket(const std::string& exp, int& curr_pos);
+    void parse_variable_or_function(const std::string& exp, int& curr_pos);
+    void parse_operation(const std::string& exp, int& curr_pos);
+    void parse_number(const std::string& exp, int& curr_pos);
     //void build_polish_record();
 };

@@ -1,6 +1,5 @@
 // Copyright 2024 Trofimov Nikita
 #include <gtest.h>
-#include "../lib_list/tlist.h"
 #include "../lib_stackOnList/lstack.h"
 
 TEST(Test_LStack, Constructor) {

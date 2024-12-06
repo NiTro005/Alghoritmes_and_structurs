@@ -1,6 +1,6 @@
 // Copyright 2024 Kita Trofimov
 #include <gtest.h>
-#include "lexems.h"
+#include "../lib_calculator/lexems.h"
 
 
 TEST(CalculatorTest, CheckValidExpression) {
