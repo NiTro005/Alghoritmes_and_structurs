@@ -1,8 +1,8 @@
 // Copyright 2024 Kita Trofimov
-#include "../lib_calculator/expression.h"
-#include "../lib_calculator/lexems.h"
 #include <iostream>
 #include <string>
+#include "../lib_calculator/expression.h"
+#include "../lib_calculator/lexems.h"
 
 bool is_number(char symbol) {
     return symbol >= '0' && symbol <= '9';
@@ -134,14 +134,16 @@ void Expression::check() {
         } else if ((*it).type() == LexemType::OPERATION) {
             if (first_lexem || last_was_operation || last_was_function) {
                 throw std::runtime_error
-                ("Invalid expression: consecutive operations or function followed by operation");
+                ("Invalid expression: " \
+                 "consecutive operations or function followed by operation");
             }
             last_was_operation = true;
             last_was_function = false;
         } else if ((*it).type() == LexemType::FUNCTION) {
             if (last_was_operation || last_was_function) {
                 throw std::runtime_error
-                ("Invalid expression: consecutive functions or operation followed by function");
+                ("Invalid expression: " \
+                 "consecutive functions or operation followed by function");
             }
             last_was_operation = false;
             last_was_function = true;

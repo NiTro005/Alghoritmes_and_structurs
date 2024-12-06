@@ -1,2 +1,2 @@
 // Copyright 2024 Kita Trofimov
-#include "lexems.h"
+#include "../lib_calculator/lexems.h"
