@@ -20,7 +20,13 @@ add_subdirectory(lib_string)
 
 add_subdirectory(lib_list)
 
+add_subdirectory(lib_calculator)
+
+add_subdirectory(lib_polinom)
+
 add_subdirectory(lib_stack)
+
+add_subdirectory(lib_stackOnList)
 
 add_subdirectory(lib_queue)
 

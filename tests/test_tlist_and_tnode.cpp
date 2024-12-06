@@ -108,8 +108,8 @@ TEST(TListTest, InsertPosition) {
     list.insert(1, 4);
 
     EXPECT_EQ(list.head->value(), 1);
-    EXPECT_EQ(list.head->next()->value(), 2);
-    EXPECT_EQ(list.head->next()->next()->value(), 4);
+    EXPECT_EQ(list.head->next()->value(), 4);
+    EXPECT_EQ(list.head->next()->next()->value(), 2);
     EXPECT_EQ(list.head->next()->next()->next()->value(), 3);
     EXPECT_EQ(list.head->next()->next()->next()->next(), nullptr);
     EXPECT_EQ(list.last->value(), 3);
