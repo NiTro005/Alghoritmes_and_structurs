@@ -34,8 +34,8 @@ std::ostream& operator<<(std::ostream& out, const Lexem& lexem) {
 }
 
 Expression::Expression(std::string exp) {
-    delete_spaces(&exp);
     parse(exp);
+    check();
 }
 
 void Expression::print() {
@@ -44,26 +44,21 @@ void Expression::print() {
     }
 }
 
-void Expression::delete_spaces(std::string* exp) {
-    // Реализация удаления пробелов
-}
 
 void Expression::parse(std::string exp) {
     int curr_pos = 0;
     while (curr_pos < exp.size()) {
         if (exp[curr_pos] == '(' || exp[curr_pos] == ')') {
             parse_bracket(exp, curr_pos);
-        }
-        else if (is_alpha(exp[curr_pos])) {
+        } else if (is_alpha(exp[curr_pos])) {
             parse_variable_or_function(exp, curr_pos);
-        }
-        else if (exp[curr_pos] == '+' || exp[curr_pos] == '-' || exp[curr_pos] == '*' || exp[curr_pos] == '/' || exp[curr_pos] == '^') {
+        } else if (exp[curr_pos] == '+' || exp[curr_pos] == '-'
+            || exp[curr_pos] == '*' || exp[curr_pos] == '/'
+            || exp[curr_pos] == '^') {
             parse_operation(exp, curr_pos);
-        }
-        else if (is_number(exp[curr_pos])) {
+        } else if (is_number(exp[curr_pos])) {
             parse_number(exp, curr_pos);
-        }
-        else {
+        } else {
             curr_pos++;
         }
     }
@@ -75,17 +70,19 @@ void Expression::parse_bracket(std::string& exp, int& curr_pos) {
     curr_pos++;
 }
 
-void Expression::parse_variable_or_function(std::string& exp, int& curr_pos) {
+void Expression::parse_variable_or_function
+(std::string& exp, int& curr_pos) {
     int start_pos = curr_pos;
-    while (curr_pos < exp.size() && (is_alpha(exp[curr_pos]) || is_number(exp[curr_pos]))) {
+    while (curr_pos < exp.size() && (is_alpha(exp[curr_pos])
+        || is_number(exp[curr_pos]))) {
         curr_pos++;
     }
     std::string token = exp.substr(start_pos, curr_pos - start_pos);
-    if (token == "sin" || token == "cos" || token == "tg" || token == "ctg") {
+    if (token == "sin" || token == "cos"
+        || token == "tg" || token == "ctg") {
         Function new_lexem(token);
         _expression.push_back(new_lexem);
-    }
-    else {
+    } else {
         Variable new_lexem(token);
         _expression.push_back(new_lexem);
     }
@@ -109,8 +106,7 @@ void Expression::parse_number(std::string& exp, int& curr_pos) {
         }
         FloatConst new_lexem(exp.substr(start_pos, curr_pos - start_pos));
         _expression.push_back(new_lexem);
-    }
-    else {
+    } else {
         IntConst new_lexem(exp.substr(start_pos, curr_pos - start_pos));
         _expression.push_back(new_lexem);
     }
@@ -120,36 +116,36 @@ void Expression::check() {
     int bracket_count = 0;
     bool last_was_operation = false;
     bool last_was_function = false;
+    bool first_lexem = true;
 
     for (auto it = _expression.begin(); it != _expression.end(); ++it) {
         if ((*it).type() == LexemType::BRACKET) {
             if ((*it).name() == "(") {
                 bracket_count++;
-            }
-            else if ((*it).name() == ")") {
+            } else if ((*it).name() == ")") {
                 bracket_count--;
             }
             last_was_operation = false;
             last_was_function = false;
-        }
-        else if ((*it).type() == LexemType::OPERATION) {
-            if (last_was_operation || last_was_function) {
-                throw std::runtime_error("Invalid expression: consecutive operations or function followed by operation");
+        } else if ((*it).type() == LexemType::OPERATION) {
+            if (first_lexem || last_was_operation || last_was_function) {
+                throw std::runtime_error
+                ("Invalid expression: consecutive operations or function followed by operation");
             }
             last_was_operation = true;
             last_was_function = false;
-        }
-        else if ((*it).type() == LexemType::FUNCTION) {
+        } else if ((*it).type() == LexemType::FUNCTION) {
             if (last_was_operation || last_was_function) {
-                throw std::runtime_error("Invalid expression: consecutive functions or operation followed by function");
+                throw std::runtime_error
+                ("Invalid expression: consecutive functions or operation followed by function");
             }
             last_was_operation = false;
             last_was_function = true;
-        }
-        else {
+        } else {
             last_was_operation = false;
             last_was_function = false;
         }
+        first_lexem = false;
     }
 
     if (bracket_count != 0) {
@@ -158,5 +154,9 @@ void Expression::check() {
 
     if (last_was_operation) {
         throw std::runtime_error("Invalid expression: ends with an operation");
+    }
+
+    if (_expression.isEmpty()) {
+        throw std::runtime_error("Invalid expression: empty expression");
     }
 }
