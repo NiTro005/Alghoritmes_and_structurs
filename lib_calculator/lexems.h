@@ -69,7 +69,8 @@ class Variable : public Lexem {
 class Operation : public Lexem {
     int priority;
  public:
-    explicit Operation(std::string name) : Lexem(name, OPERATION), priority(0) {}
+    explicit Operation(std::string name) :
+        Lexem(name, OPERATION), priority(0) {}
     void setPriority(int priority) { this->priority = priority; }
 };
 

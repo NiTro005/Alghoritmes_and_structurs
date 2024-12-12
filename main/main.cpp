@@ -5,7 +5,7 @@
 #include <ctime>
 #include <cstdint>
 #include <random>
-#define   STACKS
+#define   POLINOM
 #ifdef EASY_EXAMPLE
 #include <iomanip>
 #include "../lib_easy_example/easy_example.h"
@@ -285,4 +285,42 @@ int main() {
             << timespent[2] << " ms" << std::endl;
         return 0;
     }
-#endif  // DMassive
+#endif  // Stacks
+
+#ifdef POLINOM
+#include <iostream>
+#include <vector>
+#include "../lib_polinom/polinom.h"
+
+    int main() {
+        // Тестирование CMonom
+        CMonom m1(3.0);
+        m1._powers[0] = 2;
+        m1._powers[1] = 1;
+
+        CMonom m2(4.0);
+        m2._powers[0] = 2;
+        m2._powers[1] = 1;
+
+        CMonom m3 = m1 + m2;
+        std::cout << "m3: " << m3 << std::endl;
+
+        // Тестирование CPolynom
+        CPolynom p1;
+        p1.monoms.push_back(m1);
+        p1.monoms.push_back(CMonom(2.0));
+
+        CPolynom p2;
+        p2.monoms.push_back(m2);
+        p2.monoms.push_back(CMonom(1.0));
+
+        CPolynom p3 = p1 + p2;
+        std::cout << "p3: " << p3 << std::endl;
+
+        // Вычисление значения полинома в точке
+        std::vector<float> values = { 2, 3, 1 };
+        std::cout << "p3 evaluated: " << p3.evaluate(values) << std::endl;
+
+        return 0;
+    }
+#endif  // Polinom

@@ -26,6 +26,13 @@ class TList {
      iterator end() {
          return iterator(nullptr);
      }
+     const iterator begin() const {
+         return iterator(head);
+     }
+
+     const iterator end() const {
+         return iterator(nullptr);
+     }
 
      void push_front(const T& value) noexcept;
      void push_back(const T& value) noexcept;
@@ -76,6 +83,10 @@ class TList {
 
           const T& operator*() const {
               return pCur->value();
+          }
+
+          TNode<T>* getNode() const {
+              return pCur;
           }
      };
 };
