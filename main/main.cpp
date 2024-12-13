@@ -288,12 +288,11 @@ int main() {
 #endif  // Stacks
 
 #ifdef POLINOM
-#include <iostream>
 #include <vector>
+#include <string>
 #include "../lib_polinom/polinom.h"
 
     int main() {
-        // Тестирование CMonom
         CMonom m1(3.0);
         m1._powers[0] = 2;
         m1._powers[1] = 1;
@@ -305,7 +304,6 @@ int main() {
         CMonom m3 = m1 + m2;
         std::cout << "m3: " << m3 << std::endl;
 
-        // Тестирование CPolynom
         CPolynom p1;
         p1.monoms.push_back(m1);
         p1.monoms.push_back(CMonom(2.0));
@@ -315,12 +313,12 @@ int main() {
         p2.monoms.push_back(CMonom(1.0));
 
         CPolynom p3 = p1 + p2;
-        std::cout << "p3: " << p3 << std::endl;
 
-        // Вычисление значения полинома в точке
         std::vector<float> values = { 2, 3, 1 };
         std::cout << "p3 evaluated: " << p3.evaluate(values) << std::endl;
 
+        std::string polynomStr = "3x1^2x2^1 + 4x1^2x2^1 + 2";
+        CPolynom p4(polynomStr);
         return 0;
     }
 #endif  // Polinom

@@ -7,7 +7,7 @@
 #define MAX_COUNT 3
 
 class CMonom {
-public:
+ public:
     float _coef;
     int _powers[MAX_COUNT];
 
@@ -38,14 +38,16 @@ public:
 
     friend std::ostream& operator<<(std::ostream& os, const CMonom& monom);
     friend std::istream& operator>>(std::istream& is, CMonom& monom);
+
     bool operator<(const CMonom& other) const;
 };
 
 class CPolynom {
-public:
+ public:
     TList<CMonom> monoms;
 
     CPolynom();
+    CPolynom(const std::string& polynomStr);
     CPolynom(const CPolynom& other);
     CPolynom& operator=(const CPolynom& other);
 
@@ -61,9 +63,8 @@ public:
 
     float evaluate(const std::vector<float>& values) const;
 
-    friend std::ostream& operator<<(std::ostream& os, const CPolynom& polynom);
-    friend std::istream& operator>>(std::istream& is, CPolynom& polynom);
-
-private:
+ private:
     void addMonom(const CMonom& monom);
+    void parsePolynom(const std::string& polynomStr);
 };
+

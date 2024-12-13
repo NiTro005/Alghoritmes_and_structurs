@@ -6,23 +6,34 @@
 #include <algorithm>
 
 CMonom::CMonom(float coef) : _coef(coef) {
-    std::fill(std::begin(_powers), std::end(_powers), 0);
+    for (int i = 0; i < MAX_COUNT; ++i) {
+        _powers[i] = 0;
+    }
 }
 
 CMonom::CMonom(const CMonom& other) : _coef(other._coef) {
-    std::copy(std::begin(other._powers), std::end(other._powers), std::begin(_powers));
+    for (int i = 0; i < MAX_COUNT; ++i) {
+        _powers[i] = other._powers[i];
+    }
 }
 
 CMonom& CMonom::operator=(const CMonom& other) {
     if (this != &other) {
         _coef = other._coef;
-        std::copy(std::begin(other._powers), std::end(other._powers), std::begin(_powers));
+        for (int i = 0; i < MAX_COUNT; ++i) {
+            _powers[i] = other._powers[i];
+        }
     }
     return *this;
 }
 
 bool CMonom::operator==(const CMonom& other) const {
-    return std::equal(std::begin(_powers), std::end(_powers), std::begin(other._powers));
+    for (int i = 0; i < MAX_COUNT; ++i) {
+        if (_powers[i] != other._powers[i]) {
+            return false;
+        }
+    }
+    return true;
 }
 
 bool CMonom::operator!=(const CMonom& other) const {
@@ -30,17 +41,15 @@ bool CMonom::operator!=(const CMonom& other) const {
 }
 
 CMonom CMonom::operator+(const CMonom& other) const {
-    if (*this != other) throw std::invalid_argument("Monomials are not similar");
-    CMonom result(*this);
-    result._coef += other._coef;
-    return result;
+    if (*this != other) throw std::invalid_argument
+    ("Monomials are not similar");
+    return CMonom(_coef + other._coef);
 }
 
 CMonom CMonom::operator-(const CMonom& other) const {
-    if (*this != other) throw std::invalid_argument("Monomials are not similar");
-    CMonom result(*this);
-    result._coef -= other._coef;
-    return result;
+    if (*this != other) throw std::invalid_argument
+    ("Monomials are not similar");
+    return CMonom(_coef - other._coef);
 }
 
 CMonom CMonom::operator*(const CMonom& other) const {
@@ -52,7 +61,8 @@ CMonom CMonom::operator*(const CMonom& other) const {
 }
 
 CMonom CMonom::operator/(const CMonom& other) const {
-    if (other._coef == 0) throw std::invalid_argument("Division by zero");
+    if (other._coef == 0) throw std::invalid_argument
+    ("Division by zero");
     CMonom result(_coef / other._coef);
     for (int i = 0; i < MAX_COUNT; ++i) {
         result._powers[i] = _powers[i] - other._powers[i];
@@ -61,22 +71,17 @@ CMonom CMonom::operator/(const CMonom& other) const {
 }
 
 CMonom CMonom::operator*(float scalar) const {
-    CMonom result(*this);
-    result._coef *= scalar;
-    return result;
+    return CMonom(_coef * scalar);
 }
 
 CMonom CMonom::operator/(float scalar) const {
-    if (scalar == 0) throw std::invalid_argument("Division by zero");
-    CMonom result(*this);
-    result._coef /= scalar;
-    return result;
+    if (scalar == 0) throw std::invalid_argument
+    ("Division by zero");
+    return CMonom(_coef / scalar);
 }
 
 CMonom CMonom::operator-() const {
-    CMonom result(*this);
-    result._coef = -_coef;
-    return result;
+    return CMonom(-_coef);
 }
 
 CMonom& CMonom::operator+=(const CMonom& other) {
@@ -110,7 +115,8 @@ CMonom& CMonom::operator/=(float scalar) {
 }
 
 float CMonom::evaluate(const std::vector<float>& values) const {
-    if (values.size() != MAX_COUNT) throw std::invalid_argument("Invalid number of variables");
+    if (values.size() != MAX_COUNT) throw std::invalid_argument
+    ("Invalid number of variables");
     float result = _coef;
     for (int i = 0; i < MAX_COUNT; ++i) {
         result *= std::pow(values[i], _powers[i]);
@@ -147,8 +153,7 @@ bool CMonom::operator<(const CMonom& other) const {
     for (int i = 0; i < MAX_COUNT; ++i) {
         if (_powers[i] < other._powers[i]) {
             return true;
-        }
-        else if (_powers[i] > other._powers[i]) {
+        } else if (_powers[i] > other._powers[i]) {
             return false;
         }
     }
@@ -156,6 +161,10 @@ bool CMonom::operator<(const CMonom& other) const {
 }
 
 CPolynom::CPolynom() {}
+
+CPolynom::CPolynom(const std::string& polynomStr) {
+    parsePolynom(polynomStr);
+}
 
 CPolynom::CPolynom(const CPolynom& other) : monoms(other.monoms) {}
 
@@ -226,29 +235,6 @@ float CPolynom::evaluate(const std::vector<float>& values) const {
     return result;
 }
 
-std::ostream& operator<<(std::ostream& os, const CPolynom& polynom) {
-    for (auto it = polynom.monoms.begin(); it != polynom.monoms.end(); ++it) {
-        os << *it;
-        auto nextIt = it;
-        ++nextIt;
-        if (nextIt != polynom.monoms.end()) {
-            os << " + ";
-        }
-    }
-    return os;
-}
-
-std::istream& operator>>(std::istream& is, CPolynom& polynom) {
-    std::string input;
-    is >> input;
-    std::istringstream iss(input);
-    CMonom monom;
-    while (iss >> monom) {
-        polynom.addMonom(monom);
-    }
-    return is;
-}
-
 void CPolynom::addMonom(const CMonom& monom) {
     for (auto it = monoms.begin(); it != monoms.end(); ++it) {
         if (*it == monom) {
@@ -262,4 +248,22 @@ void CPolynom::addMonom(const CMonom& monom) {
         ++it;
     }
     monoms.insert(it.getNode(), monom);
+}
+
+void CPolynom::parsePolynom(const std::string& polynomStr) {
+    std::istringstream iss(polynomStr);
+    std::string token;
+    while (iss >> token) {
+        CMonom monom;
+        std::istringstream tokenStream(token);
+        tokenStream >> monom._coef;
+        char var;
+        int power;
+        while (tokenStream >> var >> power) {
+            if (var >= 'x' && var <= 'z') {
+                monom._powers[var - 'x'] = power;
+            }
+        }
+        addMonom(monom);
+    }
 }
