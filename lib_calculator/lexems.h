@@ -11,8 +11,8 @@ enum TypeBrackets {
 };
 
 class FloatConst : public Lexem {
-    float _value;
  public:
+    float _value;
     explicit FloatConst(std::string exp) : Lexem(exp, FLOAT_CONST) {
         int curr_pos = 0;
         float result = 0;
@@ -36,8 +36,9 @@ class FloatConst : public Lexem {
 };
 
 class IntConst : public Lexem {
-    int _value;
  public:
+    int _value;
+
     explicit IntConst(std::string name) : Lexem(name, INT_CONST) {
         _value = std::stoi(name);
     }
@@ -46,37 +47,39 @@ class IntConst : public Lexem {
 };
 
 class Bracket : public Lexem {
-    TypeBrackets type;
-    int priority;
  public:
-    explicit Bracket(std::string name) : Lexem(name, BRACKET), priority(0) {
+    TypeBrackets type;
+
+    explicit Bracket(std::string name) : Lexem(name, BRACKET) {
         if (name[0] == '(') {
             type = TypeBrackets::OPEN;
         } else {
             type = TypeBrackets::CLOSE;
         }
+        _priority = 5;
     }
-    void setPriority(int priority) { this->priority = priority; }
 };
 
 class Variable : public Lexem {
-    int value;
  public:
+     int value;
+
     explicit Variable(std::string name) : Lexem(name, VARIABLE), value(0) {}
     void setValue(int value) { this->value = value; }
 };
 
 class Operation : public Lexem {
-    int priority;
  public:
-    explicit Operation(std::string name) :
-        Lexem(name, OPERATION), priority(0) {}
-    void setPriority(int priority) { this->priority = priority; }
+    explicit Operation(std::string name) : Lexem(name, OPERATION) {
+        if (name == "+" ||name == "-") _priority = 4;
+        if (name == "*" || name == "/") _priority = 3;
+        if (name == "^") _priority = 2;
+    }
 };
 
 class Function : public Lexem {
-    int priority;
  public:
-    explicit Function(std::string name) : Lexem(name, FUNCTION), priority(0) {}
-    void setPriority(int priority) { this->priority = priority; }
+    explicit Function(std::string name) : Lexem(name, FUNCTION) {
+        _priority = 1;
+    }
 };

@@ -30,6 +30,10 @@ LexemType Lexem::type() const {
     return _type;
 }
 
+int Lexem::priority() const {
+    return _priority;
+}
+
 std::ostream& operator<<(std::ostream& out, const Lexem& lexem) {
     out << lexem._name;
     return out;
@@ -117,7 +121,44 @@ void Expression::parse_number
 }
 
 void Expression::build_polish_record() {
-
+    TStack<Lexem> operations;
+    for (auto& lex: _expression) {
+        if (lex.type() == (VARIABLE || INT_CONST || FLOAT_CONST)) {
+            polish_record.push_back(lex);
+        } else {
+            if (lex.type() == BRACKET) {
+                Bracket* bracket = dynamic_cast<Bracket*>(&lex);
+                if (bracket->type == OPEN) {
+                    operations.push(lex);
+                } else {
+                    while (operations.top().type() != BRACKET) {
+                        polish_record.push_back(operations.top());
+                        operations.pop();
+                    }
+                    operations.pop();
+                }
+            } else {
+                if (lex.priority() < operations.top().priority()) {
+                    operations.push(lex);
+                } else if (lex.priority() == operations.top().priority()) {
+                    polish_record.push_back(operations.top());
+                    operations.pop();
+                    operations.push(lex);
+                } else {
+                    while (operations.top().priority() >= lex.priority()
+                        || !operations.IsEmpty()) {
+                        polish_record.push_back(operations.top());
+                        operations.pop();
+                    }
+                    operations.push(lex);
+                }
+            }
+        }
+    }
+    while (!operations.IsEmpty()) {
+        polish_record.push_back(operations.top());
+        operations.pop();
+    }
 }
 
 void Expression::check() {

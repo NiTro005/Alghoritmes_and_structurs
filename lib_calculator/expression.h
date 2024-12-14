@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include "../lib_list/tlist.h"
+#include "../lib_stack/stack.h"
 
 enum LexemType {
     BRACKET,
@@ -20,7 +21,10 @@ class Lexem {
  protected:
     std::string _name;
     LexemType _type;
+    int _priority;
+
  public:
+    Lexem() = default;
     Lexem(std::string name, LexemType type);
 
     void set_name(std::string name);
@@ -28,20 +32,23 @@ class Lexem {
 
     std::string name() const;
     LexemType type() const;
+    int priority() const;
+    virtual ~Lexem() = default;
 
     friend std::ostream& operator<<(std::ostream& out, const Lexem& lexem);
 };
 
 class Expression {
     TList<Lexem> _expression;
-    TList<Lexem> polish_record;
 
  public:
+     TList<Lexem> polish_record;
     explicit Expression(std::string exp);
     //void set_vars_values();
     //void calculate();
     void print();
     void check();
+    void build_polish_record();
 
  private:
     void parse(std::string exp);
@@ -49,5 +56,4 @@ class Expression {
     void parse_variable_or_function(const std::string& exp, int& curr_pos);
     void parse_operation(const std::string& exp, int& curr_pos);
     void parse_number(const std::string& exp, int& curr_pos);
-    void build_polish_record();
 };
