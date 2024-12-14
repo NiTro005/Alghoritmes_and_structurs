@@ -116,6 +116,10 @@ void Expression::parse_number
     }
 }
 
+void Expression::build_polish_record() {
+
+}
+
 void Expression::check() {
     int bracket_count = 0;
     bool last_was_operation = false;

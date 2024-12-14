@@ -4,6 +4,8 @@
 #include <cmath>
 #include <sstream>
 #include <algorithm>
+#include <vector>
+#include <string>
 
 CMonom::CMonom(float coef) : _coef(coef) {
     for (int i = 0; i < MAX_COUNT; ++i) {

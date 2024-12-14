@@ -2,6 +2,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <string>
 #include "../lib_list/tlist.h"
 
 #define MAX_COUNT 3
@@ -11,7 +12,7 @@ class CMonom {
     float _coef;
     int _powers[MAX_COUNT];
 
-    CMonom(float coef = 1.0);
+    explicit CMonom(float coef = 1.0);
     CMonom(const CMonom& other);
     CMonom& operator=(const CMonom& other);
 
@@ -47,7 +48,7 @@ class CPolynom {
     TList<CMonom> monoms;
 
     CPolynom();
-    CPolynom(const std::string& polynomStr);
+    explicit CPolynom(const std::string& polynomStr);
     CPolynom(const CPolynom& other);
     CPolynom& operator=(const CPolynom& other);
 
