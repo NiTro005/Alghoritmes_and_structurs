@@ -5,7 +5,10 @@
 #include <ctime>
 #include <cstdint>
 #include <random>
-#define   POLINOM
+
+#define CALCULATOR
+#include "calc_main.cpp"
+
 #ifdef EASY_EXAMPLE
 #include <iomanip>
 #include "../lib_easy_example/easy_example.h"
@@ -322,3 +325,36 @@ int main() {
         return 0;
     }
 #endif  // Polinom
+
+#ifdef CALCULATOR
+#include "../lib_calculator/expression.h"
+    int main() {
+        try {
+            std::string expression;
+            std::cout << "Enter the expression: ";
+            std::getline(std::cin, expression);
+
+            Expression exp(expression);
+            std::string var;
+            int value;
+            while (true) {
+                std::cout << "Enter variable name (or 'done' to finish): ";
+                std::cin >> var;
+                if (var == "done") {
+                    break;
+                }
+                std::cout << "Enter value for " << var << ": ";
+                std::cin >> value;
+                exp.set_vars_values(var, value);
+            }
+
+            double result = exp.calculate();
+            std::cout << "Result: " << result << std::endl;
+        }
+        catch (const std::runtime_error& e) {
+            std::cout << "Error: " << e.what() << std::endl;
+        }
+
+        return 0;
+    }
+#endif // CALCULATOR
