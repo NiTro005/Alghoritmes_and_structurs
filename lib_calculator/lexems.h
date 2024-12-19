@@ -62,10 +62,10 @@ class Bracket : public Lexem {
 
 class Variable : public Lexem {
  public:
-     int value;
+     int _value;
 
-    explicit Variable(std::string name) : Lexem(name, VARIABLE), value(0) {}
-    void setValue(int value) { this->value = value; }
+    explicit Variable(std::string name) : Lexem(name, VARIABLE), _value(0) {}
+    void setValue(int value) { this->_value = value; }
 };
 
 class Operation : public Lexem {

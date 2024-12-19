@@ -42,8 +42,8 @@ class Expression {
  public:
      TList<Lexem*> polish_record;
     explicit Expression(std::string exp);
-    //void set_vars_values();
-    //void calculate();
+    void set_vars_values(std::string var, int value);
+    double calculate();
     void print();
     void check();
     void build_polish_record();
