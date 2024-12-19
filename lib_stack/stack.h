@@ -45,7 +45,7 @@ inline bool TStack<T>:: IsFull() const noexcept {
 template<typename T>
 void TStack<T>::push(T value) {
     if (!IsFull()) {
-         _data.push_front(value);
+         _data.push_back(value);
     } else {
         throw std::out_of_range("Error:Overlow stack");
     }
@@ -54,7 +54,7 @@ void TStack<T>::push(T value) {
 template<typename T>
 inline void TStack<T>::pop() {
     if (!IsEmpty()) {
-        _data.pop_front();
+        _data.pop_back();
     } else {
         throw std::out_of_range("Stack is empty");
     }
@@ -65,5 +65,5 @@ inline T TStack<T>::top() const {
     if (IsEmpty()) {
         throw std::out_of_range("Stack is empty");
     }
-    return _data.data()[0];
+    return _data[_data.size() - 1];
 }
