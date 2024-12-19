@@ -80,8 +80,7 @@ double Expression::calculate() {
             } else if (lex->name() == "^") {
                 values.push(pow(a, b));
             }
-        }
-        else if (lex->type() == FUNCTION) {
+        } else if (lex->type() == FUNCTION) {
             double a = values.top(); values.pop();
             if (lex->name() == "sin") {
                 values.push(sin(a));
@@ -129,7 +128,8 @@ void Expression::parse_bracket(const std::string& exp, int& curr_pos) {
     curr_pos++;
 }
 
-void Expression::parse_variable_or_function(const std::string& exp, int& curr_pos) {
+void Expression::parse_variable_or_function
+(const std::string& exp, int& curr_pos) {
     int start_pos = curr_pos;
     while (curr_pos < exp.size() && (is_alpha(exp[curr_pos])
         || is_number(exp[curr_pos]))) {
@@ -247,12 +247,12 @@ void Expression::check() {
         } else if ((*it)->type() == LexemType::FUNCTION) {
             if (last_was_function) {
                 throw std::runtime_error
-                ("Invalid expression: function must be followed by an opening bracket");
+                ("Invalid expression: function must" \
+                    "be followed by an opening bracket");
             }
             last_was_operation = false;
             last_was_function = true;
-        }
-        else {
+        } else {
             last_was_operation = false;
             last_was_function = false;
         }

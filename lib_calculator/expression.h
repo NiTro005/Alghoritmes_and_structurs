@@ -50,8 +50,8 @@ class Expression {
 
  private:
     void parse(std::string exp);
-    void parse_bracket(const std::string& exp, int& curr_pos);
-    void parse_variable_or_function(const std::string& exp, int& curr_pos);
-    void parse_operation(const std::string& exp, int& curr_pos);
-    void parse_number(const std::string& exp, int& curr_pos);
+    void parse_bracket(const std::string& exp, int& curr_pos);  // NOLINT(runtime/references)
+    void parse_variable_or_function(const std::string& exp, int& curr_pos);  // NOLINT(runtime/references)
+    void parse_operation(const std::string& exp, int& curr_pos);  // NOLINT(runtime/references)
+    void parse_number(const std::string& exp, int& curr_pos);  // NOLINT(runtime/references)
 };
