@@ -122,14 +122,15 @@ void Expression::parse(std::string exp) {
     }
 }
 
-void Expression::parse_bracket(const std::string& exp, int& curr_pos) {
+void Expression::parse_bracket
+(const std::string& exp, int& curr_pos) {  // NOLINT(runtime/references)
     Bracket* new_lexem = new Bracket(exp.substr(curr_pos, 1));
     _expression.push_back(new_lexem);
     curr_pos++;
 }
 
 void Expression::parse_variable_or_function
-(const std::string& exp, int& curr_pos) {
+(const std::string& exp, int& curr_pos) {  // NOLINT(runtime/references)
     int start_pos = curr_pos;
     while (curr_pos < exp.size() && (is_alpha(exp[curr_pos])
         || is_number(exp[curr_pos]))) {
@@ -146,13 +147,15 @@ void Expression::parse_variable_or_function
     }
 }
 
-void Expression::parse_operation(const std::string& exp, int& curr_pos) {
+void Expression::parse_operation
+(const std::string& exp, int& curr_pos) {  // NOLINT(runtime/references)
     Operation* new_lexem = new Operation(exp.substr(curr_pos, 1));
     _expression.push_back(new_lexem);
     curr_pos++;
 }
 
-void Expression::parse_number(const std::string& exp, int& curr_pos) {
+void Expression::parse_number
+(const std::string& exp, int& curr_pos) {  // NOLINT(runtime/references)
     int start_pos = curr_pos;
     while (curr_pos < exp.size() && is_number(exp[curr_pos])) {
         curr_pos++;
