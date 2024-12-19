@@ -48,13 +48,13 @@ class IntConst : public Lexem {
 
 class Bracket : public Lexem {
  public:
-    TypeBrackets type;
+    TypeBrackets typebracket;
 
     explicit Bracket(std::string name) : Lexem(name, BRACKET) {
         if (name[0] == '(') {
-            type = TypeBrackets::OPEN;
+            typebracket = TypeBrackets::OPEN;
         } else {
-            type = TypeBrackets::CLOSE;
+            typebracket = TypeBrackets::CLOSE;
         }
         _priority = 5;
     }

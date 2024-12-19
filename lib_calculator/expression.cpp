@@ -56,28 +56,31 @@ void Expression::parse(std::string exp) {
     while (curr_pos < exp.size()) {
         if (exp[curr_pos] == '(' || exp[curr_pos] == ')') {
             parse_bracket(exp, curr_pos);
-        } else if (is_alpha(exp[curr_pos])) {
+        }
+        else if (is_alpha(exp[curr_pos])) {
             parse_variable_or_function(exp, curr_pos);
-        } else if (exp[curr_pos] == '+' || exp[curr_pos] == '-'
+        }
+        else if (exp[curr_pos] == '+' || exp[curr_pos] == '-'
             || exp[curr_pos] == '*' || exp[curr_pos] == '/'
             || exp[curr_pos] == '^') {
             parse_operation(exp, curr_pos);
-        } else if (is_number(exp[curr_pos])) {
+        }
+        else if (is_number(exp[curr_pos])) {
             parse_number(exp, curr_pos);
-        } else {
+        }
+        else {
             curr_pos++;
         }
     }
 }
 
 void Expression::parse_bracket(const std::string& exp, int& curr_pos) {
-    Bracket new_lexem(exp.substr(curr_pos, 1));
+    Bracket* new_lexem = new Bracket(exp.substr(curr_pos, 1));
     _expression.push_back(new_lexem);
     curr_pos++;
 }
 
-void Expression::parse_variable_or_function
-(const std::string& exp, int& curr_pos) {
+void Expression::parse_variable_or_function(const std::string& exp, int& curr_pos) {
     int start_pos = curr_pos;
     while (curr_pos < exp.size() && (is_alpha(exp[curr_pos])
         || is_number(exp[curr_pos]))) {
@@ -86,23 +89,22 @@ void Expression::parse_variable_or_function
     std::string token = exp.substr(start_pos, curr_pos - start_pos);
     if (token == "sin" || token == "cos"
         || token == "tg" || token == "ctg") {
-        Function new_lexem(token);
+        Function* new_lexem = new Function(token);
         _expression.push_back(new_lexem);
-    } else {
-        Variable new_lexem(token);
+    }
+    else {
+        Variable* new_lexem = new Variable(token);
         _expression.push_back(new_lexem);
     }
 }
 
-void Expression::parse_operation
-(const std::string& exp, int& curr_pos) {
-    Operation new_lexem(exp.substr(curr_pos, 1));
+void Expression::parse_operation(const std::string& exp, int& curr_pos) {
+    Operation* new_lexem = new Operation(exp.substr(curr_pos, 1));
     _expression.push_back(new_lexem);
     curr_pos++;
 }
 
-void Expression::parse_number
-(const std::string& exp, int& curr_pos) {
+void Expression::parse_number(const std::string& exp, int& curr_pos) {
     int start_pos = curr_pos;
     while (curr_pos < exp.size() && is_number(exp[curr_pos])) {
         curr_pos++;
@@ -112,41 +114,50 @@ void Expression::parse_number
         while (curr_pos < exp.size() && is_number(exp[curr_pos])) {
             curr_pos++;
         }
-        FloatConst new_lexem(exp.substr(start_pos, curr_pos - start_pos));
+        FloatConst* new_lexem = new FloatConst(exp.substr(start_pos, curr_pos - start_pos));
         _expression.push_back(new_lexem);
-    } else {
-        IntConst new_lexem(exp.substr(start_pos, curr_pos - start_pos));
+    }
+    else {
+        IntConst* new_lexem = new IntConst(exp.substr(start_pos, curr_pos - start_pos));
         _expression.push_back(new_lexem);
     }
 }
 
 void Expression::build_polish_record() {
-    TStack<Lexem> operations;
-    for (auto& lex: _expression) {
-        if (lex.type() == (VARIABLE || INT_CONST || FLOAT_CONST)) {
+    TStack<Lexem*> operations;
+    for (auto lex : _expression) {
+        if (lex->type() == VARIABLE || lex->type() == INT_CONST || lex->type() == FLOAT_CONST) {
             polish_record.push_back(lex);
-        } else {
-            if (lex.type() == BRACKET) {
-                Bracket* bracket = dynamic_cast<Bracket*>(&lex);
-                if (bracket->type == OPEN) {
+        }
+        else {
+            if (lex->type() == BRACKET) {
+                Bracket* bracket = static_cast<Bracket*>(lex);
+                if (bracket->typebracket == OPEN) {
                     operations.push(lex);
-                } else {
-                    while (operations.top().type() != BRACKET) {
+                }
+                else {
+                    while (operations.top()->type() != BRACKET) {
                         polish_record.push_back(operations.top());
                         operations.pop();
                     }
                     operations.pop();
+                    if (operations.top()->type() == FUNCTION) {
+                        polish_record.push_back(operations.top());
+                        operations.pop();
+                    }
                 }
-            } else {
-                if (lex.priority() < operations.top().priority()) {
+            }
+            else {
+                if (operations.IsEmpty() || lex->priority() < operations.top()->priority()) {
                     operations.push(lex);
-                } else if (lex.priority() == operations.top().priority()) {
+                }
+                else if (operations.IsEmpty() || lex->priority() == operations.top()->priority()) {
                     polish_record.push_back(operations.top());
                     operations.pop();
                     operations.push(lex);
-                } else {
-                    while (operations.top().priority() >= lex.priority()
-                        || !operations.IsEmpty()) {
+                }
+                else {
+                    while (!operations.IsEmpty() && operations.top()->priority() <= lex->priority()) {
                         polish_record.push_back(operations.top());
                         operations.pop();
                     }
@@ -168,31 +179,33 @@ void Expression::check() {
     bool first_lexem = true;
 
     for (auto it = _expression.begin(); it != _expression.end(); ++it) {
-        if ((*it).type() == LexemType::BRACKET) {
-            if ((*it).name() == "(") {
+        if ((*it)->type() == LexemType::BRACKET) {
+            if ((*it)->name() == "(") {
                 bracket_count++;
-            } else if ((*it).name() == ")") {
+                if (last_was_function) {
+                    last_was_function = false;
+                }
+            }
+            else if ((*it)->name() == ")") {
                 bracket_count--;
             }
             last_was_operation = false;
-            last_was_function = false;
-        } else if ((*it).type() == LexemType::OPERATION) {
-            if (first_lexem || last_was_operation || last_was_function) {
-                throw std::runtime_error
-                ("Invalid expression: " \
-                 "consecutive operations or function followed by operation");
+        }
+        else if ((*it)->type() == LexemType::OPERATION) {
+            if (first_lexem || last_was_operation) {
+                throw std::runtime_error("Invalid expression: consecutive operations");
             }
             last_was_operation = true;
             last_was_function = false;
-        } else if ((*it).type() == LexemType::FUNCTION) {
-            if (last_was_operation || last_was_function) {
-                throw std::runtime_error
-                ("Invalid expression: " \
-                 "consecutive functions or operation followed by function");
+        }
+        else if ((*it)->type() == LexemType::FUNCTION) {
+            if (last_was_function) {
+                throw std::runtime_error("Invalid expression: function must be followed by an opening bracket");
             }
             last_was_operation = false;
             last_was_function = true;
-        } else {
+        }
+        else {
             last_was_operation = false;
             last_was_function = false;
         }
@@ -205,6 +218,10 @@ void Expression::check() {
 
     if (last_was_operation) {
         throw std::runtime_error("Invalid expression: ends with an operation");
+    }
+
+    if (last_was_function) {
+        throw std::runtime_error("Invalid expression: function must be followed by an opening bracket");
     }
 
     if (_expression.isEmpty()) {

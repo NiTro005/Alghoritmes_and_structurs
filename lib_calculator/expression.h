@@ -33,16 +33,14 @@ class Lexem {
     std::string name() const;
     LexemType type() const;
     int priority() const;
-    virtual ~Lexem() = default;
-
     friend std::ostream& operator<<(std::ostream& out, const Lexem& lexem);
 };
 
 class Expression {
-    TList<Lexem> _expression;
+    TList<Lexem*> _expression;
 
  public:
-     TList<Lexem> polish_record;
+     TList<Lexem*> polish_record;
     explicit Expression(std::string exp);
     //void set_vars_values();
     //void calculate();
