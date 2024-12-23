@@ -7,7 +7,6 @@
 #include <random>
 
 #define CALCULATOR
-#include "calc_main.cpp"
 
 #ifdef EASY_EXAMPLE
 #include <iomanip>
