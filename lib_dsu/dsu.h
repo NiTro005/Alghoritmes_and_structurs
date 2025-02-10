@@ -1,11 +1,12 @@
 // Copyright 2024 Kita Trofimov
 #pragma once
 #include <iostream>
+#include "../lib_dmassive/archive.h"
 
 class DSU {
     int _size;
-    int* _parent;
-    int* _rank;
+    TDMassive<int> _parent;
+    TDMassive<int> _rank;
 
 public:
     DSU(int size = 0);
