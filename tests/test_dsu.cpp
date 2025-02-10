@@ -32,3 +32,47 @@ TEST(TestDSU, testFind) {
 
     ASSERT_ANY_THROW(dsu.find(-1));
 }
+
+
+TEST(DSUTest, UnionTest_RankFirstGreater) {
+    DSU dsu(5);
+    dsu.Union(1, 2);
+    dsu.Union(3, 4);
+    dsu.Union(1, 3);
+
+    EXPECT_EQ(dsu.find(1), dsu.find(2));
+    EXPECT_EQ(dsu.find(1), dsu.find(3));
+    EXPECT_EQ(dsu.find(1), dsu.find(4));
+}
+
+TEST(DSUTest, UnionTest_RankSecondGreater) {
+    DSU dsu(5);
+    dsu.Union(1, 2);
+    dsu.Union(3, 4);
+    dsu.Union(3, 5);
+    dsu.Union(1, 3);
+
+    EXPECT_EQ(dsu.find(1), dsu.find(2));
+    EXPECT_EQ(dsu.find(1), dsu.find(3));
+    EXPECT_EQ(dsu.find(1), dsu.find(4));
+    EXPECT_EQ(dsu.find(1), dsu.find(5));
+}
+
+TEST(DSUTest, UnionTest_RankEqual) {
+    DSU dsu(5);
+    dsu.Union(1, 2);
+    dsu.Union(3, 4);
+    dsu.Union(1, 3);
+
+    EXPECT_EQ(dsu.find(1), dsu.find(2));
+    EXPECT_EQ(dsu.find(1), dsu.find(3));
+    EXPECT_EQ(dsu.find(1), dsu.find(4));
+}
+
+TEST(DSUTest, UnionTest_SameSet) {
+    DSU dsu(5);
+    dsu.Union(1, 2);
+    dsu.Union(1, 2);
+
+    EXPECT_EQ(dsu.find(1), dsu.find(2));
+}
