@@ -16,6 +16,8 @@ add_subdirectory(lib_pair)	      # подключаем дополнительн
 
 add_subdirectory(lib_dmassive)
 
+add_subdirectory(lib_dsu)
+
 add_subdirectory(lib_string)
 
 add_subdirectory(lib_list)
