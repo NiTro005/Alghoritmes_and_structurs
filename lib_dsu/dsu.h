@@ -8,8 +8,8 @@ class DSU {
     TDMassive<int> _parent;
     TDMassive<int> _rank;
 
-public:
-    DSU(int size = 0);
+ public:
+    explicit DSU(int size = 0);
     ~DSU();
     int parent(int elem);
     void make_set(int elem);

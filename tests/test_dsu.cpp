@@ -1,7 +1,6 @@
 // Copyright 2024 Kita Trofimov
 #include <gtest.h>
 #include "../lib_dsu/dsu.h"
-
 TEST(DSUTest, UnionTest) {
     DSU dsu(5);
     dsu.Union(1, 2);

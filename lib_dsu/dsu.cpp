@@ -24,7 +24,7 @@ int DSU::find(int elem) {
         throw std::logic_error("Incorrect element\n");
     }
     elem--;
-    if (_parent[elem] != elem ) {
+    if (_parent[elem] != elem) {
         _parent[elem] = find(_parent[elem] + 1);
     }
     return _parent[elem];
