@@ -4,12 +4,16 @@
 DSU::DSU(int size): _size(size), _parent(size), _rank(size, 0) {}
 DSU::~DSU() {}
 
+int DSU::parent(int elem) {
+    return _parent[elem - 1] + 1;
+}
+
 void DSU::make_set(int elem) {
-    if (elem > _size || elem < 0) {
-        throw std::logic_error("incorrect element\n";
+    if (elem > _size || elem <= 0) {
+        throw std::logic_error("incorrect element\n");
     }
     elem--;
-    _parent.insert(elem, elem);
+    _parent[elem] = elem;
 }
 
 int DSU::find(int elem) {
