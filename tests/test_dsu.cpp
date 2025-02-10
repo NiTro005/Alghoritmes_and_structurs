@@ -20,10 +20,9 @@ TEST(DSUTest, UnionTest) {
 }
 
 
-TEST(TestDSU, testFind) {
+TEST(DSUTest, testFind) {
     DSU dsu(7);
     EXPECT_EQ(dsu.find(3), 2);
-    
     dsu.Union(2, 1);
     dsu.Union(3, 2);
     EXPECT_EQ(dsu.find(1), 1);
