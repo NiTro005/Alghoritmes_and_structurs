@@ -27,7 +27,8 @@ TEST(TestDSU, testFind) {
     
     dsu.Union(2, 1);
     dsu.Union(3, 2);
-    EXPECT_EQ(dsu.find(1), 2);
+    EXPECT_EQ(dsu.find(1), 1);
+    EXPECT_EQ(dsu.find(3), 1);
 
     ASSERT_ANY_THROW(dsu.find(-1));
 }

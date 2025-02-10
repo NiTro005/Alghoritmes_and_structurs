@@ -33,7 +33,16 @@ int DSU::find(int elem) {
 void DSU::Union(int first, int second) {
     int first_parent = find(first);
     int second_parent = find(second);
-    _parent[second_parent] = first_parent;
+    if (first_parent != second_parent) {
+        if (_rank[first_parent] < _rank[second_parent]) {
+            _parent[first_parent] = second_parent;
+        } else if (_rank[first_parent] > _rank[second_parent]) {
+            _parent[second_parent] = first_parent;
+        } else {
+            _parent[second_parent] = first_parent;
+            _rank[first_parent]++;
+        }
+    }
 }
 
 void DSU::clear() {
