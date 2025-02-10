@@ -2,12 +2,32 @@
 #include <gtest.h>
 #include "../lib_dsu/dsu.h"
 
-TEST(TestDSU, testMake_Set) {
+TEST(DSUTest, UnionTest) {
+    DSU dsu(5);
+    dsu.Union(1, 2);
+    EXPECT_EQ(dsu.parent(1), dsu.parent(2));
+
+    dsu.Union(2, 3);
+    EXPECT_EQ(dsu.parent(1), dsu.parent(3));
+
+    dsu.Union(4, 5);
+    EXPECT_EQ(dsu.parent(4), dsu.parent(5));
+
+    dsu.Union(1, 4);
+    EXPECT_EQ(dsu.find(1), dsu.find(4));
+    EXPECT_EQ(dsu.find(2), dsu.find(5));
+
+    ASSERT_ANY_THROW(dsu.Union(-1, 2));
+}
+
+
+TEST(TestDSU, testFind) {
     DSU dsu(7);
-    dsu.make_set(1);
-    dsu.make_set(4);
-    EXPECT_EQ(dsu.parent(1), 1);
-    EXPECT_EQ(dsu.parent(4), 4);
-    ASSERT_ANY_THROW(dsu.make_set(-1));
-    ASSERT_ANY_THROW(dsu.make_set(0));
+    EXPECT_EQ(dsu.find(3), 2);
+    
+    dsu.Union(2, 1);
+    dsu.Union(3, 2);
+    EXPECT_EQ(dsu.find(1), 2);
+
+    ASSERT_ANY_THROW(dsu.find(-1));
 }
