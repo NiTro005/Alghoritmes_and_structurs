@@ -8,6 +8,5 @@ class ITable {
     virtual void insert(Tkey key, Tval val);
     virtual void erase(TKey key);
     virtual Tval find(Tkey key);
-    virtual operator[](Tkey key);
-    virtual operator=(const ITable<TKey, Tval>& > tab);
+    virtual Tval& operator[](Tkey key);
 };
