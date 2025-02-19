@@ -6,26 +6,24 @@
 #include "../lib_itable/itable.h"
 
 template <class Tkey, class Tval>
-class UnsortedTable : ITable<Tkey, Tval> {
+class UnsortedTable : public ITable<Tkey, Tval> {
     TList <TPair<Tkey, Tval>> _data;
     size_t _size = 0;
 
  public:
-     UnsortedTable();
+     UnsortedTable() = default;
      UnsortedTable(const TList<TPair<Tkey, Tval>>& data);
      UnsortedTable(const UnsortedTable<Tkey, Tval>& tab);
+     ~UnsortedTable() = default;
      
-     Tkey insert(Tval val) override noexcept;
+     Tkey insert(Tval val) override;
      void insert(Tkey key, Tval val) override;
-     /*void erase(Tkey key, Tval val) override;*/
-     Tval find(Tkey key) override const noexcept;
+     void erase(Tkey key) override;
+     Tval find(Tkey key) override;
 
-     Tval& operator[](Tkey key) override const;
-     /*UnsortedTable& operator=(const UnsortedTable<Tkey, Tval>& tab) noexcept;*/
+     Tval& operator[](Tkey key) override;
+     UnsortedTable& operator=(const UnsortedTable<Tkey, Tval>& tab) noexcept;
 };
-
-template<class Tkey, class Tval>
-inline UnsortedTable<Tkey, Tval>::UnsortedTable() {}
 
 template<class Tkey, class Tval>
 inline UnsortedTable<Tkey, Tval>::UnsortedTable
@@ -38,13 +36,23 @@ inline UnsortedTable<Tkey, Tval>::UnsortedTable
 _size(tab._size) {}
 
 template<class Tkey, class Tval>
+Tkey UnsortedTable<Tkey, Tval>::insert(Tval val) {
+    return Tkey();
+}
+
+template<class Tkey, class Tval>
 void UnsortedTable<Tkey, Tval>::insert(Tkey key, Tval val) {
     if (find(key) == NULL) {
-        std::logic_error("No value");
+        throw std::logic_error("No value");
     }
-    size++;
+    _size++;
     TPair<Tkey, Tval> new_row(key, val);
     _data.push_back(new_row);
+}
+
+template<class Tkey, class Tval>
+void UnsortedTable<Tkey, Tval>::erase(Tkey key) {
+
 }
 
 template <class Tkey, class Tval>
@@ -54,5 +62,11 @@ Tval UnsortedTable<Tkey, Tval>::find(Tkey key) {
             return pair.second();
         }
     }
-    return null;
+    throw std::out_of_range("Key not found");
+}
+
+template<class Tkey, class Tval>
+Tval& UnsortedTable<Tkey, Tval>::operator[](Tkey key) {
+    Tval val = find(key);
+    return val;
 }
