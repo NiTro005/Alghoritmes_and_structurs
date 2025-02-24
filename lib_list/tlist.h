@@ -216,14 +216,6 @@ void TList<T>::erase(TNode<T>* node) {
     if (node == nullptr) {
         throw std::invalid_argument("Node pointer is nullptr");
     }
-    if (node == head) {
-        pop_front();
-        return;
-    }
-    if (node == last) {
-        pop_back();
-        return;
-    }
     TNode<T>* link = node->next();
     node->next(node->next()->next());
     delete link;

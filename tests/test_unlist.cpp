@@ -2,17 +2,67 @@
 #include <gtest.h>
 #include "../lib_unsort_table/untable.h"
 
-TList<TPair<int, int>> setList(int size) {
-    TList<TPair<int, int>> list;
-    for (int i = 0; i < size; i++) {
-        TPair<int, int> pair(i, i * 10);
-        list.push_back(pair);
-    }
-    return list;
+TEST(UnsortedTableTest, FindMethod) {
+    UnsortedTable<int, std::string> table;
+    table.insert(1, "one");
+    table.insert(2, "two");
+    table.insert(3, "three");
+
+    EXPECT_EQ(table.find(1), "one");
+    EXPECT_EQ(table.find(2), "two");
+    EXPECT_EQ(table.find(3), "three");
+
+    ASSERT_ANY_THROW(table.find(4));
 }
 
-TEST(UnsortedTable, test_find_on_coorect_value) {
-    TList<TPair<int, int>> pair = setList(10);
-    UnsortedTable<int, int> un(pair);
-    EXPECT_EQ(un.find(2), 20);
+TEST(UnsortedTableTest, Insert_with_key) {
+    UnsortedTable<int, std::string> table;
+    table.insert(1, "one");
+    table.insert(2, "two");
+    table.insert(3, "three");
+
+    EXPECT_EQ(table.find(3), "three");
+    ASSERT_ANY_THROW(table.insert(1, "r"));
+    EXPECT_EQ(table.find(1), "one");
+}
+
+TEST(UnsortedTableTest, OperatorBrackets) {
+    UnsortedTable<int, std::string> table;
+    table.insert(1, "one");
+    table.insert(2, "two");
+    table.insert(3, "three");
+
+    EXPECT_EQ(table[1], "one");
+    EXPECT_EQ(table[3], "three");
+}
+
+TEST(UnsortedTableTest, Insert_without_key) {
+    UnsortedTable<int, std::string> table;
+    int key_one = table.insert("one");
+    int key_two = table.insert("two");
+    int key_three = table.insert("three");
+
+    EXPECT_EQ(table.find(key_three), "three");
+    EXPECT_EQ(table.find(key_one), "one");
+    EXPECT_EQ(table.find(key_two), "two");
+}
+
+TEST(UnsortedTableTest, EraseMethod) {
+    UnsortedTable<int, std::string> table;
+    table.insert(1, "one");
+    table.insert(2, "two");
+    table.insert(3, "three");
+
+    EXPECT_EQ(table.find(1), "one");
+    EXPECT_EQ(table.find(2), "two");
+    EXPECT_EQ(table.find(3), "three");
+
+    table.erase(2);
+
+    EXPECT_THROW(table.find(2), std::out_of_range);
+
+    EXPECT_EQ(table.find(1), "one");
+    EXPECT_EQ(table.find(3), "three");
+
+    EXPECT_THROW(table.erase(4), std::out_of_range);
 }

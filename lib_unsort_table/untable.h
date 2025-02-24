@@ -1,6 +1,8 @@
 // Copyright 2024 Kita Trofimov
 #pragma once
 #include <iostream>
+#include <unordered_set>
+#include <random>
 #include "../lib_list/tlist.h"
 #include "../lib_pair/pair.h"
 #include "../lib_itable/itable.h"
@@ -21,8 +23,12 @@ class UnsortedTable : public ITable<Tkey, Tval> {
      void erase(Tkey key) override;
      Tval find(Tkey key) override;
 
-     Tval& operator[](Tkey key) override;
+     Tval operator[](Tkey key) override;
      UnsortedTable& operator=(const UnsortedTable<Tkey, Tval>& tab) noexcept;
+
+ private:
+     Tkey generate_key();
+
 };
 
 template<class Tkey, class Tval>
@@ -37,22 +43,39 @@ _size(tab._size) {}
 
 template<class Tkey, class Tval>
 Tkey UnsortedTable<Tkey, Tval>::insert(Tval val) {
-    return Tkey();
+    _size++;
+    Tkey new_key = generate_key();
+    TPair<Tkey, Tval> new_row(new_key, val);
+    _data.push_back(new_row);
+    return new_key;
 }
 
 template<class Tkey, class Tval>
 void UnsortedTable<Tkey, Tval>::insert(Tkey key, Tval val) {
-    if (find(key) == NULL) {
-        throw std::logic_error("No value");
+    try {
+        find(key);
+        throw std::logic_error("Key already exists");
     }
-    _size++;
-    TPair<Tkey, Tval> new_row(key, val);
-    _data.push_back(new_row);
+    catch (const std::out_of_range&) {
+        _size++;
+        TPair<Tkey, Tval> new_row(key, val);
+        _data.push_back(new_row);
+    }
 }
 
 template<class Tkey, class Tval>
 void UnsortedTable<Tkey, Tval>::erase(Tkey key) {
-
+    auto prev = _data.begin();
+    for (auto it = _data.begin();
+        it != _data.end(); ++it) {
+        if ((*it).first() == key) {
+            _data.erase(prev.getNode());
+            _size--;
+            return;
+        }
+        prev = it;
+    }
+    throw std::out_of_range("Key not found");
 }
 
 template <class Tkey, class Tval>
@@ -66,7 +89,24 @@ Tval UnsortedTable<Tkey, Tval>::find(Tkey key) {
 }
 
 template<class Tkey, class Tval>
-Tval& UnsortedTable<Tkey, Tval>::operator[](Tkey key) {
+Tval UnsortedTable<Tkey, Tval>::operator[](Tkey key) {
     Tval val = find(key);
     return val;
+}
+
+template<class Tkey, class Tval>
+UnsortedTable<Tkey, Tval>& UnsortedTable<Tkey, Tval>::operator=(const UnsortedTable<Tkey, Tval>& tab) noexcept {
+    if (this != &tab) {
+        _data = tab._data;
+        _size = tab._size;
+    }
+    return *this;
+}
+
+template<class Tkey, class Tval>
+Tkey UnsortedTable<Tkey, Tval>::generate_key() {
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    static std::uniform_int_distribution<> dis(0, std::numeric_limits<Tkey>::max());
+    return dis(gen);
 }

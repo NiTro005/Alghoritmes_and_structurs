@@ -4,9 +4,9 @@
 template<class Tkey, class Tval>
 class ITable {
  public:
-    virtual Tkey insert(Tval val);
-    virtual void insert(Tkey key, Tval val);
-    virtual void erase(Tkey key);
-    virtual Tval find(Tkey key);
-    virtual Tval& operator[](Tkey key);
+    virtual Tkey insert(Tval val) = 0;
+    virtual void insert(Tkey key, Tval val) = 0;
+    virtual void erase(Tkey key) = 0;
+    virtual Tval find(Tkey key) = 0;
+    virtual Tval operator[](Tkey key) = 0;
 };
