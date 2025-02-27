@@ -9,6 +9,15 @@
 #include "../lib_pair/pair.h"
 #include "../lib_itable/itable.h"
 
+template<class Tkey>
+Tkey generate_key() {
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    static std::uniform_int_distribution<> dis
+    (0, std::numeric_limits<Tkey>::max());
+    return dis(gen);
+}
+
 template <class Tkey, class Tval>
 class UnsortedTable : public ITable<Tkey, Tval> {
     TList <TPair<Tkey, Tval>> _data;
@@ -25,9 +34,6 @@ class UnsortedTable : public ITable<Tkey, Tval> {
      Tval find(Tkey key) override;
      Tval operator[](Tkey key) override;
      UnsortedTable& operator=(const UnsortedTable<Tkey, Tval>& tab) noexcept;
-
- private:
-     Tkey generate_key();
 };
 
 template<class Tkey, class Tval>
@@ -43,7 +49,7 @@ _size(tab._size) {}
 template<class Tkey, class Tval>
 Tkey UnsortedTable<Tkey, Tval>::insert(Tval val) {
     _size++;
-    Tkey new_key = generate_key();
+    Tkey new_key = generate_key<Tkey>();
     TPair<Tkey, Tval> new_row(new_key, val);
     _data.push_back(new_row);
     return new_key;
@@ -102,13 +108,4 @@ UnsortedTable<Tkey, Tval>& UnsortedTable
         _size = tab._size;
     }
     return *this;
-}
-
-template<class Tkey, class Tval>
-Tkey UnsortedTable<Tkey, Tval>::generate_key() {
-    static std::random_device rd;
-    static std::mt19937 gen(rd());
-    static std::uniform_int_distribution<> dis
-    (0, std::numeric_limits<Tkey>::max());
-    return dis(gen);
 }
