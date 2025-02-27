@@ -22,10 +22,8 @@ class UnsortedTableMas : ITable<Tkey, Tval> {
      void erase(Tkey key) override;
      Tval find(Tkey key) override;
      Tval operator[](Tkey key) override;
-     UnsortedTableMas& operator=(const UnsortedTableMas<Tkey, Tval>& tab) noexcept;
-
-private:
-
+     UnsortedTableMas& operator=
+         (const UnsortedTableMas<Tkey, Tval>& tab) noexcept;
 };
 
 template<class Tkey, class Tval>
@@ -76,8 +74,7 @@ Tval UnsortedTableMas<Tkey, Tval>::operator[](Tkey key) {
 
 template<class Tkey, class Tval>
 UnsortedTableMas<Tkey, Tval>& UnsortedTableMas
-<Tkey, Tval>::operator=(const UnsortedTableMas<Tkey, Tval>& tab) noexcept
-{
+<Tkey, Tval>::operator=(const UnsortedTableMas<Tkey, Tval>& tab) noexcept {
     if (this != &tab) {
         _data = tab._data;
         _size = tab._size;
