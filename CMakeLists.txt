@@ -22,6 +22,8 @@ add_subdirectory(lib_itable)
 
 add_subdirectory(lib_unsort_table)
 
+add_subdirectory(lib_sorted_table)
+
 add_subdirectory(lib_string)
 
 add_subdirectory(lib_list)
