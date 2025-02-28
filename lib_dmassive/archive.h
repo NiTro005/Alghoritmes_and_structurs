@@ -101,14 +101,17 @@ class TDMassive {
         size_t _size;
         size_t _current_index;
 
-    public:
+     public:
         Iterator() = default;
         Iterator(const Iterator& it)
-            : _ptr(it._ptr), _states(it._states), _size(it._size), _current_index(it._current_index) {}
-        explicit Iterator(T* ptr, State* states, size_t size, size_t current_index = 0)
-            : _ptr(ptr), _states(states), _size(size), _current_index(current_index) {
-            // Пропускаем удаленные элементы при инициализации
-            while (_current_index < _size && _states[_current_index] == State::deleted) {
+            : _ptr(it._ptr), _states(it._states),
+            _size(it._size), _current_index(it._current_index) {}
+        explicit Iterator(T* ptr, State* states,
+            size_t size, size_t current_index = 0)
+            : _ptr(ptr), _states(states), _size(size),
+            _current_index(current_index) {
+            while (_current_index < _size &&
+                _states[_current_index] == State::deleted) {
                 ++_current_index;
                 ++_ptr;
             }
@@ -118,7 +121,8 @@ class TDMassive {
             do {
                 ++_current_index;
                 ++_ptr;
-            } while (_current_index < _size && _states[_current_index] == State::deleted);
+            } while (_current_index < _size &&
+                _states[_current_index] == State::deleted);
             return *this;
         }
 

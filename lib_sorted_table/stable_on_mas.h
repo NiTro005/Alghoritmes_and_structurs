@@ -84,7 +84,7 @@ void SortedTabOnMas<Tkey, Tval>::erase(Tkey key) {
 template<class Tkey, class Tval>
 Tval SortedTabOnMas<Tkey, Tval>::find(Tkey key) {
     size_t pos = binary_search(key);
-    if(_data[pos].first() == key) return _data[pos].second();
+    if (_data[pos].first() == key) return _data[pos].second();
     throw std::out_of_range("Key not found");
 }
 
@@ -102,8 +102,7 @@ size_t SortedTabOnMas<Tkey, Tval>::binary_search(Tkey key) {
         size_t mid = left + (right - left) / 2;
         if (_data[mid].first() < key) {
             left = mid + 1;
-        }
-        else {
+        } else {
             right = mid;
         }
     }
