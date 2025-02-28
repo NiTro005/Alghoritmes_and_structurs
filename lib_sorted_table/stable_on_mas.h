@@ -27,8 +27,8 @@ SortedTabOnMas<Tkey, Tval>::SortedTabOnMas
 (const TDMassive<TPair<Tkey, Tval>>& mas) {
     TDMassive<TPair<Tkey, Tval>> new_mas(mas);
     for (size_t i = 0; i < new_mas.size(); i++) {
-        for (size_t j = i; j > 0 && new_mas[j - 1].second() > new_mas[j].second(); j--) {
-            new_mas.swap(new_mas[j - 1], new_mas[j]);
+        for (size_t j = i; j > 0 && new_mas[j - 1].first() > new_mas[j].first(); j--) {
+            algorithm::swap(new_mas[j - 1], new_mas[j]);
         }
     }
     _data = new_mas;
@@ -38,3 +38,41 @@ template<class Tkey, class Tval>
 inline SortedTabOnMas<Tkey, Tval>::SortedTabOnMas
 (const SortedTabOnMas<Tkey, Tval>& tab): _data(tab._data) {}
 
+template<class Tkey, class Tval>
+inline Tkey SortedTabOnMas<Tkey, Tval>::insert(Tval val)
+{
+    return Tkey();
+}
+
+template<class Tkey, class Tval>
+inline void SortedTabOnMas<Tkey, Tval>::insert(Tkey key, Tval val)
+{
+}
+
+template<class Tkey, class Tval>
+inline void SortedTabOnMas<Tkey, Tval>::erase(Tkey key)
+{
+}
+
+template<class Tkey, class Tval>
+Tval SortedTabOnMas<Tkey, Tval>::find(Tkey key) {
+    size_t left = 0;
+    size_t right = _data.size() - 1;
+
+    while (left <= right) {
+        size_t mid = left + (right - left) / 2;
+        if (_data[mid].first() == key) {
+            return _data[mid].second();
+        } else if (_data[mid].first() < key) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    throw std::out_of_range("No key");
+}
+
+template<class Tkey, class Tval>
+Tval SortedTabOnMas<Tkey, Tval>::operator[](Tkey key) {
+    return find(key);
+}
