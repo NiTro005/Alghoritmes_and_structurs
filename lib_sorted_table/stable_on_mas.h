@@ -42,7 +42,8 @@ SortedTabOnMas<Tkey, Tval>::SortedTabOnMas
 (const TDMassive<TPair<Tkey, Tval>>& mas) {
     TDMassive<TPair<Tkey, Tval>> new_mas(mas);
     for (size_t i = 0; i < new_mas.size(); i++) {
-        for (size_t j = i; j > 0 && new_mas[j - 1].first() > new_mas[j].first(); j--) {
+        for (size_t j = i; j > 0 &&
+            new_mas[j - 1].first()> new_mas[j].first(); j--) {
             algorithm::swap(new_mas[j - 1], new_mas[j]);
         }
     }
@@ -110,4 +111,13 @@ size_t SortedTabOnMas<Tkey, Tval>::binary_search(Tkey key) {
         return left;
     }
     return left - 1;
+}
+
+template<class Tkey, class Tval>
+SortedTabOnMas<Tkey, Tval>& SortedTabOnMas<Tkey, Tval>::
+operator=(const SortedTabOnMas<Tkey, Tval>& tab) {
+    if (this != &tab) {
+        _data = tab._data;
+    }
+    return *this;
 }
