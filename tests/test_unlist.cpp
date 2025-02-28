@@ -70,7 +70,7 @@ TEST(UnsortedTableTest, EraseMethod) {
 }
 
 TEST(UnsortedTableOnMassTest, FindMethod) {
-    UnsortedTable<int, std::string> table;
+    UnsortedTableMas<int, std::string> table;
     table.insert(1, "one");
     table.insert(2, "two");
     table.insert(3, "three");
@@ -83,7 +83,7 @@ TEST(UnsortedTableOnMassTest, FindMethod) {
 }
 
 TEST(UnsortedTableOnMasTest, Insert_with_key) {
-    UnsortedTable<int, std::string> table;
+    UnsortedTableMas<int, std::string> table;
     table.insert(1, "one");
     table.insert(2, "two");
     table.insert(3, "three");
@@ -94,7 +94,7 @@ TEST(UnsortedTableOnMasTest, Insert_with_key) {
 }
 
 TEST(UnsortedTableOnMasTest, OperatorBrackets) {
-    UnsortedTable<int, std::string> table;
+    UnsortedTableMas<int, std::string> table;
     table.insert(1, "one");
     table.insert(2, "two");
     table.insert(3, "three");
@@ -104,7 +104,7 @@ TEST(UnsortedTableOnMasTest, OperatorBrackets) {
 }
 
 TEST(UnsortedTableOnMasTest, Insert_without_key) {
-    UnsortedTable<int, std::string> table;
+    UnsortedTableMas<int, std::string> table;
     int key_one = table.insert("one");
     int key_two = table.insert("two");
     int key_three = table.insert("three");
@@ -115,7 +115,7 @@ TEST(UnsortedTableOnMasTest, Insert_without_key) {
 }
 
 TEST(UnsortedTableOnMasTest, EraseMethod) {
-    UnsortedTable<int, std::string> table;
+    UnsortedTableMas<int, std::string> table;
     table.insert(1, "one");
     table.insert(2, "two");
     table.insert(3, "three");

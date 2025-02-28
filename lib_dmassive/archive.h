@@ -83,12 +83,13 @@ class TDMassive {
     const T& operator[](size_t index) const;
     TDMassive& operator=(const TDMassive& other);
     iterator begin() {
-        return iterator(_data);
+        return iterator(_data, _states, _size, 0);
     }
 
     iterator end() {
-        return iterator(_data + _size);
+        return iterator(_data + _size, _states + _size, _size, _size);
     }
+
 
  private:
     size_t count_value(T value)  const noexcept;
@@ -96,38 +97,52 @@ class TDMassive {
 
     class Iterator {
         T* _ptr;
+        State* _states;
+        size_t _size;
+        size_t _current_index;
 
-     public:
-         Iterator() = default;
-         Iterator(const Iterator& it) : _ptr(it._ptr) {}
-         explicit Iterator(T* ptr) : _ptr(ptr) {}
+    public:
+        Iterator() = default;
+        Iterator(const Iterator& it)
+            : _ptr(it._ptr), _states(it._states), _size(it._size), _current_index(it._current_index) {}
+        explicit Iterator(T* ptr, State* states, size_t size, size_t current_index = 0)
+            : _ptr(ptr), _states(states), _size(size), _current_index(current_index) {
+            // Пропускаем удаленные элементы при инициализации
+            while (_current_index < _size && _states[_current_index] == State::deleted) {
+                ++_current_index;
+                ++_ptr;
+            }
+        }
 
-         Iterator& operator++() {
-             ++_ptr;
-             return *this;
-         }
+        Iterator& operator++() {
+            do {
+                ++_current_index;
+                ++_ptr;
+            } while (_current_index < _size && _states[_current_index] == State::deleted);
+            return *this;
+        }
 
-         Iterator operator++(int) {
-             Iterator temp = *this;
-             ++_ptr;
-             return temp;
-         }
+        Iterator operator++(int) {
+            Iterator temp = *this;
+            ++(*this);
+            return temp;
+        }
 
-         bool operator!=(const Iterator& other) const {
-             return _ptr != other._ptr;
-         }
+        bool operator!=(const Iterator& other) const {
+            return _ptr != other._ptr;
+        }
 
-         bool operator==(const Iterator& other) const {
-             return _ptr == other._ptr;
-         }
+        bool operator==(const Iterator& other) const {
+            return _ptr == other._ptr;
+        }
 
-         T& operator*() {
-             return *_ptr;
-         }
+        T& operator*() {
+            return *_ptr;
+        }
 
-         const T& operator*() const {
-             return *_ptr;
-         }
+        const T& operator*() const {
+            return *_ptr;
+        }
     };
 };
 

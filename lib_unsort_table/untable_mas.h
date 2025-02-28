@@ -48,10 +48,13 @@ void UnsortedTableMas<Tkey, Tval>::insert(Tkey key, Tval val) {
 
 template<class Tkey, class Tval>
 void UnsortedTableMas<Tkey, Tval>::erase(Tkey key) {
+    size_t pos = 0;
     for (auto mas : _data) {
-        if ((*mas).first() == key) {
-            _data.erase(mas);
+        if (mas.first() == key) {
+            _data.remove_by_index(pos);
+            return;
         }
+        pos++;
     }
     throw std::out_of_range("Key not found");
 }
@@ -77,7 +80,6 @@ UnsortedTableMas<Tkey, Tval>& UnsortedTableMas
 <Tkey, Tval>::operator=(const UnsortedTableMas<Tkey, Tval>& tab) noexcept {
     if (this != &tab) {
         _data = tab._data;
-        _size = tab._size;
     }
     return *this;
 }

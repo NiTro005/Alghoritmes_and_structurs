@@ -5,6 +5,15 @@
 #include "../lib_pair/pair.h"
 #include "../lib_itable/itable.h"
 
+template<class Tkey>
+Tkey generate_key() {
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    static std::uniform_int_distribution<> dis
+    (0, std::numeric_limits<Tkey>::max());
+    return dis(gen);
+}
+
 template <class Tkey, class Tval>
 class SortedTabOnMas : ITable<Tkey, Tval> {
     TDMassive<TPair<Tkey, Tval>> _data;
@@ -20,6 +29,9 @@ class SortedTabOnMas : ITable<Tkey, Tval> {
      Tval find(Tkey key) override;
      Tval operator[](Tkey key) override;
      SortedTabOnMas& operator=(const SortedTabOnMas<Tkey, Tval>& tab);
+
+ private:
+     /*TKey binary_search(Tkey key);*/
 };
 
 template<class Tkey, class Tval>
@@ -39,14 +51,13 @@ inline SortedTabOnMas<Tkey, Tval>::SortedTabOnMas
 (const SortedTabOnMas<Tkey, Tval>& tab): _data(tab._data) {}
 
 template<class Tkey, class Tval>
-inline Tkey SortedTabOnMas<Tkey, Tval>::insert(Tval val)
-{
+Tkey SortedTabOnMas<Tkey, Tval>::insert(Tval val) {
     return Tkey();
 }
 
 template<class Tkey, class Tval>
-inline void SortedTabOnMas<Tkey, Tval>::insert(Tkey key, Tval val)
-{
+void SortedTabOnMas<Tkey, Tval>::insert(Tkey key, Tval val) {
+    
 }
 
 template<class Tkey, class Tval>
