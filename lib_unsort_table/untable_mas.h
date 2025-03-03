@@ -41,7 +41,6 @@ void UnsortedTableMas<Tkey, Tval>::insert(Tkey key, Tval val) {
     }
     TPair<Tkey, Tval> new_row(key, val);
     _data.push_back(new_row);
-
 }
 
 template<class Tkey, class Tval>

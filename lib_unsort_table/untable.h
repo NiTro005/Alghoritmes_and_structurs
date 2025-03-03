@@ -63,7 +63,6 @@ void UnsortedTable<Tkey, Tval>::insert(Tkey key, Tval val) {
     _size++;
     TPair<Tkey, Tval> new_row(key, val);
     _data.push_back(new_row);
-
 }
 
 template<class Tkey, class Tval>
