@@ -9,6 +9,28 @@ template<typename T>
 bool RabbitTurtleCycleList(const TList<T>& list);
 template bool RabbitTurtleCycleList<int>(const TList<int>& list);
 
+template <class T>
+void link_lists(TList<T>& first, TList<T>& sec) {
+    auto s = sec.begin();
+    auto f = first.begin();
+    TNode<T>* cur = first.head;
+    while (f != first.end() && s != sec.end()) {
+        if (*f < *s) {
+            cur = f.getNode();
+            f++;
+        } else {
+            first.insert(cur, *s);
+            s++;
+        }
+    }
+    while (s != sec.end()) {
+        first.push_back(*s);
+        s++;
+    }
+}
+ 
+
+
 template<typename T>
 struct CicleErr {
     bool has_cicle;

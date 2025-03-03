@@ -68,6 +68,8 @@ void SortedTabOnMas<Tkey, Tval>::insert(Tkey key, Tval val) {
     if (_data[pos].first() != key) {
         TPair<Tkey, Tval> new_row(key, val);
         _data.insert(TPair<Tkey, Tval>(key, val), pos + 1);
+    } else {
+        throw std::logic_error("key already exists");
     }
 }
 
