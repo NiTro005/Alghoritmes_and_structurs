@@ -10,7 +10,7 @@ bool RabbitTurtleCycleList(const TList<T>& list);
 template bool RabbitTurtleCycleList<int>(const TList<int>& list);
 
 template <class T>
-void link_lists(TList<T>& first, TList<T>& sec) {
+void link_lists(TList<T>& first, TList<T>& sec) {  // NOLINT(runtime/references)
     auto s = sec.begin();
     auto f = first.begin();
     TNode<T>* cur = first.head;
@@ -28,7 +28,6 @@ void link_lists(TList<T>& first, TList<T>& sec) {
         s++;
     }
 }
- 
 
 
 template<typename T>

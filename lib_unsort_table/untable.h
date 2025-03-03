@@ -57,15 +57,13 @@ Tkey UnsortedTable<Tkey, Tval>::insert(Tval val) {
 
 template<class Tkey, class Tval>
 void UnsortedTable<Tkey, Tval>::insert(Tkey key, Tval val) {
-    try {
-        find(key);
+    if (find(key) != Tval()) {
         throw std::logic_error("Key already exists");
     }
-    catch (const std::out_of_range&) {
-        _size++;
-        TPair<Tkey, Tval> new_row(key, val);
-        _data.push_back(new_row);
-    }
+    _size++;
+    TPair<Tkey, Tval> new_row(key, val);
+    _data.push_back(new_row);
+
 }
 
 template<class Tkey, class Tval>
@@ -90,7 +88,7 @@ Tval UnsortedTable<Tkey, Tval>::find(Tkey key) {
             return pair.second();
         }
     }
-    throw std::out_of_range("Key not found");
+    return Tval();
 }
 
 template<class Tkey, class Tval>

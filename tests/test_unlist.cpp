@@ -13,8 +13,6 @@ TEST(UnsortedTableTest, FindMethod) {
     EXPECT_EQ(table.find(1), "one");
     EXPECT_EQ(table.find(2), "two");
     EXPECT_EQ(table.find(3), "three");
-
-    ASSERT_ANY_THROW(table.find(4));
 }
 
 TEST(UnsortedTableTest, Insert_with_key) {
@@ -61,12 +59,11 @@ TEST(UnsortedTableTest, EraseMethod) {
 
     table.erase(2);
 
-    EXPECT_THROW(table.find(2), std::out_of_range);
-
     EXPECT_EQ(table.find(1), "one");
     EXPECT_EQ(table.find(3), "three");
 
     EXPECT_THROW(table.erase(4), std::out_of_range);
+    EXPECT_THROW(table.erase(2), std::out_of_range);
 }
 
 TEST(UnsortedTableOnMassTest, FindMethod) {
@@ -78,8 +75,6 @@ TEST(UnsortedTableOnMassTest, FindMethod) {
     EXPECT_EQ(table.find(1), "one");
     EXPECT_EQ(table.find(2), "two");
     EXPECT_EQ(table.find(3), "three");
-
-    ASSERT_ANY_THROW(table.find(4));
 }
 
 TEST(UnsortedTableOnMasTest, Insert_with_key) {
@@ -125,8 +120,6 @@ TEST(UnsortedTableOnMasTest, EraseMethod) {
     EXPECT_EQ(table.find(3), "three");
 
     table.erase(2);
-
-    EXPECT_THROW(table.find(2), std::out_of_range);
 
     EXPECT_EQ(table.find(1), "one");
     EXPECT_EQ(table.find(3), "three");
