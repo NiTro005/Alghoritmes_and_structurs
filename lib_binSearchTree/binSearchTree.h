@@ -14,9 +14,16 @@ class TBinSearchTree {
     TBinNode<T>* search(T val) const noexcept;
     TBinNode<T>* insert(T val);
     void erase(T val);
+    T min(const TBinNode<T>& node);
     void clear() noexcept;
+    void clear(TBinNode<T>* node) noexcept;
     void print() const noexcept;
 };
+
+template<class T>
+TBinSearchTree<T>::~TBinSearchTree() {
+    clear();
+}
 
 template<class T>
 TBinNode<T>* TBinSearchTree<T>::search(T val) const noexcept {
@@ -54,4 +61,19 @@ TBinNode<T>* TBinSearchTree<T>::insert(T val) {
         pred->left = new_node;
     }
     return new_node;
+}
+
+template<class T>
+void TBinSearchTree<T>::clear() noexcept {
+    clear(head);
+    head = nullptr;
+}
+
+template<class T>
+void TBinSearchTree<T>::clear(TBinNode<T>* node) noexcept{
+    if (node != nullptr) {
+        clear(node->left);
+        clear(node->right);
+        delete node;
+    }
 }
