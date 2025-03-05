@@ -11,17 +11,20 @@ class TBinSearchTree {
     TBinSearchTree() = default;
     ~TBinSearchTree();
 
-    TBinNode<T>* search(T val);
+    TBinNode<T>* search(T val) const noexcept;
     TBinNode<T>* insert(T val);
     void erase(T val);
-    void clear();
-    void print();
+    void clear() noexcept;
+    void print() const noexcept;
 };
 
 template<class T>
-TBinNode<T>* TBinSearchTree<T>::search(T val) {
+TBinNode<T>* TBinSearchTree<T>::search(T val) const noexcept {
     TBinNode<T>* cur = head;
+    TBinNode<T>* pred = nullptr;
+
     while (cur != nullptr) {
+        pred = cur;
         if (cur->value < val) {
             cur = cur->right;
         } else if (cur->value > val) {
@@ -30,5 +33,25 @@ TBinNode<T>* TBinSearchTree<T>::search(T val) {
             return cur;
         }
     }
-    return nullptr;
+    return pred;
+}
+
+template<class T>
+TBinNode<T>* TBinSearchTree<T>::insert(T val) {
+    TBinNode<T>* pred = search(val);
+    TBinNode<T>* new_node = new TBinNode<T>(val);
+
+    if (pred == nullptr) {
+        head = new_node;
+        return new_node;
+    }
+
+    if (pred->value == val) {
+        throw std::logic_error("This value is busy");
+    } else if (pred->value < val) {
+        pred->right = new_node;
+    } else {
+        pred->left = new_node;
+    }
+    return new_node;
 }
