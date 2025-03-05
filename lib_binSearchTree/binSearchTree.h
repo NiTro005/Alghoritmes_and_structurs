@@ -17,3 +17,18 @@ class TBinSearchTree {
     void clear();
     void print();
 };
+
+template<class T>
+TBinNode<T>* TBinSearchTree<T>::search(T val) {
+    TBinNode<T>* cur = head;
+    while (cur != nullptr) {
+        if (cur->value < val) {
+            cur = cur->right;
+        } else if (cur->value > val) {
+            cur = cur->left;
+        } else {
+            return cur;
+        }
+    }
+    return nullptr;
+}

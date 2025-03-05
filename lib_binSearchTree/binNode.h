@@ -9,7 +9,8 @@ class TBinNode {
     TBinNode<T>* left, right;
 
     TBinNode() = default;
-    TBinNode(T value, TBinNode<T>* left = nullptr, TBinNode<T>* right = nullptr);
+    explicit TBinNode(T value, TBinNode<T>* left = nullptr,
+        TBinNode<T>* right = nullptr);
     TBinNode(const TBinNode<T>& node);
 
     TBinNode<T>& operator=(const TBinNode<T>& nod);
