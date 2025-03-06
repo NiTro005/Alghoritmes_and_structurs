@@ -1,6 +1,7 @@
 // Copyright 2024 Kita Trofimov
 #pragma once
 #include <iostream>
+#include <algorithm>
 #include "../lib_binSearchTree/binNode.h"
 
 template<class T>
@@ -14,7 +15,7 @@ class TBinSearchTree {
     TBinNode<T>* search(T val) const noexcept;
     TBinNode<T>* insert(T val);
     void erase(T val);
-    T min(const TBinNode<T>& node);
+    T min(TBinNode<T>*& node);
     void clear() noexcept;
     void clear(TBinNode<T>* node) noexcept;
     void print() const noexcept;
@@ -64,13 +65,52 @@ TBinNode<T>* TBinSearchTree<T>::insert(T val) {
 }
 
 template<class T>
+void TBinSearchTree<T>::erase(T val) {
+    TBinNode<T>* node = search(val);
+    if (node->value != val) {
+        throw std::logic_error("No value");
+    }
+    if (node->left != nullptr) {
+        T value = min(node);
+        node->value = value;
+    }
+    if (node->left == nullptr && node->right != nullptr) {
+        node->value = node->right->value;
+        delete node->right;
+        node->right = nullptr;
+    }
+}
+
+template<class T>
+T TBinSearchTree<T>::min(TBinNode<T>*& node) {
+    TBinNode<T>* cur = node;
+    TBinNode<T>* prev = nullptr;
+
+    while (cur->left != nullptr) {
+        prev = cur;
+        cur = cur->left;
+    }
+    T value = cur->value;
+
+    if (prev == nullptr) {
+        node = cur->right;
+    } else {
+        prev->left = cur->right;
+    }
+
+    delete cur;
+    return value;
+}
+
+
+template<class T>
 void TBinSearchTree<T>::clear() noexcept {
     clear(head);
     head = nullptr;
 }
 
 template<class T>
-void TBinSearchTree<T>::clear(TBinNode<T>* node) noexcept{
+void TBinSearchTree<T>::clear(TBinNode<T>* node) noexcept {
     if (node != nullptr) {
         clear(node->left);
         clear(node->right);
