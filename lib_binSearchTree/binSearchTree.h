@@ -15,7 +15,7 @@ class TBinSearchTree {
     TBinNode<T>* search(T val) const noexcept;
     TBinNode<T>* insert(T val);
     void erase(T val);
-    T min(TBinNode<T>*& node);
+    T min(TBinNode<T>*& node);  // NOLINT(runtime/references)
     void clear() noexcept;
     void clear(TBinNode<T>* node) noexcept;
  private:
@@ -39,8 +39,7 @@ TBinNode<T>* TBinSearchTree<T>::search(T val) const noexcept {
         pred = cur;
         if (cur->value < val) {
             cur = cur->right;
-        }
-        else {
+        } else {
             cur = cur->left;
         }
     }
@@ -86,8 +85,7 @@ void TBinSearchTree<T>::erase(T val) {
     TBinNode<T>* child = (node->left != nullptr) ? node->left : node->right;
     if (parent == nullptr) {
         _head = child;
-    }
-    else {
+    } else {
         if (parent->left == node) {
             parent->left = child;
         } else {
@@ -99,7 +97,7 @@ void TBinSearchTree<T>::erase(T val) {
 }
 
 template<class T>
-T TBinSearchTree<T>::min(TBinNode<T>*& node) {
+T TBinSearchTree<T>::min(TBinNode<T>*& node) {  // NOLINT(runtime/references)
     if (node == nullptr) {
         throw std::logic_error("Node is nullptr");
     }
