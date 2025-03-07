@@ -6,7 +6,7 @@
 
 template<class T>
 class TBinSearchTree {
-    TBinNode<T>* _head;
+    TBinNode<T>* _head = nullptr;
 
  public:
     TBinSearchTree() = default;
@@ -18,7 +18,8 @@ class TBinSearchTree {
     T min(TBinNode<T>*& node);
     void clear() noexcept;
     void clear(TBinNode<T>* node) noexcept;
-    void print() const noexcept;
+ private:
+     TBinNode<T>* getParent(TBinNode<T>* node) const;
 };
 
 template<class T>
@@ -28,74 +29,93 @@ TBinSearchTree<T>::~TBinSearchTree() {
 
 template<class T>
 TBinNode<T>* TBinSearchTree<T>::search(T val) const noexcept {
-    TBinNode<T>* cur = head;
+    TBinNode<T>* cur = _head;
     TBinNode<T>* pred = nullptr;
 
     while (cur != nullptr) {
+        if (cur->value == val) {
+            return cur;
+        }
         pred = cur;
         if (cur->value < val) {
             cur = cur->right;
-        } else if (cur->value > val) {
+        }
+        else {
             cur = cur->left;
-        } else {
-            return cur;
         }
     }
+
     return pred;
 }
 
 template<class T>
 TBinNode<T>* TBinSearchTree<T>::insert(T val) {
-    TBinNode<T>* pred = search(val);
     TBinNode<T>* new_node = new TBinNode<T>(val);
-
-    if (pred == nullptr) {
-        head = new_node;
+    if (_head == nullptr) {
+        _head = new_node;
         return new_node;
     }
 
-    if (pred->value == val) {
+    TBinNode<T>* node = search(val);
+    if (node->value == val) {
+        delete new_node;
         throw std::logic_error("This value is busy");
-    } else if (pred->value < val) {
-        pred->right = new_node;
-    } else {
-        pred->left = new_node;
     }
+    if (node->value < val) {
+        node->right = new_node;
+    } else {
+        node->left = new_node;
+    }
+
     return new_node;
 }
 
 template<class T>
 void TBinSearchTree<T>::erase(T val) {
     TBinNode<T>* node = search(val);
-    if (node->value != val) {
+    if (node == nullptr || node->value != val) {
         throw std::logic_error("No value");
     }
-    if (node->left != nullptr) {
-        T value = min(node);
-        node->value = value;
+
+    TBinNode<T>* parent = getParent(node);
+    if (node->left != nullptr && node->right != nullptr) {
+        T minValue = min(node->right);
+        node->value = minValue;
+        return;
     }
-    if (node->left == nullptr && node->right != nullptr) {
-        node->value = node->right->value;
-        delete node->right;
-        node->right = nullptr;
+    TBinNode<T>* child = (node->left != nullptr) ? node->left : node->right;
+    if (parent == nullptr) {
+        _head = child;
     }
+    else {
+        if (parent->left == node) {
+            parent->left = child;
+        } else {
+            parent->right = child;
+        }
+    }
+
+    delete node;
 }
 
 template<class T>
 T TBinSearchTree<T>::min(TBinNode<T>*& node) {
+    if (node == nullptr) {
+        throw std::logic_error("Node is nullptr");
+    }
+
     TBinNode<T>* cur = node;
-    TBinNode<T>* prev = nullptr;
+    TBinNode<T>* parent = nullptr;
 
     while (cur->left != nullptr) {
-        prev = cur;
+        parent = cur;
         cur = cur->left;
     }
     T value = cur->value;
-
-    if (prev == nullptr) {
+    if (parent == nullptr) {
         node = cur->right;
     } else {
-        prev->left = cur->right;
+        parent->left = cur->right;
     }
 
     delete cur;
@@ -105,8 +125,10 @@ T TBinSearchTree<T>::min(TBinNode<T>*& node) {
 
 template<class T>
 void TBinSearchTree<T>::clear() noexcept {
-    clear(head);
-    head = nullptr;
+    if (_head != nullptr) {
+        clear(_head);
+        _head = nullptr;
+    }
 }
 
 template<class T>
@@ -116,4 +138,27 @@ void TBinSearchTree<T>::clear(TBinNode<T>* node) noexcept {
         clear(node->right);
         delete node;
     }
+}
+
+template<class T>
+TBinNode<T>* TBinSearchTree<T>::getParent(TBinNode<T>* node) const {
+    if (node == nullptr || node == _head) {
+        return nullptr;
+    }
+
+    TBinNode<T>* cur = _head;
+    TBinNode<T>* parent = nullptr;
+
+    while (cur != nullptr) {
+        if (cur->left == node || cur->right == node) {
+            return cur;
+        }
+        if (node->value < cur->value) {
+            cur = cur->left;
+        } else {
+            cur = cur->right;
+        }
+    }
+
+    return nullptr;
 }

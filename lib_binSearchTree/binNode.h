@@ -6,7 +6,8 @@ template<class T>
 class TBinNode {
  public:
     T value;
-    TBinNode<T>* left, right;
+    TBinNode<T>* left;
+    TBinNode<T>* right;
 
     TBinNode() = default;
     explicit TBinNode(T value, TBinNode<T>* left = nullptr,
