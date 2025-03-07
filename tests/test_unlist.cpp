@@ -3,6 +3,7 @@
 #include <string>
 #include "../lib_unsort_table/untable.h"
 #include "../lib_unsort_table/untable_mas.h"
+#include "../lib_unsort_table/untable_tree.h"
 
 TEST(UnsortedTableTest, FindMethod) {
     UnsortedTable<int, std::string> table;
