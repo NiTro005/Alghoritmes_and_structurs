@@ -138,3 +138,25 @@ TEST(BinSearchTreeTableTest, FindMethod) {
     EXPECT_EQ(tab.find(2), 20);
     EXPECT_EQ(tab.find(4), 40);
 }
+
+TEST(BinSearchTreeTableTest, Insert_with_key_test) {
+    TBSTable<int, int> tab;
+    for (int i = 0; i < 5; i++) {
+        tab.insert(i, i * 10);
+    }
+    EXPECT_EQ(tab.find(2), 20);
+    EXPECT_EQ(tab.find(4), 40);
+
+    ASSERT_ANY_THROW(tab.insert(1, 10));
+}
+
+TEST(BinSearchTreeTableTest, Insert_no_key_test) {
+    TBSTable<int, int> tab;
+    int key1 = tab.insert(5);
+    int key2 = tab.insert(8);
+    int key3 = tab.insert(10);
+    
+    EXPECT_EQ(tab.find(key1), 5);
+    EXPECT_EQ(tab.find(key2), 8);
+    EXPECT_EQ(tab.find(key3), 10);
+}

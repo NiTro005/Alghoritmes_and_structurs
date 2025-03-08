@@ -24,7 +24,7 @@ public:
     void erase(Tkey key) override;
     Tval find(Tkey key) override;
     Tval operator[](Tkey key) override;
-    /*TBSTable& operator=(const TBSTable<Tkey, Tval>& tab) noexcept;*/
+    TBSTable& operator=(const TBSTable<Tkey, Tval>& tab) noexcept;
 };
 
 template<class Tkey, class Tval>
@@ -34,12 +34,21 @@ _size(tab._size) {}
 
 template<class Tkey, class Tval>
 Tkey TBSTable<Tkey, Tval>::insert(Tval val) {
-    return Tkey();
+    _size++;
+    Tkey new_key = generate_key<Tkey>();
+    TPair<Tkey, Tval> new_row(new_key, val);
+    _data.insert(new_row);
+    return new_key;
 }
 
 template<class Tkey, class Tval>
 void TBSTable<Tkey, Tval>::insert(Tkey key, Tval val) {
-
+    if (find(key) != Tval()) {
+        throw std::logic_error("Key already exists");
+    }
+    _size++;
+    TPair<Tkey, Tval> new_row(key, val);
+    _data.insert(new_row);
 }
 
 template<class Tkey, class Tval>
@@ -54,10 +63,12 @@ TBSTable<Tkey, Tval>::TBSTable
 
 template <class Tkey, class Tval>
 Tval TBSTable<Tkey, Tval>::find(Tkey key) {
-    TPair<Tkey, Tval> pair_to_find(key, Tval());
-    TBinNode<TPair<Tkey, Tval>>* result = _data.search(pair_to_find);
-    if (result->value.first() == key) {
-        return result->value.second();
+    if (_data._head != nullptr) {
+        TPair<Tkey, Tval> pair_to_find(key, Tval());
+        TBinNode<TPair<Tkey, Tval>>* result = _data.search(pair_to_find);
+        if (result->value.first() == key) {
+            return result->value.second();
+        }
     }
     return Tval();
 }

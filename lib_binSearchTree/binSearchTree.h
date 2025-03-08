@@ -6,9 +6,8 @@
 
 template<class T>
 class TBinSearchTree {
-    TBinNode<T>* _head = nullptr;
-
  public:
+    TBinNode<T>* _head = nullptr;
     TBinSearchTree() = default;
     TBinSearchTree(const TBinSearchTree& other);
 
@@ -52,7 +51,6 @@ TBinNode<T>* TBinSearchTree<T>::search(T val) const noexcept {
             cur = cur->left;
         }
     }
-
     return pred;
 }
 
