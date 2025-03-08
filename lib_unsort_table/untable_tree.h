@@ -83,3 +83,13 @@ Tval TBSTable<Tkey, Tval>::operator[](Tkey key) {
     Tval val = find(key);
     return val;
 }
+
+template<class Tkey, class Tval>
+TBSTable<Tkey, Tval>& TBSTable<Tkey, Tval>::operator=
+(const TBSTable<Tkey, Tval>& tab) noexcept {
+    if (this != &tab) {
+        _data = tab._data;
+        _size = tab._size;
+    }
+    return *this;
+}
