@@ -24,5 +24,46 @@ public:
     void erase(Tkey key) override;
     Tval find(Tkey key) override;
     Tval operator[](Tkey key) override;
-    TBSTable& operator=(const TBSTable<Tkey, Tval>& tab) noexcept;
+    /*TBSTable& operator=(const TBSTable<Tkey, Tval>& tab) noexcept;*/
 };
+
+template<class Tkey, class Tval>
+TBSTable<Tkey, Tval>::TBSTable
+(const TBSTable<Tkey, Tval>& tab) : _data(tab._data),
+_size(tab._size) {}
+
+template<class Tkey, class Tval>
+Tkey TBSTable<Tkey, Tval>::insert(Tval val) {
+    return Tkey();
+}
+
+template<class Tkey, class Tval>
+void TBSTable<Tkey, Tval>::insert(Tkey key, Tval val) {
+
+}
+
+template<class Tkey, class Tval>
+void TBSTable<Tkey, Tval>::erase(Tkey key) {
+
+}
+
+template<class Tkey, class Tval>
+TBSTable<Tkey, Tval>::TBSTable
+(const TBinSearchTree<TPair<Tkey, Tval>>& data) :
+    _data(data), _size(data.size()) {}
+
+template <class Tkey, class Tval>
+Tval TBSTable<Tkey, Tval>::find(Tkey key) {
+    TPair<Tkey, Tval> pair_to_find(key, Tval());
+    TBinNode<TPair<Tkey, Tval>>* result = _data.search(pair_to_find);
+    if (result->value.first() == key) {
+        return result->value.second();
+    }
+    return Tval();
+}
+
+template<class Tkey, class Tval>
+Tval TBSTable<Tkey, Tval>::operator[](Tkey key) {
+    Tval val = find(key);
+    return val;
+}

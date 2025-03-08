@@ -125,3 +125,16 @@ TEST(TBinSearchTreeTest, EraseNonExistent) {
 
     EXPECT_THROW(tree.erase(20), std::logic_error);
 }
+
+TEST(TBinSearchTreeTest, size_test) {
+    TBinSearchTree<int> tree;
+    tree.insert(10);
+    tree.insert(5);
+    tree.insert(15);
+    tree.insert(3);
+    tree.insert(7);
+    tree.insert(12);
+    tree.insert(17);
+
+    EXPECT_EQ(tree.size(), 7);
+}

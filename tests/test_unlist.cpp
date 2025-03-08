@@ -127,3 +127,14 @@ TEST(UnsortedTableOnMasTest, EraseMethod) {
 
     EXPECT_THROW(table.erase(4), std::out_of_range);
 }
+
+TEST(BinSearchTreeTableTest, FindMethod) {
+    TBinSearchTree<TPair<int, int>> tree;
+    for (int i = 0; i < 5; i++) {
+        TPair<int, int> p(i, i * 10);
+        tree.insert(p);
+    }
+    TBSTable<int, int> tab(tree);
+    EXPECT_EQ(tab.find(2), 20);
+    EXPECT_EQ(tab.find(4), 40);
+}

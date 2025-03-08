@@ -10,6 +10,8 @@ class TBinSearchTree {
 
  public:
     TBinSearchTree() = default;
+    TBinSearchTree(const TBinSearchTree& other);
+
     ~TBinSearchTree();
 
     TBinNode<T>* search(T val) const noexcept;
@@ -18,9 +20,16 @@ class TBinSearchTree {
     T min(TBinNode<T>*& node);  // NOLINT(runtime/references)
     void clear() noexcept;
     void clear(TBinNode<T>* node) noexcept;
+    size_t size() const;
  private:
      TBinNode<T>* getParent(TBinNode<T>* node) const;
+     size_t size(TBinNode<T>* node) const;
 };
+
+template<class T>
+TBinSearchTree<T>::TBinSearchTree(const TBinSearchTree& other) {
+    _head = copyTree(other._head);
+}
 
 template<class T>
 TBinSearchTree<T>::~TBinSearchTree() {
@@ -120,6 +129,16 @@ T TBinSearchTree<T>::min(TBinNode<T>*& node) {  // NOLINT(runtime/references)
     return value;
 }
 
+template<class T>
+TBinNode<T>* copyTree(TBinNode<T>* node) {
+    if (node == nullptr) {
+        return nullptr;
+    }
+    TBinNode<T>* newNode = new TBinNode<T>(node->value);
+    newNode->left = copyTree(node->left);
+    newNode->right = copyTree(node->right);
+    return newNode;
+}
 
 template<class T>
 void TBinSearchTree<T>::clear() noexcept {
@@ -159,4 +178,17 @@ TBinNode<T>* TBinSearchTree<T>::getParent(TBinNode<T>* node) const {
     }
 
     return nullptr;
+}
+
+template<class T>
+size_t TBinSearchTree<T>::size() const {
+    return size(_head);
+}
+
+template<class T>
+size_t TBinSearchTree<T>::size(TBinNode<T>* node) const {
+    if (node == nullptr) {
+        return 0;
+    }
+    return 1 + size(node->left) + size(node->right);
 }
