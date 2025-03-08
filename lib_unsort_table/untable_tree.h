@@ -14,7 +14,7 @@ class TBSTable : public ITable<Tkey, Tval> {
     TBinSearchTree<TPair<Tkey, Tval>> _data;
     size_t _size = 0;
 
-public:
+ public:
     TBSTable() = default;
     explicit TBSTable(const TBinSearchTree<TPair<Tkey, Tval>>& data);
     TBSTable(const TBSTable<Tkey, Tval>& tab);
@@ -53,7 +53,12 @@ void TBSTable<Tkey, Tval>::insert(Tkey key, Tval val) {
 
 template<class Tkey, class Tval>
 void TBSTable<Tkey, Tval>::erase(Tkey key) {
-
+    TPair<Tkey, Tval> pair_to_remove(key, Tval());
+    if (_data.search(pair_to_remove)->value.first() != key) {
+        throw std::out_of_range("Key not found");
+    }
+    _data.erase(pair_to_remove);
+    _size--;
 }
 
 template<class Tkey, class Tval>

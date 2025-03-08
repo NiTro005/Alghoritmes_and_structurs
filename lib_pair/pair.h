@@ -36,6 +36,7 @@ class TPair {
     TPair& operator=(const TPair& pair) noexcept;
     bool operator==(const T1& key) const noexcept;
     bool operator==(const TPair<T1, T2>& other) const noexcept;
+    bool operator!=(const TPair<T1, T2>& other) const noexcept;
     bool operator<(const T1& key) const noexcept;
     bool operator<(const TPair<T1, T2>& other) const noexcept;
 
@@ -86,6 +87,11 @@ bool TPair<T1, T2>::operator==(const T1& key) const noexcept {
 template <class T1, class T2>
 bool TPair<T1, T2>::operator==(const TPair<T1, T2>& other) const noexcept {
     return _first == other._first;
+}
+
+template <class T1, class T2>
+bool TPair<T1, T2>::operator!=(const TPair<T1, T2>& other) const noexcept {
+    return _first != other._first;
 }
 
 template <class T1, class T2>

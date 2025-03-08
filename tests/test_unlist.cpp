@@ -155,8 +155,25 @@ TEST(BinSearchTreeTableTest, Insert_no_key_test) {
     int key1 = tab.insert(5);
     int key2 = tab.insert(8);
     int key3 = tab.insert(10);
-    
     EXPECT_EQ(tab.find(key1), 5);
     EXPECT_EQ(tab.find(key2), 8);
     EXPECT_EQ(tab.find(key3), 10);
+}
+
+TEST(BinSearchTreeTableTest, EraseMethod) {
+    TBSTable<int, std::string> table;
+    table.insert(1, "one");
+    table.insert(2, "two");
+    table.insert(3, "three");
+
+    EXPECT_EQ(table.find(1), "one");
+    EXPECT_EQ(table.find(2), "two");
+    EXPECT_EQ(table.find(3), "three");
+
+    table.erase(2);
+
+    EXPECT_EQ(table.find(1), "one");
+    EXPECT_EQ(table.find(3), "three");
+
+    EXPECT_THROW(table.erase(4), std::out_of_range);
 }
