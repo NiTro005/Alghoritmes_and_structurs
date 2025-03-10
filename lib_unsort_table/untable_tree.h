@@ -54,7 +54,7 @@ void TBSTable<Tkey, Tval>::insert(Tkey key, Tval val) {
 template<class Tkey, class Tval>
 void TBSTable<Tkey, Tval>::erase(Tkey key) {
     TPair<Tkey, Tval> pair_to_remove(key, Tval());
-    if (_data.search(pair_to_remove)->value.first() != key) {
+    if (_data.search(pair_to_remove)->get_value().first() != key) {
         throw std::out_of_range("Key not found");
     }
     _data.erase(pair_to_remove);
@@ -71,8 +71,8 @@ Tval TBSTable<Tkey, Tval>::find(Tkey key) {
     if (_data._head != nullptr) {
         TPair<Tkey, Tval> pair_to_find(key, Tval());
         TBinNode<TPair<Tkey, Tval>>* result = _data.search(pair_to_find);
-        if (result->value.first() == key) {
-            return result->value.second();
+        if (result->get_value().first() == key) {
+            return result->get_value().second();
         }
     }
     return Tval();

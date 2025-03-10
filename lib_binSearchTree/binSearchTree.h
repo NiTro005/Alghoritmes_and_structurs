@@ -20,9 +20,11 @@ class TBinSearchTree {
     void clear() noexcept;
     void clear(TBinNode<T>* node) noexcept;
     size_t size() const;
+    void print(TBinNode<T>* node, int indent = 0) const;
  private:
      TBinNode<T>* getParent(TBinNode<T>* node) const;
      size_t size(TBinNode<T>* node) const;
+     TBinNode<T>* copyTree(TBinNode<T>* node);
 };
 
 template<class T>
@@ -82,13 +84,12 @@ void TBinSearchTree<T>::erase(T val) {
     if (node == nullptr || node->value != val) {
         throw std::logic_error("No value");
     }
-
-    TBinNode<T>* parent = getParent(node);
     if (node->left != nullptr && node->right != nullptr) {
         T minValue = min(node->right);
         node->value = minValue;
         return;
     }
+    TBinNode<T>* parent = getParent(node);
     TBinNode<T>* child = (node->left != nullptr) ? node->left : node->right;
     if (parent == nullptr) {
         _head = child;
@@ -128,7 +129,7 @@ T TBinSearchTree<T>::min(TBinNode<T>*& node) {  // NOLINT(runtime/references)
 }
 
 template<class T>
-TBinNode<T>* copyTree(TBinNode<T>* node) {
+TBinNode<T>* TBinSearchTree<T>::copyTree(TBinNode<T>* node) {
     if (node == nullptr) {
         return nullptr;
     }
@@ -189,4 +190,18 @@ size_t TBinSearchTree<T>::size(TBinNode<T>* node) const {
         return 0;
     }
     return 1 + size(node->left) + size(node->right);
+}
+
+template<class T>
+void TBinSearchTree<T>::print(TBinNode<T>* node, int indent) const {
+    if (node == nullptr) {
+        return;
+    }
+    print(node->right, indent + 4);
+
+    for (int i = 0; i < indent; ++i) {
+        std::cout << ' ';
+    }
+    std::cout << node->value << std::endl;
+    print(node->left, indent + 4);
 }

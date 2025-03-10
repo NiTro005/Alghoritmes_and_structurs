@@ -10,11 +10,11 @@ TEST(TBinSearchTreeTest, InsertAndSearch) {
     tree.insert(6);
     tree.insert(11);
 
-    EXPECT_EQ(tree.search(10)->value, 10);
-    EXPECT_EQ(tree.search(5)->value, 5);
-    EXPECT_EQ(tree.search(15)->value, 15);
-    EXPECT_EQ(tree.search(6)->value, 6);
-    EXPECT_EQ(tree.search(11)->value, 11);
+    EXPECT_EQ(tree.search(10)->get_value(), 10);
+    EXPECT_EQ(tree.search(5)->get_value(), 5);
+    EXPECT_EQ(tree.search(15)->get_value(), 15);
+    EXPECT_EQ(tree.search(6)->get_value(), 6);
+    EXPECT_EQ(tree.search(11)->get_value(), 11);
 }
 
 TEST(TBinSearchTreeTest, EraseLeafNode) {
@@ -25,10 +25,10 @@ TEST(TBinSearchTreeTest, EraseLeafNode) {
     tree.insert(3);
 
     tree.erase(3);
-    EXPECT_EQ(tree.search(3)->value, 5);
-    EXPECT_EQ(tree.search(5)->value, 5);
-    EXPECT_EQ(tree.search(10)->value, 10);
-    EXPECT_EQ(tree.search(15)->value, 15);
+    EXPECT_EQ(tree.search(3)->get_value(), 5);
+    EXPECT_EQ(tree.search(5)->get_value(), 5);
+    EXPECT_EQ(tree.search(10)->get_value(), 10);
+    EXPECT_EQ(tree.search(15)->get_value(), 15);
 }
 
 TEST(TBinSearchTreeTest, EraseNodeWithLeftChild) {
@@ -39,9 +39,9 @@ TEST(TBinSearchTreeTest, EraseNodeWithLeftChild) {
 
     tree.erase(5);
 
-    EXPECT_EQ(tree.search(5)->value, 3);
-    EXPECT_EQ(tree.search(3)->value, 3);
-    EXPECT_EQ(tree.search(10)->value, 10);
+    EXPECT_EQ(tree.search(5)->get_value(), 3);
+    EXPECT_EQ(tree.search(3)->get_value(), 3);
+    EXPECT_EQ(tree.search(10)->get_value(), 10);
 }
 
 TEST(TBinSearchTreeTest, EraseNodeWithRightChild) {
@@ -52,9 +52,9 @@ TEST(TBinSearchTreeTest, EraseNodeWithRightChild) {
 
     tree.erase(5);
 
-    EXPECT_EQ(tree.search(5)->value, 7);
-    EXPECT_EQ(tree.search(7)->value, 7);
-    EXPECT_EQ(tree.search(10)->value, 10);
+    EXPECT_EQ(tree.search(5)->get_value(), 7);
+    EXPECT_EQ(tree.search(7)->get_value(), 7);
+    EXPECT_EQ(tree.search(10)->get_value(), 10);
 }
 
 TEST(TBinSearchTreeTest, EraseNodeWithTwoChildren) {
@@ -69,13 +69,13 @@ TEST(TBinSearchTreeTest, EraseNodeWithTwoChildren) {
 
     tree.erase(15);
 
-    EXPECT_EQ(tree.search(15)->value, 12);
-    EXPECT_EQ(tree.search(12)->value, 12);
-    EXPECT_EQ(tree.search(17)->value, 17);
-    EXPECT_EQ(tree.search(10)->value, 10);
-    EXPECT_EQ(tree.search(5)->value, 5);
-    EXPECT_EQ(tree.search(3)->value, 3);
-    EXPECT_EQ(tree.search(7)->value, 7);
+    EXPECT_EQ(tree.search(15)->get_value(), 12);
+    EXPECT_EQ(tree.search(12)->get_value(), 12);
+    EXPECT_EQ(tree.search(17)->get_value(), 17);
+    EXPECT_EQ(tree.search(10)->get_value(), 10);
+    EXPECT_EQ(tree.search(5)->get_value(), 5);
+    EXPECT_EQ(tree.search(3)->get_value(), 3);
+    EXPECT_EQ(tree.search(7)->get_value(), 7);
 }
 
 TEST(TBinSearchTreeTest, EraseRootNode) {
@@ -86,9 +86,23 @@ TEST(TBinSearchTreeTest, EraseRootNode) {
 
     tree.erase(10);
 
-    EXPECT_EQ(tree.search(10)->value, 5);
-    EXPECT_EQ(tree.search(5)->value, 5);
-    EXPECT_EQ(tree.search(15)->value, 15);
+    EXPECT_EQ(tree.search(10)->get_value(), 5);
+    EXPECT_EQ(tree.search(5)->get_value(), 5);
+    EXPECT_EQ(tree.search(15)->get_value(), 15);
+}
+
+TEST(TBinSearchTreeTest, EraseFromMidle) {
+    TBinSearchTree<int> tree;
+    tree.insert(10);
+    tree.insert(5);
+    tree.insert(15);
+    tree.insert(3);
+    tree.insert(7);
+    tree.insert(17);
+    tree.insert(20);
+
+    tree.erase(15);
+    EXPECT_EQ(tree.search(15)->get_value(), 17);
 }
 
 TEST(TBinSearchTreeTest, EraseNonExistentValue) {
