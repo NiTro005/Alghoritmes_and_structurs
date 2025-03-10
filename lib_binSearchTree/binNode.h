@@ -8,8 +8,8 @@ class TBinNode {
     T value;
     TBinNode<T>* left;
     TBinNode<T>* right;
- public:
 
+ public:
     TBinNode() = default;
     explicit TBinNode(T value, TBinNode<T>* left = nullptr,
         TBinNode<T>* right = nullptr);
