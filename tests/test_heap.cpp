@@ -113,18 +113,17 @@ TEST(HeapTest, ComplexOperationSequence) {
     EXPECT_EQ(heap.remove(), 1);
 }
 
-//TEST(HeapTest, HeapifyAfterConstruction) {
-//    // Проверяем корректность работы конструктора с массивом
-//    int data[] = { 3, 1, 4, 1, 5, 9 };
-//    Heap<int> heap(6, data, MAX);
-//
-//    EXPECT_EQ(heap.remove(), 9);
-//    EXPECT_EQ(heap.remove(), 5);
-//    EXPECT_EQ(heap.remove(), 4);
-//    EXPECT_EQ(heap.remove(), 3);
-//    EXPECT_EQ(heap.remove(), 1);
-//    EXPECT_EQ(heap.remove(), 1);
-//}
+TEST(HeapTest, HeapifyAfterConstruction) {
+    int data[] = { 3, 1, 4, 1, 5, 9 };
+    Heap<int> heap(6, data, MAX);
+
+    EXPECT_EQ(heap.remove(), 9);
+    EXPECT_EQ(heap.remove(), 5);
+    EXPECT_EQ(heap.remove(), 4);
+    EXPECT_EQ(heap.remove(), 3);
+    EXPECT_EQ(heap.remove(), 1);
+    EXPECT_EQ(heap.remove(), 1);
+}
 
 TEST(HeapTest, EmplaceWithinCapacity) {
     Heap<int> heap(3, MAX);

@@ -33,13 +33,24 @@ class Heap {
 
     void heapify() noexcept;
     void sift_down(size_t index) noexcept;
-    void sift_up(size_t index ) noexcept;
+    void sift_up(size_t index) noexcept;
 };
 
 template<class TVal>
 Heap<TVal>::Heap(size_t size, Type type) : _data(new TVal[size]),
 _capacity(size), _size(0) {
     _comp = (type == MAX) ? &greater : &less;
+}
+
+template<class TVal>
+Heap<TVal>::Heap(size_t size, const TVal* data, Type type)
+    : _data(new TVal[size]), _capacity(size), _size(size),
+    _comp(type == MAX ? &greater : &less)
+{
+    for (size_t i = 0; i < size; ++i) {
+        _data[i] = data[i];
+    }
+    heapify();
 }
 
 template<class TVal>
@@ -112,6 +123,16 @@ inline bool Heap<TVal>::less(const TVal& a, const TVal& b) {
 template<class TVal>
 inline bool Heap<TVal>::greater(const TVal& a, const TVal& b) {
     return a > b;
+}
+
+template<class TVal>
+void Heap<TVal>::heapify() noexcept {
+    if (_size == 0) return;
+
+    for (size_t i = parent(_size - 1); i > 0; --i) {
+        sift_down(i);
+    }
+    sift_down(0);
 }
 
 template<class TVal>
