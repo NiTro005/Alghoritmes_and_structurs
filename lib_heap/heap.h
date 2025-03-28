@@ -11,11 +11,11 @@ class Heap {
     size_t _capacity, _size;
 
     bool (*_comp)(const TVal& val1, const TVal& val2);
-public:
+ public:
     Heap(size_t size = 0, Type type = MAX);
     Heap(size_t size, const TVal* data, Type type = MAX);
 
-    inline size_t lelt(size_t index) const;
+    inline size_t left(size_t index) const;
     inline size_t right(size_t index) const;
     inline size_t parent(size_t index) const;
     inline bool is_empty() const noexcept;
@@ -24,13 +24,14 @@ public:
     void emplace(size_t index, TVal value);
     inline TVal top() const;
     TVal remove();
-private:
+
+ private:
     static bool less(const TVal& a, const TVal& b);
     static bool greater(const TVal& a, const TVal& b);
 
     void heapify() noexcept;
-    void sift_down(size_t) noexcept;
-    void sift_up(size_t) noexcept;
+    void sift_down(size_t index) noexcept;
+    void sift_up(size_t index ) noexcept;
 };
 
 template<class TVal>
@@ -40,7 +41,7 @@ _capacity(size), _size(0) {
 }
 
 template<class TVal>
-inline size_t Heap<TVal>::lelt(size_t index) const {
+inline size_t Heap<TVal>::left(size_t index) const {
     return index * 2 + 1;
 }
 
@@ -72,6 +73,16 @@ inline TVal Heap<TVal>::top() const {
 }
 
 template<class TVal>
+TVal Heap<TVal>::remove() {
+    if (is_empty()) throw std::logic_error("heap is empty");
+    TVal value = _data[0];
+    _data[0] = _data[_size - 1];
+    _size--;
+    if (_size > 0) sift_down(0);
+    return value;
+}
+
+template<class TVal>
 inline bool Heap<TVal>::less(const TVal& a, const TVal& b) {
     return a < b;
 }
@@ -79,6 +90,30 @@ inline bool Heap<TVal>::less(const TVal& a, const TVal& b) {
 template<class TVal>
 inline bool Heap<TVal>::greater(const TVal& a, const TVal& b) {
     return a > b;
+}
+
+template<class TVal>
+void Heap<TVal>::sift_down(size_t index) noexcept {
+    size_t extremum = index;
+    size_t child;
+
+    while (true) {
+        size_t left_child = left(index);
+        size_t right_child = right(index);
+
+        if (left_child < _size && _comp(_data[left_child], _data[extremum])) {
+            extremum = left_child;
+        }
+        if (right_child < _size && _comp(_data[right_child], _data[extremum])) {
+            extremum = right_child;
+        }
+        if (extremum == index) {
+            break;
+        }
+
+        std::swap(_data[index], _data[extremum]);
+        index = extremum;
+    }
 }
 
 template<class TVal>
