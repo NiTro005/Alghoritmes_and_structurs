@@ -60,6 +60,13 @@ inline bool Heap<TVal>::is_empty() const noexcept {
 }
 
 template<class TVal>
+void Heap<TVal>::insert(TVal value) noexcept {
+    _data[_size] = value;
+    sift_up(_size);
+    _size++;
+}
+
+template<class TVal>
 inline TVal Heap<TVal>::top() const {
     return _data[0];
 }
@@ -72,4 +79,17 @@ inline bool Heap<TVal>::less(const TVal& a, const TVal& b) {
 template<class TVal>
 inline bool Heap<TVal>::greater(const TVal& a, const TVal& b) {
     return a > b;
+}
+
+template<class TVal>
+void Heap<TVal>::sift_up(size_t index) noexcept {
+    while (index > 0) {
+        size_t par = parent(index);
+        if (_comp(_data[index], _data[par])) {
+            std::swap(_data[index], _data[par]);
+            index = par;
+        } else {
+            break;
+        }
+    }
 }
