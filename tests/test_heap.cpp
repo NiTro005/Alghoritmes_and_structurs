@@ -125,3 +125,32 @@ TEST(HeapTest, ComplexOperationSequence) {
 //    EXPECT_EQ(heap.remove(), 1);
 //    EXPECT_EQ(heap.remove(), 1);
 //}
+
+TEST(HeapTest, EmplaceWithinCapacity) {
+    Heap<int> heap(3, MAX);
+    heap.emplace(0, 5);
+    heap.emplace(1, 3);
+    heap.emplace(2, 8);
+
+    EXPECT_EQ(heap.top(), 8);
+}
+
+TEST(HeapTest, EmplaceOverCapacityThrows) {
+    Heap<int> heap(2, MAX);
+    heap.emplace(0, 1);
+    heap.emplace(1, 2);
+
+    ASSERT_ANY_THROW(heap.emplace(2, 3));
+}
+
+TEST(HeapTest, EmplaceReplaceMaintainsHeap) {
+    Heap<int> heap(3, MAX);
+    heap.insert(10);
+    heap.insert(8);
+    heap.insert(7);
+
+    heap.emplace(1, 12);
+    EXPECT_EQ(heap.remove(), 12);
+    EXPECT_EQ(heap.remove(), 10);
+    EXPECT_EQ(heap.remove(), 7);
+}

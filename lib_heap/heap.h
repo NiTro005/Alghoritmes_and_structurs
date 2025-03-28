@@ -1,6 +1,7 @@
 // Copyright 2024 Kita Trofimov
 #pragma once
 #include <iostream>
+#include <utility>
 #include "../lib_dmassive/archive.h"
 
 enum Type { MIN, MAX };
@@ -11,8 +12,9 @@ class Heap {
     size_t _capacity, _size;
 
     bool (*_comp)(const TVal& val1, const TVal& val2);
+
  public:
-    Heap(size_t size = 0, Type type = MAX);
+    explicit Heap(size_t size = 0, Type type = MAX);
     Heap(size_t size, const TVal* data, Type type = MAX);
 
     inline size_t left(size_t index) const;
@@ -21,7 +23,7 @@ class Heap {
     inline bool is_empty() const noexcept;
     void insert(TVal value) noexcept;
 
-    void emplace(size_t index, TVal value);
+    void emplace(size_t index, const TVal& value);
     inline TVal top() const;
     TVal remove();
 
@@ -65,6 +67,26 @@ void Heap<TVal>::insert(TVal value) noexcept {
     _data[_size] = value;
     sift_up(_size);
     _size++;
+}
+
+template<class TVal>
+void Heap<TVal>::emplace(size_t index, const TVal& value) {
+    if (index >= _capacity) {
+        throw std::out_of_range("Index exceeds heap capacity");
+    }
+
+    if (index < _size) {
+        _data[index] = value;
+        if (index > 0 && _comp(_data[index], _data[parent(index)])) {
+            sift_up(index);
+        } else {
+            sift_down(index);
+        }
+    } else if (index == _size) {
+        insert(value);
+    } else {
+        throw std::logic_error("Cannot emplace with index > current size");
+    }
 }
 
 template<class TVal>
