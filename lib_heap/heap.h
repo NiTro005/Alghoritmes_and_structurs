@@ -3,13 +3,17 @@
 #include <iostream>
 #include "../lib_dmassive/archive.h"
 
+enum Type { MIN, MAX };
+
 template <class TVal>
 class Heap {
     TVal* _data;
     size_t _capacity, _size;
+
+    bool (*_comp)(const TVal& val1, const TVal& val2);
 public:
-    Heap(size_t size = 0);
-    Heap(size_t, const TVal*);
+    Heap(size_t size = 0, Type type = MAX);
+    Heap(size_t size, const TVal* data, Type type = MAX);
 
     inline size_t lelt(size_t index) const;
     inline size_t right(size_t index) const;
@@ -21,8 +25,51 @@ public:
     inline TVal top() const;
     TVal remove();
 private:
-    void max_heapify() noexcept;
-    void min_heapify() noexcept;
+    static bool less(const TVal& a, const TVal& b);
+    static bool greater(const TVal& a, const TVal& b);
+
+    void heapify() noexcept;
     void sift_down(size_t) noexcept;
     void sift_up(size_t) noexcept;
 };
+
+template<class TVal>
+Heap<TVal>::Heap(size_t size, Type type) : _data(new TVal[size]),
+_capacity(size), _size(0) {
+    _comp = (type == MAX) ? &greater : &less;
+}
+
+template<class TVal>
+inline size_t Heap<TVal>::lelt(size_t index) const {
+    return index * 2 + 1;
+}
+
+template<class TVal>
+inline size_t Heap<TVal>::right(size_t index) const {
+    return index * 2 + 2;
+}
+
+template<class TVal>
+inline size_t Heap<TVal>::parent(size_t index) const {
+    return (index - 1) / 2;
+}
+
+template<class TVal>
+inline bool Heap<TVal>::is_empty() const noexcept {
+    return _size == 0;
+}
+
+template<class TVal>
+inline TVal Heap<TVal>::top() const {
+    return _data[0];
+}
+
+template<class TVal>
+inline bool Heap<TVal>::less(const TVal& a, const TVal& b) {
+    return a < b;
+}
+
+template<class TVal>
+inline bool Heap<TVal>::greater(const TVal& a, const TVal& b) {
+    return a > b;
+}
