@@ -20,6 +20,8 @@ add_subdirectory(lib_dsu)
 
 add_subdirectory(lib_itable)
 
+add_subdirectory(lib_heap)
+
 add_subdirectory(lib_unsort_table)
 
 add_subdirectory(lib_sorted_table)
