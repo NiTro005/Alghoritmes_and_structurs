@@ -45,8 +45,7 @@ _capacity(size), _size(0) {
 template<class TVal>
 Heap<TVal>::Heap(size_t size, const TVal* data, Type type)
     : _data(new TVal[size]), _capacity(size), _size(size),
-    _comp(type == MAX ? &greater : &less)
-{
+    _comp(type == MAX ? &greater : &less) {
     for (size_t i = 0; i < size; ++i) {
         _data[i] = data[i];
     }
