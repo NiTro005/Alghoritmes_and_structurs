@@ -4,10 +4,45 @@
 #include "../lib_stack/stack.h"
 #include "../lib_list/tlist.h"
 #include "../lib_list/tnode.h"
+#include "../lib_heap/heap.h"
+
 bool IsCorrect(const CString& str);
 template<typename T>
 bool RabbitTurtleCycleList(const TList<T>& list);
 template bool RabbitTurtleCycleList<int>(const TList<int>& list);
+
+template<typename T>
+void heapSort(T* array, size_t n, size_t k) {
+    Heap<T> heap(k + 1, MIN);
+    for (size_t i = 0; i <= k && i < n; ++i) {
+        heap.insert(array[i]);
+    }
+    size_t j = 0;
+
+    for (size_t i = k + 1; i < n; ++i) {
+        array[j++] = heap.remove();
+        heap.insert(array[i]);
+    }
+
+    while (!heap.is_empty()) {
+        array[j++] = heap.remove();
+    }
+}
+
+template<typename T>
+void insertionSortK(T* array, size_t n, size_t k) {
+    for (size_t i = 1; i < n; ++i) {
+        T key = array[i];
+        size_t j = i;
+
+        size_t start = (i > k) ? i - k : 0;
+        while (j > start && array[j - 1] > key) {
+            array[j] = array[j - 1];
+            j--;
+        }
+        array[j] = key;
+    }
+}
 
 template <class T>
 void link_lists(TList<T>& first, TList<T>& sec) {  // NOLINT(runtime/references)

@@ -6,6 +6,7 @@
 
 #include "../lib_list/tlist.h"
 #include "../lib_list/tnode.h"
+#include "../lib_heap/heap.h"
 
 
 template <typename T>
@@ -165,5 +166,17 @@ TEST(LinkListsTest, SecondListAppendedToEnd) {
     for (auto it = list1.begin(); it != list1.end(); it++) {
         EXPECT_EQ(*it, *l3);
         l3++;
+    }
+}
+
+TEST(TestSortHeap, test_on_correct_sort) {
+    size_t n = 7, k = 3;
+    int mass[] = { 6, 5, 3, 2, 8, 10, 9 };
+
+    heapSort(mass, n, k);
+
+    int expected[] = { 2, 3, 5, 6, 8, 9, 10 };
+    for (size_t i = 0; i < n; ++i) {
+        EXPECT_EQ(mass[i], expected[i]);
     }
 }

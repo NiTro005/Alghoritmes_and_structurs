@@ -1,12 +1,14 @@
 // Copyright 2024 Marina Usova
 #include <stdlib.h>
 #include <time.h>
+#include <algorithm>
+#include <memory>
 #include <iostream>
 #include <ctime>
 #include <cstdint>
 #include <random>
 
-#define BINTREE
+#define COMPARESORT
 
 #ifdef EASY_EXAMPLE
 #include <iomanip>
@@ -376,3 +378,64 @@ int main() {
     }
 
 #endif  // BINTREE
+
+#ifdef COMPARESORT
+#include "../lib_parser/parser.h"
+
+    template<typename T>
+    std::unique_ptr<T[]> createPartiallySortedArray(size_t n, size_t k) {
+        if (n == 0) return nullptr;
+
+        std::unique_ptr<T[]> arr(new T[n]);
+        for (size_t i = 0; i < n; ++i) {
+            arr[i] = static_cast<T>(i);
+        }
+
+        std::random_device rd;
+        std::mt19937 gen(rd());
+
+        for (size_t i = 0; i < n; ++i) {
+            size_t left = (i > k) ? i - k : 0;
+            size_t right = (i + k < n) ? i + k : n - 1;
+
+            std::uniform_int_distribution<size_t> dist(left, right);
+            std::swap(arr[i], arr[dist(gen)]);
+        }
+
+        return arr;
+    }
+
+#include <iostream>
+#include <ctime>
+#include <memory>
+
+    int main() {
+        size_t n, k;
+
+        std::cout << "Enter array size (n): ";
+        std::cin >> n;
+        std::cout << "Enter k (max displacement): ";
+        std::cin >> k;
+
+        auto arr1 = createPartiallySortedArray<int>(n, k);
+        auto arr2 = std::make_unique<int[]>(n);
+        for (size_t i = 0; i < n; ++i) {
+            arr2[i] = arr1[i];
+        }
+
+        clock_t start = clock();
+        heapSort(arr1.get(), n, k);
+        double heap_time = static_cast<double>(clock() - start) / CLOCKS_PER_SEC;
+
+        start = clock();
+        insertionSortK(arr2.get(), n, k);
+        double insertion_time = static_cast<double>(clock() - start) / CLOCKS_PER_SEC;
+
+        std::cout << "\nResults:\n";
+        std::cout << "HeapSort time: " << heap_time << " sec\n";
+        std::cout << "InsertionSort time: " << insertion_time << " sec\n";
+        std::cout << "Difference: " << (insertion_time - heap_time) << " sec\n";
+
+        return 0;
+    }
+#endif  // COMPARESORT
