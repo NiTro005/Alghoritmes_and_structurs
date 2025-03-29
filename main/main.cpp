@@ -3,6 +3,7 @@
 #include <time.h>
 #include <algorithm>
 #include <memory>
+#include <utility>
 #include <iostream>
 #include <ctime>
 #include <cstdint>
@@ -405,10 +406,6 @@ int main() {
         return arr;
     }
 
-#include <iostream>
-#include <ctime>
-#include <memory>
-
     int main() {
         size_t n, k;
 
@@ -425,11 +422,13 @@ int main() {
 
         clock_t start = clock();
         heapSort(arr1.get(), n, k);
-        double heap_time = static_cast<double>(clock() - start) / CLOCKS_PER_SEC;
+        double heap_time = static_cast<double>
+            (clock() - start) / CLOCKS_PER_SEC;
 
         start = clock();
         insertionSortK(arr2.get(), n, k);
-        double insertion_time = static_cast<double>(clock() - start) / CLOCKS_PER_SEC;
+        double insertion_time = static_cast<double>
+            (clock() - start) / CLOCKS_PER_SEC;
 
         std::cout << "\nResults:\n";
         std::cout << "HeapSort time: " << heap_time << " sec\n";
