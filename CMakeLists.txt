@@ -28,6 +28,8 @@ add_subdirectory(lib_sorted_table)
 
 add_subdirectory(lib_binSearchTree)
 
+add_subdirectory(lib_hash_table)
+
 add_subdirectory(lib_string)
 
 add_subdirectory(lib_list)

@@ -126,7 +126,7 @@ inline bool Heap<TVal>::greater(const TVal& a, const TVal& b) {
 
 template<class TVal>
 void Heap<TVal>::heapify() noexcept {
-    if (_size == 0) return;
+    if (is_empty()) return;
 
     for (size_t i = parent(_size - 1); i > 0; --i) {
         sift_down(i);
@@ -137,8 +137,6 @@ void Heap<TVal>::heapify() noexcept {
 template<class TVal>
 void Heap<TVal>::sift_down(size_t index) noexcept {
     size_t extremum = index;
-    size_t child;
-
     while (true) {
         size_t left_child = left(index);
         size_t right_child = right(index);
