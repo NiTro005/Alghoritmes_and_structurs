@@ -29,7 +29,7 @@ class HashTable {
      HashTable& operator=(const HashTable&) = delete;
 
      void insert(Tkey key, Tval val) { _strategy->insert(key, val); }
-     void erase(Tkey key) { _strategy->erase(key); }
+     void erase(Tkey key) { _strategy->remove(key); }
      Tval find(Tkey key) { return _strategy->find(key); }
      Tval operator[](Tkey key) { return (*_strategy)[key]; }
 };
