@@ -5,11 +5,29 @@
 #include "../lib_list/tlist.h"
 #include "../lib_list/tnode.h"
 #include "../lib_heap/heap.h"
+#include "../lib_dsu/dsu.h"
 
 bool IsCorrect(const CString& str);
 template<typename T>
 bool RabbitTurtleCycleList(const TList<T>& list);
 template bool RabbitTurtleCycleList<int>(const TList<int>& list);
+
+class Maze {
+ private:
+    int rows, cols;
+    int** walls_h;
+    int** walls_v;
+    DSU dsu;
+
+    int toIndex(int x, int y) const;
+    void shuffle(int* array, int n);
+
+ public:
+    Maze(int r, int c);
+    ~Maze();
+    void generateMaze();
+    void printMaze() const ;
+};
 
 template<typename T>
 void heapSort(T* array, size_t n, size_t k) {

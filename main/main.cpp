@@ -9,7 +9,7 @@
 #include <cstdint>
 #include <random>
 
-#define COMPARESORT
+#define LABIRINT
 
 #ifdef EASY_EXAMPLE
 #include <iomanip>
@@ -438,3 +438,11 @@ int main() {
         return 0;
     }
 #endif  // COMPARESORT
+#ifdef LABIRINT
+#include "../lib_parser/parser.h"
+    int main() {
+        Maze lab(10, 20);
+        lab.printMaze();
+        return 0;
+    }
+#endif  // LABIRINT
