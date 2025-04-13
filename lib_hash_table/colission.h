@@ -114,7 +114,13 @@ void OpenAddressColission<Tkey, Tval>::insert(Tkey key, Tval val) {
 
 template<class Tkey, class Tval>
 void OpenAddressColission<Tkey, Tval>::remove(Tkey key) {
-
+    if (!isEmpty()) {
+        size_t hash = findHash(key);
+        array[hash]._state = Node::deleted;
+        _size--;
+    } else {
+        throw std::logic_error("array is empty");
+    }
 }
 
 template<class Tkey, class Tval>
@@ -153,11 +159,15 @@ size_t OpenAddressColission<Tkey, Tval>::probe(size_t hash, size_t shift) const 
 template<class Tkey, class Tval>
 size_t OpenAddressColission<Tkey, Tval>::findHash(Tkey key) {
     size_t hash = hashCode(key);
-    if (array[hash].data == key) return hash;
-    while (array[hash]._state != Node::empty) {
-        if (array[hash].data == key) return hash;
+    size_t start_hash = hash;
+    do {
+        if (array[hash].data == key) {
+            if (array[hash]._state == Node::deleted) return NULL;
+            return hash;
+        }
         hash = probe(hash);
-    }
+    } while (array[hash]._state != Node::empty || hash == start_hash);
+
     return NULL;
 }
 
