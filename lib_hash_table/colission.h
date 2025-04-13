@@ -55,7 +55,7 @@ class ChainStrategyColission : public IColission<Tkey, Tval> {
     struct Node {
         TPair<Tkey, Tval> data;
         Node* next = nullptr;
-        Node(const TPair<Tkey, Tval>& data) : data(data) {}
+        explicit Node(const TPair<Tkey, Tval>& data) : data(data) {}
         Node() = default;
     };
     Node* array[CAPACITY];
@@ -154,7 +154,8 @@ const noexcept {
 }
 
 template<class Tkey, class Tval>
-size_t OpenAddressColission<Tkey, Tval>::probe(size_t hash, size_t shift) const {
+size_t OpenAddressColission<Tkey, Tval>::probe
+(size_t hash, size_t shift) const {
     return (hash + shift) & (CAPACITY - 1);
 }
 

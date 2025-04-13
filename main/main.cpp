@@ -382,7 +382,6 @@ int main() {
 #endif  // BINTREE
 
 #ifdef COMPARESORT
-#include "../lib_parser/parser.h"
 
     template<typename T>
     std::unique_ptr<T[]> createPartiallySortedArray(size_t n, size_t k) {
