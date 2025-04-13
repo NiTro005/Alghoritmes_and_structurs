@@ -27,7 +27,7 @@ class IColission {
 template <class Tkey, class Tval>
 class OpenAddressColission : public IColission<Tkey, Tval>{
     struct Node {
-        enum state { deleted, busy, empty }; 
+        enum state { deleted, busy, empty };
         state _state = empty;
         TPair<Tkey, Tval> data;
     };
@@ -39,13 +39,13 @@ class OpenAddressColission : public IColission<Tkey, Tval>{
      void insert(Tkey key, Tval val) override;
      void remove(Tkey key) override;
      Tval find(Tkey key) override;
-     size_t search(Tkey key) override;
      Tval operator[](Tkey key) override;
      ~OpenAddressColission() override = default;
      bool isFull() const noexcept;
      bool isEmpty() const noexcept;
 
  private:
+     size_t search(Tkey key) override;
      size_t probe(size_t hash, size_t shift = 31) const;
      size_t findHash(Tkey key);
 };
@@ -53,8 +53,10 @@ class OpenAddressColission : public IColission<Tkey, Tval>{
 template <class Tkey, class Tval>
 class ChainStrategyColission : public IColission<Tkey, Tval> {
     struct Node {
-        TPair<Tkey, Tval> date;
+        TPair<Tkey, Tval> data;
         Node* next = nullptr;
+        Node(const TPair<Tkey, Tval>& data) : data(data) {}
+        Node() = default;
     };
     Node* array[CAPACITY];
 
@@ -64,25 +66,25 @@ class ChainStrategyColission : public IColission<Tkey, Tval> {
      void insert(Tkey key, Tval val) override;
      void remove(Tkey key) override;
      Tval find(Tkey key) override;
-     size_t search(Tkey key) override;
+
      Tval operator[](Tkey key) override;
      ~ChainStrategyColission() override;
+ private:
+     size_t search(Tkey key) override;
 };
 
 template <class Tkey, class Tval>
 size_t IColission<Tkey, Tval>::hashCode(Tkey key) {
     if constexpr (sizeof(Tkey) <= sizeof(size_t)) {
         return static_cast<size_t>(key) % CAPACITY;
-    }
-    else if constexpr (std::is_same_v<Tkey, std::string>) {
+    } else if constexpr (std::is_same_v<Tkey, std::string>) {
         const std::string& s = key;
         size_t sum = 0;
         for (char c : s) {
             sum += static_cast<unsigned char>(c);
         }
         return sum % CAPACITY;
-    }
-    else {
+    } else {
         size_t sum = 0;
         const unsigned char* p = reinterpret_cast<const unsigned char*>(&key);
         for (size_t i = 0; i < sizeof(Tkey); i++) {
@@ -172,34 +174,80 @@ size_t OpenAddressColission<Tkey, Tval>::findHash(Tkey key) {
 }
 
 template<class Tkey, class Tval>
-inline void ChainStrategyColission<Tkey, Tval>::insert(Tkey key, Tval val)
-{
+void ChainStrategyColission<Tkey, Tval>::insert(Tkey key, Tval val) {
+    size_t hash = search(key);
+    Node* current = array[hash];
+
+    while (current != nullptr) {
+        if (current->data.first() == key) {
+            current->data.set_second(val);
+            return;
+        }
+        current = current->next;
+    }
+
+    Node* newNode = new Node(TPair<Tkey, Tval>(key, val));
+    newNode->next = array[hash];
+    array[hash] = newNode;
 }
 
 template<class Tkey, class Tval>
-inline void ChainStrategyColission<Tkey, Tval>::remove(Tkey key)
-{
+void ChainStrategyColission<Tkey, Tval>::remove(Tkey key) {
+    size_t hash = search(key);
+    Node* current = array[hash];
+    Node* prev = nullptr;
+
+    while (current != nullptr) {
+        if (current->data.first() == key) {
+            if (prev == nullptr) {
+                array[hash] = current->next;
+            } else {
+                prev->next = current->next;
+            }
+            delete current;
+            return;
+        }
+        prev = current;
+        current = current->next;
+    }
+
+    throw std::logic_error("Key not found");
 }
 
 template<class Tkey, class Tval>
-inline Tval ChainStrategyColission<Tkey, Tval>::find(Tkey key)
-{
-    return Tval();
+Tval ChainStrategyColission<Tkey, Tval>::find(Tkey key) {
+    size_t hash = search(key);
+    Node* current = array[hash];
+
+    while (current != nullptr) {
+        if (current->data.first() == key) {
+            return current->data.second();
+        }
+        current = current->next;
+    }
+
+    throw std::logic_error("Key not found");
 }
 
 template<class Tkey, class Tval>
-inline size_t ChainStrategyColission<Tkey, Tval>::search(Tkey key)
-{
-    return size_t();
+inline size_t ChainStrategyColission<Tkey, Tval>::search(Tkey key) {
+    return hashCode(key);
 }
 
 template<class Tkey, class Tval>
-inline Tval ChainStrategyColission<Tkey, Tval>::operator[](Tkey key)
-{
-    return Tval();
+inline Tval ChainStrategyColission<Tkey, Tval>::operator[](Tkey key) {
+    return find(key);
 }
 
 template<class Tkey, class Tval>
-inline ChainStrategyColission<Tkey, Tval>::~ChainStrategyColission()
-{
+ChainStrategyColission<Tkey, Tval>::~ChainStrategyColission() {
+    for (size_t i = 0; i < CAPACITY; ++i) {
+        Node* current = array[i];
+        while (current != nullptr) {
+            Node* next = current->next;
+            delete current;
+            current = next;
+        }
+        array[i] = nullptr;
+    }
 }

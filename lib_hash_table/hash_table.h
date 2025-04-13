@@ -11,7 +11,7 @@ class HashTable {
     IColission<Tkey, Tval>* _strategy = nullptr;
 
  public:
-     HashTable(typeColission type) {
+     explicit HashTable(typeColission type) {
          switch (type) {
          case OpenAddress:
              _strategy = new OpenAddressColission<Tkey, Tval>();

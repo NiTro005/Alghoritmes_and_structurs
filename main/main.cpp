@@ -8,6 +8,7 @@
 #include <ctime>
 #include <cstdint>
 #include <random>
+#include "../lib_parser/parser.h"
 
 #define LABIRINT
 
@@ -439,7 +440,6 @@ int main() {
     }
 #endif  // COMPARESORT
 #ifdef LABIRINT
-#include "../lib_parser/parser.h"
     int main() {
         Maze lab(10, 20);
         lab.printMaze();

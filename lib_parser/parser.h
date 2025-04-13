@@ -26,7 +26,7 @@ class Maze {
     Maze(int r, int c);
     ~Maze();
     void generateMaze();
-    void printMaze() const ;
+    void printMaze() const;
 };
 
 template<typename T>
