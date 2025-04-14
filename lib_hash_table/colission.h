@@ -54,9 +54,8 @@ template <class Tkey, class Tval>
 class ChainStrategyColission : public IColission<Tkey, Tval> {
     struct Node {
         TPair<Tkey, Tval> data;
-        Node* next = nullptr;
-        explicit Node(const TPair<Tkey, Tval>& data) : data(data) {}
-        Node() = default;
+        Node* next;
+        explicit Node(const TPair<Tkey, Tval>& data) : data(data), next(nullptr) {}
     };
     Node* array[CAPACITY];
 
@@ -103,7 +102,7 @@ template<class Tkey, class Tval>
 void OpenAddressColission<Tkey, Tval>::insert(Tkey key, Tval val) {
     if (!isFull()) {
         size_t hash = search(key);
-        if (hash != NULL) {
+        if (hash != CAPACITY) {
             array[hash].data = TPair<Tkey, Tval>(key, val);
             _size++;
         } else {
@@ -128,16 +127,18 @@ void OpenAddressColission<Tkey, Tval>::remove(Tkey key) {
 template<class Tkey, class Tval>
 Tval OpenAddressColission<Tkey, Tval>::find(Tkey key) {
     size_t hash = findHash(key);
-    if (hash == NULL) throw std::logic_error("no key");
+    if (hash == CAPACITY) throw std::logic_error("no key");
     return array[hash].data.second();
 }
 
 template<class Tkey, class Tval>
 size_t OpenAddressColission<Tkey, Tval>::search(Tkey key) {
     size_t hash = hashCode(key);
+    size_t first_hash = hash;
     while (array[hash]._state == Node::busy) {
         if (array[hash].data == key) return NULL;
         hash = probe(hash);
+        if (hash == first_hash) return NULL;
     }
     return hash;
 }
@@ -165,13 +166,13 @@ size_t OpenAddressColission<Tkey, Tval>::findHash(Tkey key) {
     size_t start_hash = hash;
     do {
         if (array[hash].data == key) {
-            if (array[hash]._state == Node::deleted) return NULL;
+            if (array[hash]._state == Node::deleted) return CAPACITY;
             return hash;
         }
         hash = probe(hash);
     } while (array[hash]._state != Node::empty || hash == start_hash);
 
-    return NULL;
+    return CAPACITY;
 }
 
 template<class Tkey, class Tval>
