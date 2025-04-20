@@ -55,7 +55,8 @@ class ChainStrategyColission : public IColission<Tkey, Tval> {
     struct Node {
         TPair<Tkey, Tval> data;
         Node* next;
-        explicit Node(const TPair<Tkey, Tval>& data) : data(data), next(nullptr) {}
+        explicit Node(const TPair<Tkey, Tval>& data) :
+            data(data), next(nullptr) {}
     };
     Node* array[CAPACITY];
 
