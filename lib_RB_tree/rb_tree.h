@@ -4,19 +4,20 @@
 #include <algorithm>
 #include "../lib_RB_tree/rb_tree.h"
 
+
 template <class T>
 class RBTree {
-    enum Color { RED, BLACK };
     struct RBNode {
+     public:
         T _val;
         RBNode* _left;
         RBNode* _right;
         RBNode* _parent;
-        Color _color;
+        bool _color;
 
-        RBNode(const T& val)
+        explicit RBNode(const T& val)
             : _val(val), _left(nullptr), _right(nullptr),
-            _parent(nullptr), _color(RED) {}
+            _parent(nullptr), _color(true) {}
 
         RBNode(const RBNode& node)
             : _val(node._val), _left(nullptr), _right(nullptr),
@@ -45,7 +46,7 @@ class RBTree {
     void transplant(RBNode* u, RBNode* v);
     RBNode* minimum(RBNode* node) const;
     RBNode* maximum(RBNode* node) const;
-    RBNode* search(RBNode* node, const T& val) const;
+    RBNode* search(const T& val) const;
     void printInOrder(RBNode* node) const;
     void deleteTree(RBNode* node);
     RBNode* copyTree(RBNode* node, RBNode* parent);
@@ -91,6 +92,35 @@ RBTree<T>::~RBTree() {
     deleteTree(root);
 }
 
+template<class T>
+void RBTree<T>::insert(const T& val) {
+    RBNode* leaf = new RBNode(val);
+    if (isEmpty()) {
+        leaf->_color = false;
+        root = leaf;
+        return;
+    }
+
+    RBNode* parent = search(val);
+    if (parent->_val == val) {
+        delete leaf;
+        throw std::logic_error("This value already exists");
+    }
+
+    leaf->_parent = parent;
+    if (val < parent->_val) {
+        parent->_left = leaf;
+    } else {
+        parent->_right = leaf;
+    }
+
+    if (parent->_color == false) {
+        return;
+    }
+
+    fixInsert(leaf);
+}
+
 template <typename T>
 void RBTree<T>::deleteTree(RBNode* node) {
     if (node == nullptr) return;
@@ -101,18 +131,32 @@ void RBTree<T>::deleteTree(RBNode* node) {
 
 template <typename T>
 bool RBTree<T>::contains(const T& val) const {
-    return search(root, val) != nullptr;
+    return search(val) != nullptr;
 }
 
 template <typename T>
 typename RBTree<T>::RBNode*
-RBTree<T>::search(RBNode* node, const T& val) const {
-    while (node != nullptr && node->_val != val) {
-        if (val < node->_val) {
-            node = node->_left;
-        } else {
-            node = node->_right;
+RBTree<T>::search(const T& val) const {
+    RBNode* current = root;
+    RBNode* parent = nullptr;
+
+    while (current != nullptr) {
+        if (current->_val == val) {
+            return current;
+        }
+        parent = current;
+        if (val < current->_val) {
+            current = current->_left;
+        }
+        else {
+            current = current->_right;
         }
     }
-    return node;
+
+    return parent;
+}
+
+template<class T>
+void RBTree<T>::fixInsert(RBNode* z) {
+
 }
