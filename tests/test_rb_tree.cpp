@@ -1,5 +1,6 @@
 // Copyright 2024 Kita Trofimov
 #include <gtest.h>
+#include <vector>
 #include <string>
 #include "../lib_RB_tree/rb_tree.h"
 
@@ -18,6 +19,7 @@ TEST(RBTreeTest, InsertMultipleElements) {
     tree.insert(5);
     tree.insert(15);
     tree.insert(25);
+
 
     EXPECT_TRUE(tree.validate());
     EXPECT_TRUE(tree.contains(10));

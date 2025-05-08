@@ -75,7 +75,8 @@ RBTree<T>& RBTree<T>::operator=(const RBTree& other) {
 }
 
 template <typename T>
-typename RBTree<T>::RBNode* RBTree<T>::copyTree(RBNode* node, RBNode* parent) {
+typename RBTree<T>::RBNode* RBTree<T>::copyTree
+(RBNode* node, RBNode* parent) {
     if (node == nullptr) {
         return nullptr;
     }
@@ -220,11 +221,9 @@ void RBTree<T>::leftRotate(RBNode* x) {
 
     if (x->_parent == nullptr) {
         root = y;
-    }
-    else if (x == x->_parent->_left) {
+    } else if (x == x->_parent->_left) {
         x->_parent->_left = y;
-    }
-    else {
+    } else {
         x->_parent->_right = y;
     }
 
@@ -245,11 +244,9 @@ void RBTree<T>::rightRotate(RBNode* y) {
 
     if (y->_parent == nullptr) {
         root = x;
-    }
-    else if (y == y->_parent->_right) {
+    } else if (y == y->_parent->_right) {
         y->_parent->_right = x;
-    }
-    else {
+    } else {
         y->_parent->_left = x;
     }
 
@@ -294,7 +291,8 @@ bool RBTree<T>::validate() const {
 }
 
 template <typename T>
-bool RBTree<T>::checkRedBlackProperties(RBNode* node, int currentBlackHeight, int& expectedBlackHeight) const {
+bool RBTree<T>::checkRedBlackProperties
+(RBNode* node, int currentBlackHeight, int& expectedBlackHeight) const {
     if (node == nullptr) {
         if (expectedBlackHeight == -1) {
             expectedBlackHeight = currentBlackHeight;
@@ -314,8 +312,10 @@ bool RBTree<T>::checkRedBlackProperties(RBNode* node, int currentBlackHeight, in
 
     int newBlackHeight = currentBlackHeight + (node->_color == false ? 1 : 0);
 
-    bool leftValid = checkRedBlackProperties(node->_left, newBlackHeight, expectedBlackHeight);
-    bool rightValid = checkRedBlackProperties(node->_right, newBlackHeight, expectedBlackHeight);
+    bool leftValid = checkRedBlackProperties
+    (node->_left, newBlackHeight, expectedBlackHeight);
+    bool rightValid = checkRedBlackProperties
+    (node->_right, newBlackHeight, expectedBlackHeight);
 
     return leftValid && rightValid;
 }
