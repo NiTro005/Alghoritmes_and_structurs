@@ -2,6 +2,7 @@
 #pragma once
 #include <iostream>
 #include <algorithm>
+#include <stack>
 #include "../lib_RB_tree/rb_tree.h"
 
 
@@ -46,13 +47,16 @@ class RBTree {
     void fixDelete(RBNode* x);
     void transplant(RBNode* u, RBNode* v);
     RBNode* minimum(RBNode* node) const;
-    RBNode* maximum(RBNode* node) const;
     RBNode* search(const T& val) const;
     void print(RBNode* node, int indent = 0) const;
     void deleteTree(RBNode* node);
     RBNode* copyTree(RBNode* node, RBNode* parent);
     bool checkRedBlackProperties
     (RBNode* node, int currentBlackHeight, int& expectedBlackHeight) const;
+    void fixDeleteLeftCase(RBNode*& x);
+    void fixDeleteRightCase(RBNode*& x);
+    bool validateRBProperties() const;
+    bool validateBSTProperties() const;
 };
 
 template <typename T>
@@ -125,6 +129,118 @@ void RBTree<T>::insert(const T& val) {
     fixInsert(leaf);
 }
 
+template<class T>
+void RBTree<T>::remove(const T& val) {
+    RBNode* z = search(val);
+    if (!z || z->_val != val) return;
+
+    RBNode* y = z;
+    bool yOriginalColor = y->_color;
+    RBNode* x = nullptr;
+
+    if (!z->_left) {
+        x = z->_right;
+        transplant(z, z->_right);
+    } else if (!z->_right) {
+        x = z->_left;
+        transplant(z, z->_left);
+    } else {
+        y = minimum(z->_right);
+        yOriginalColor = y->_color;
+        x = y->_right;
+
+        if (y->_parent != z) {
+            transplant(y, y->_right);
+            y->_right = z->_right;
+            y->_right->_parent = y;
+        }
+
+        transplant(z, y);
+        y->_left = z->_left;
+        y->_left->_parent = y;
+        y->_color = z->_color;
+    }
+    delete z;
+    if (yOriginalColor == false && x) {
+        fixDelete(x);
+    }
+}
+
+template<class T>
+void RBTree<T>::fixDelete(RBNode* x) {
+    while (x != root && x->_color == false) {
+        if (x == x->_parent->_left) {
+            fixDeleteLeftCase(x);
+        }
+        else {
+            fixDeleteRightCase(x);
+        }
+    }
+    x->_color = false;
+}
+
+template<class T>
+void RBTree<T>::fixDeleteLeftCase(RBNode*& x) {
+    RBNode* w = x->_parent->_right;
+
+    if (w->_color == true) {
+        w->_color = false;
+        x->_parent->_color = true;
+        leftRotate(x->_parent);
+        w = x->_parent->_right;
+    }
+
+    if ((w->_left == nullptr || w->_left->_color == false) &&
+        (w->_right == nullptr || w->_right->_color == false)) {
+        w->_color = true;
+        x = x->_parent;
+    } else {
+        if (w->_right == nullptr || w->_right->_color == false) {
+            if (w->_left) w->_left->_color = false;
+            w->_color = true;
+            rightRotate(w);
+            w = x->_parent->_right;
+        }
+
+        w->_color = x->_parent->_color;
+        x->_parent->_color = false;
+        if (w->_right) w->_right->_color = false;
+        leftRotate(x->_parent);
+        x = root;
+    }
+}
+
+template<class T>
+void RBTree<T>::fixDeleteRightCase(RBNode*& x) {
+    RBNode* w = x->_parent->_left;
+
+    if (w->_color == true) {
+        w->_color = false;
+        x->_parent->_color = true;
+        rightRotate(x->_parent);
+        w = x->_parent->_left;
+    }
+
+    if ((w->_right == nullptr || w->_right->_color == false) &&
+        (w->_left == nullptr || w->_left->_color == false)) {
+        w->_color = true;
+        x = x->_parent;
+    } else {
+        if (w->_left == nullptr || w->_left->_color == false) {
+            if (w->_right) w->_right->_color = false;
+            w->_color = true;
+            leftRotate(w);
+            w = x->_parent->_left;
+        }
+
+        w->_color = x->_parent->_color;
+        x->_parent->_color = false;
+        if (w->_left) w->_left->_color = false;
+        rightRotate(x->_parent);
+        x = root;
+    }
+}
+
 template <typename T>
 void RBTree<T>::deleteTree(RBNode* node) {
     if (node == nullptr) return;
@@ -135,7 +251,9 @@ void RBTree<T>::deleteTree(RBNode* node) {
 
 template <typename T>
 bool RBTree<T>::contains(const T& val) const {
-    return search(val) != nullptr;
+    RBNode* res = search(val);
+    if (!res || res->_val == val) return true;
+    return false;
 }
 
 template<class T>
@@ -156,8 +274,7 @@ RBTree<T>::search(const T& val) const {
         parent = current;
         if (val < current->_val) {
             current = current->_left;
-        }
-        else {
+        } else {
             current = current->_right;
         }
     }
@@ -268,8 +385,7 @@ void RBTree<T>::print(RBNode* node, int indent) const {
         std::cout << "\033[1;31m";
         std::cout << node->_val;
         std::cout << "\033[0m";
-    }
-    else {
+    } else {
         std::cout << node->_val;
     }
     print(node->_left, indent + 4);
@@ -277,17 +393,64 @@ void RBTree<T>::print(RBNode* node, int indent) const {
 
 template <typename T>
 bool RBTree<T>::validate() const {
+    if (!validateBSTProperties()) {
+        return false;
+    }
+    return validateRBProperties();
+}
+
+template <typename T>
+bool RBTree<T>::validateRBProperties() const {
     if (root == nullptr) {
         return true;
     }
 
     if (root->_color != false) {
-        std::cerr << "Violation: Root is not black" << std::endl;
+        std::cerr << "RB Violation: Root is not black" << std::endl;
         return false;
     }
 
     int blackHeight = -1;
     return checkRedBlackProperties(root, 0, blackHeight);
+}
+
+template <typename T>
+bool RBTree<T>::validateBSTProperties() const {
+    if (root == nullptr) {
+        return true;
+    }
+
+    T prev;
+    bool first = true;
+    bool valid = true;
+
+    std::stack<RBNode*> s;
+    RBNode* current = root;
+
+    while (current != nullptr || !s.empty()) {
+        while (current != nullptr) {
+            s.push(current);
+            current = current->_left;
+        }
+
+        current = s.top();
+        s.pop();
+
+        if (!first) {
+            if (current->_val <= prev) {
+                std::cerr << "BST Violation: Values not in order. "
+                    << prev << " >= " << current->_val << std::endl;
+                valid = false;
+            }
+        } else {
+            first = false;
+        }
+        prev = current->_val;
+
+        current = current->_right;
+    }
+
+    return valid;
 }
 
 template <typename T>
@@ -318,4 +481,20 @@ bool RBTree<T>::checkRedBlackProperties
     (node->_right, newBlackHeight, expectedBlackHeight);
 
     return leftValid && rightValid;
+}
+
+template <typename T>
+typename RBTree<T>::RBNode*
+RBTree<T>::minimum(RBNode* node) const {
+    while (node && node->_left) node = node->_left;
+    return node;
+}
+
+template <typename T>
+void RBTree<T>::transplant(RBNode* u, RBNode* v) {
+    if (!u->_parent) root = v;
+    else if (u == u->_parent->_left) u->_parent->_left = v;
+    else u->_parent->_right = v;
+
+    if (v) v->_parent = u->_parent;
 }
