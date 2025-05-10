@@ -249,7 +249,8 @@ TEST(RBTreeTest, RemoveWithComplexRebalance) {
     EXPECT_FALSE(tree.contains(10));
     EXPECT_TRUE(tree.validate());
 
-    std::vector<int> remaining = { 5,15,3,7,12,20,1,4,6,8,11,13,18,25 };
+    std::vector<int> remaining =
+    { 5, 15, 3, 7, 12, 20, 1, 4, 6, 8, 11, 13, 18, 25 };
     for (int val : remaining) {
         EXPECT_TRUE(tree.contains(val));
     }
@@ -295,7 +296,8 @@ TEST(RBTreeTest, RemoveWithAllCaseCoverage) {
 
     EXPECT_TRUE(tree.validate());
 
-    std::vector<int> remaining = { 5,15,27,33,35,38,45,50,55 };
+    std::vector<int> remaining =
+    { 5, 15, 27, 33, 35, 38, 45, 50, 55 };
     for (int val : remaining) {
         EXPECT_TRUE(tree.contains(val));
     }
