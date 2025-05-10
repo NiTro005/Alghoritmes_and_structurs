@@ -135,24 +135,32 @@ void RBTree<T>::remove(const T& val) {
     if (!z || z->_val != val) return;
 
     RBNode* y = z;
-    bool yOriginalColor = y->_color;
     RBNode* x = nullptr;
+    RBNode* x_parent = nullptr;
+    bool yOriginalColor = y->_color;
 
     if (!z->_left) {
         x = z->_right;
+        x_parent = z->_parent;
         transplant(z, z->_right);
     } else if (!z->_right) {
         x = z->_left;
+        x_parent = z->_parent;
         transplant(z, z->_left);
     } else {
         y = minimum(z->_right);
         yOriginalColor = y->_color;
         x = y->_right;
+        x_parent = y;
 
-        if (y->_parent != z) {
+        if (y->_parent == z) {
+            if (x) x->_parent = y;
+            x_parent = y;
+        } else {
             transplant(y, y->_right);
             y->_right = z->_right;
             y->_right->_parent = y;
+            x_parent = y->_parent;
         }
 
         transplant(z, y);
@@ -160,9 +168,28 @@ void RBTree<T>::remove(const T& val) {
         y->_left->_parent = y;
         y->_color = z->_color;
     }
+
     delete z;
-    if (yOriginalColor == false && x) {
-        fixDelete(x);
+    if (yOriginalColor == false) {
+        if (x) {
+            fixDelete(x);
+        } else if (x_parent) {
+            RBNode* nilNode = new RBNode(T());
+            nilNode->_color = false;
+            nilNode->_parent = x_parent;
+            if (x_parent->_left == nullptr) {
+                x_parent->_left = nilNode;
+            } else {
+                x_parent->_right = nilNode;
+            }
+            fixDelete(nilNode);
+            if (x_parent->_left == nilNode) {
+                x_parent->_left = nullptr;
+            } else {
+                x_parent->_right = nullptr;
+            }
+            delete nilNode;
+        }
     }
 }
 
@@ -171,8 +198,7 @@ void RBTree<T>::fixDelete(RBNode* x) {
     while (x != root && x->_color == false) {
         if (x == x->_parent->_left) {
             fixDeleteLeftCase(x);
-        }
-        else {
+        } else {
             fixDeleteRightCase(x);
         }
     }
@@ -252,8 +278,7 @@ void RBTree<T>::deleteTree(RBNode* node) {
 template <typename T>
 bool RBTree<T>::contains(const T& val) const {
     RBNode* res = search(val);
-    if (!res || res->_val == val) return true;
-    return false;
+    return res && res->_val == val;
 }
 
 template<class T>

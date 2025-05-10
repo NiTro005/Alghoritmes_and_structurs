@@ -109,7 +109,6 @@ TEST(RBTreeTest, InsertMixedNumbers) {
     EXPECT_TRUE(tree.contains(-15));
 }
 
-// Тесты для удаления элементов
 TEST(RBTreeTest, RemoveFromEmptyTree) {
     RBTree<int> tree;
     tree.remove(10);
