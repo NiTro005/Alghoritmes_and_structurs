@@ -16,11 +16,33 @@ add_subdirectory(lib_pair)	      # подключаем дополнительн
 
 add_subdirectory(lib_dmassive)
 
+add_subdirectory(lib_dsu)
+
+add_subdirectory(lib_itable)
+
+add_subdirectory(lib_heap)
+
+add_subdirectory(lib_RB_tree)
+
+add_subdirectory(lib_unsort_table)
+
+add_subdirectory(lib_sorted_table)
+
+add_subdirectory(lib_binSearchTree)
+
+add_subdirectory(lib_hash_table)
+
 add_subdirectory(lib_string)
 
 add_subdirectory(lib_list)
 
+add_subdirectory(lib_calculator)
+
+add_subdirectory(lib_polinom)
+
 add_subdirectory(lib_stack)
+
+add_subdirectory(lib_stackOnList)
 
 add_subdirectory(lib_queue)
 

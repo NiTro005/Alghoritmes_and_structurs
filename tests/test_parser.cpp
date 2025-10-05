@@ -6,6 +6,7 @@
 
 #include "../lib_list/tlist.h"
 #include "../lib_list/tnode.h"
+#include "../lib_heap/heap.h"
 
 
 template <typename T>
@@ -77,9 +78,105 @@ TEST(ListCycle, Rabbit_and_turtle_function) {
 }
 
 TEST(ListCycle, UpheavalPointer_function) {
+    CicleErr<int> cicle;
     TList<int>* list = createList<int>(20);
-
     list->last->next(list->head->next());
+    cicle = UpheavalPointerCycleList(*list);
+    EXPECT_TRUE(cicle.has_cicle);
+    EXPECT_EQ(cicle.index_err, 1);
+}
 
-    EXPECT_TRUE(UpheavalPointerCycleList(*list));
+TEST(Link_lists, Trevial_test) {
+    TList<int> list1;
+    TList<int> list2;
+    TList<int> list3;
+    list1.push_back(1);
+    list1.push_back(5);
+    list1.push_back(8);
+
+    list2.push_back(2);
+    list2.push_back(7);
+    list2.push_back(9);
+
+    list3.push_back(1);
+    list3.push_back(2);
+    list3.push_back(5);
+    list3.push_back(7);
+    list3.push_back(8);
+    list3.push_back(9);
+
+    link_lists(list1, list2);
+    auto l3 = list3.begin();
+    for (auto it = list1.begin(); it != list1.end(); it++) {
+        EXPECT_EQ(*it, *l3);
+        l3++;
+    }
+}
+
+TEST(LinkListsTest, IdenticalElements) {
+    TList<int> list1;
+    TList<int> list2;
+    TList<int> list3;
+
+    list1.push_back(1);
+    list1.push_back(2);
+    list1.push_back(3);
+
+    list2.push_back(1);
+    list2.push_back(2);
+    list2.push_back(3);
+
+    list3.push_back(1);
+    list3.push_back(1);
+    list3.push_back(2);
+    list3.push_back(2);
+    list3.push_back(3);
+    list3.push_back(3);
+
+    link_lists(list1, list2);
+    auto l3 = list3.begin();
+    for (auto it = list1.begin(); it != list1.end(); it++) {
+        EXPECT_EQ(*it, *l3);
+        l3++;
+    }
+}
+
+TEST(LinkListsTest, SecondListAppendedToEnd) {
+    TList<int> list1;
+    TList<int> list2;
+    TList<int> list3;
+
+    list1.push_back(1);
+    list1.push_back(2);
+    list1.push_back(3);
+
+    list2.push_back(4);
+    list2.push_back(5);
+    list2.push_back(6);
+
+    list3.push_back(1);
+    list3.push_back(2);
+    list3.push_back(3);
+    list3.push_back(4);
+    list3.push_back(5);
+    list3.push_back(6);
+
+    link_lists(list1, list2);
+    auto l3 = list3.begin();
+    for (auto it = list1.begin(); it != list1.end(); it++) {
+        EXPECT_EQ(*it, *l3);
+        l3++;
+    }
+}
+
+TEST(TestSortHeap, test_on_correct_sort) {
+    size_t n = 7, k = 3;
+    int mass[] = { 6, 5, 3, 2, 8, 10, 9 };
+
+    heapSort(mass, n, k);
+
+    int expected[] = { 2, 3, 5, 6, 8, 9, 10 };
+    for (size_t i = 0; i < n; ++i) {
+        EXPECT_EQ(mass[i], expected[i]);
+    }
 }

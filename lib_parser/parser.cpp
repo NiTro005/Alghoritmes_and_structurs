@@ -1,10 +1,13 @@
 // Copyright 2024 Kita Trofimov
+#include <iostream>
+#include <vector>
 #include "../lib_string/cstring.h"
 #include "../lib_stack/stack.h"
 #include "../lib_parser/parser.h"
 
 #include "../lib_list/tlist.h"
 #include "../lib_list/tnode.h"
+
 
 bool IsCorrect(const CString& str) {
     TStack<char> stack(str.size());
@@ -58,19 +61,63 @@ bool RabbitTurtleCycleList(const TList<T>& list) {
 }
 
 template<typename T>
-bool UpheavalPointerCycleList(const TList<T>& list) {
+void RecoveryList(const TList<T>& list, size_t size, size_t index) {
     TList<T> _list(list);
+    size_t cur_size = size;
+    TNode<T>* cur = _list.head;
+    TNode<T>* cur_next = cur;
+    TNode<T>* cur_prev = cur;
+
+
+    for (size_t i = 0; i <= size; i++) {
+        cur_prev = cur;
+        cur = cur_next;
+        cur_next = cur_next->next();
+        if (index >= i) {
+            continue;
+        } else if (cur == _list.last) {
+            cur->next(nullptr);
+        } else {
+            cur->next(cur_prev);
+        }
+    }
+}
+
+template<typename T>
+CicleErr<T> UpheavalPointerCycleList
+(TList<T>& _list) {  // NOLINT(runtime/references)
+    CicleErr<T> cicle;
     TNode<T>* nod = _list.head;
     TNode<T>* next = _list.head->next();
+    std::vector<TNode<T>*> find_index_err;
+    size_t size = 0;
     size_t index = 0;
-    _list.head->next(nullptr);
+    bool find = true;
+
     while (next != nullptr) {
         TNode<T>* prev = nod;
         nod = next;
         next = next->next();
+        if (std::find(find_index_err.begin(),
+            find_index_err.end(), nod) != find_index_err.end() && find) {
+            index = size;
+            find = false;
+        }
+        find_index_err.push_back(nod);
         nod->next(prev);
-        if (next == list.head) return false;
-        if (next == list.last) return true;
+        size++;
+        if (next == _list.head) {
+            find_index_err.clear();
+            cicle.has_cicle = true;
+            RecoveryList(_list, size, size - index);
+            cicle.index_err = size - index;
+            return cicle;
+        }
+        if (next == _list.last && next->next() == nullptr) {
+            RecoveryList(_list, size, 0);
+            cicle.has_cicle = false;
+            return cicle;
+        }
     }
-    return false;
 }
+

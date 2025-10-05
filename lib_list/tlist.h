@@ -9,13 +9,30 @@ template <typename T>
 void asort(TList<T>& list) noexcept;  // NOLINT(runtime/references)
 template <typename T>
 class TList {
+    template<class T>
+    class TIterator;
  public:
      TNode<T>* head = nullptr;
      TNode<T>* last = nullptr;
+     typedef TIterator<T> iterator;
 
      TList() = default;
      TList(const TList& list);
      ~TList();
+     iterator begin() {
+         return iterator(head);
+     }
+
+     iterator end() {
+         return iterator(nullptr);
+     }
+     const iterator begin() const {
+         return iterator(head);
+     }
+
+     const iterator end() const {
+         return iterator(nullptr);
+     }
 
      void push_front(const T& value) noexcept;
      void push_back(const T& value) noexcept;
@@ -24,7 +41,7 @@ class TList {
 
      TNode<T>* find(const T& value) const noexcept;
      bool isEmpty() const noexcept;
-
+     size_t size() const noexcept;
      void pop_front();
      void pop_back();
      void erase(TNode<T>* node);
@@ -35,6 +52,43 @@ class TList {
 
      friend void asort<T>
          (TList<T>& list) noexcept;  // NOLINT(runtime/references)
+
+ private:
+     template <class T>
+     class TIterator {
+         TNode<T>* pCur;
+
+      public:
+          TIterator() = default;
+          explicit TIterator(TNode<T>* nod) : pCur(nod) {}
+          TIterator(const TIterator<T>& iter) : pCur(iter.pCur) {}
+          TIterator<T>& operator++() {
+              pCur = pCur->next();
+              return *this;
+          }
+
+          TIterator<T> operator++(int) {
+              TIterator<T> temp = *this;
+              pCur = pCur->next();
+              return temp;
+          }
+          bool operator!=(const TIterator<T>& other) const {
+              return pCur != other.pCur;
+          }
+
+          bool operator==(const TIterator<T>& other) const {
+              return pCur == other.pCur;
+          }
+          T operator*() { return pCur->value(); }
+
+          const T& operator*() const {
+              return pCur->value();
+          }
+
+          TNode<T>* getNode() const {
+              return pCur;
+          }
+     };
 };
 
 
@@ -48,6 +102,8 @@ TList<T>::~TList() {
         head = head->next();
         delete link;
     }
+    head = nullptr;
+    last = nullptr;
 }
 
 template<typename T>
@@ -76,29 +132,28 @@ void TList<T>::push_back(const T& value) noexcept {
     }
 }
 
-template<typename T>
+template <typename T>
 void TList<T>::insert(TNode<T>* node, const T& value) {
     if (node == nullptr) {
         throw std::invalid_argument("Node pointer is nullptr");
     }
-    if (node->next() == nullptr) {
-        push_back(value);
-    } else {
-        TNode<T>* newNode = new TNode<T>(value, node->next());
-        node->next(newNode);
+    TNode<T>* newNode = new TNode<T>(value, node->next());
+    node->next(newNode);
+    if (newNode->next() == nullptr) {
+        last = newNode;
     }
 }
 
-template<typename T>
+template <typename T>
 void TList<T>::insert(size_t pos, const T& value) {
-    TNode<T>* cur = head;
     if (pos == 0) {
         push_front(value);
         return;
     }
-    for (size_t i = 0; i != pos; i++) {
-        cur = cur->next();
+    TNode<T>* cur = head;
+    for (size_t i = 0; i < pos - 1; ++i) {
         if (cur == nullptr) throw std::logic_error("Out of range");
+        cur = cur->next();
     }
     insert(cur, value);
 }
@@ -119,6 +174,16 @@ TNode<T>* TList<T>::find(const T& value) const noexcept {
 
 template<typename T>
 inline bool TList<T>::isEmpty() const noexcept { return head == nullptr; }
+
+template<typename T>
+inline size_t TList<T>::size() const noexcept {
+    size_t count = 0;
+    TNode<T>* current = head;
+    while (current->next() != last) {
+        count++;
+    }
+    return count;
+}
 
 template<typename T>
 void TList<T>::pop_front() {
@@ -151,14 +216,6 @@ void TList<T>::erase(TNode<T>* node) {
     if (node == nullptr) {
         throw std::invalid_argument("Node pointer is nullptr");
     }
-    if (node == head) {
-        pop_front();
-        return;
-    }
-    if (node == last) {
-        pop_back();
-        return;
-    }
     TNode<T>* link = node->next();
     node->next(node->next()->next());
     delete link;
@@ -181,7 +238,9 @@ void TList<T>::erase(size_t pos) {
         pop_back();
         return;
     }
-    erase(cur);
+    TNode<T>* link = cur->next();
+    cur->next(cur->next()->next());
+    delete link;
 }
 
 template<typename T>

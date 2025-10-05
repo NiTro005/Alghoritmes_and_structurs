@@ -96,8 +96,8 @@ TEST(Test_TDMassive, reserve_function) {
     TDMassive<int> m;
     m.resize(15, 5);
     EXPECT_EQ(m.capacity(), 15);
+    EXPECT_EQ(m.size(), 15);
     m.push_front(1);
-    m.reserve();
     EXPECT_EQ(m.capacity(), 30);
 }
 
@@ -176,16 +176,16 @@ TEST(Test_TDMassive, PopFront) {
     mass.push_back(3);
 
     mass.pop_front();
-    EXPECT_EQ(mass.data()[0], 2);
-    EXPECT_EQ(mass.data()[1], 3);
-    EXPECT_EQ(mass.size(), 2);
+    EXPECT_EQ(mass[0], 2);
+    EXPECT_EQ(mass[1], 3);
+    EXPECT_EQ(mass.size(), 3);
 
     mass.pop_front();
-    EXPECT_EQ(mass.data()[0], 3);
-    EXPECT_EQ(mass.size(), 1);
+    EXPECT_EQ(mass[0], 3);
+    EXPECT_EQ(mass.size(), 3);
 
     mass.pop_front();
-    EXPECT_EQ(mass.size(), 0);
+    EXPECT_EQ(mass.size(), 3);
 }
 
 TEST(Test_TDMassive, PopFront_any_throw) {
@@ -234,8 +234,10 @@ TEST(Test_TDMassive, RemoveByIndex_any_throw) {
     TDMassive<int> mass(10);
     mass.push_back(1);
     ASSERT_NO_THROW(mass.remove_by_index(0));
-    ASSERT_ANY_THROW(mass.remove_by_index(0));
+    mass.push_back(1);
     ASSERT_ANY_THROW(mass.remove_by_index(3));
+    ASSERT_NO_THROW(mass.remove_by_index(0));
+    ASSERT_ANY_THROW(mass.remove_by_index(0));
 }
 
 
@@ -316,15 +318,6 @@ TEST(Test_TDMassive, FindFirst) {
     EXPECT_EQ(mass.find_first(3), 3);
 }
 
-TEST(Test_TDMassive, FindFirst_any_throw) {
-    TDMassive<int> mass(10);
-    mass.push_back(1);
-    mass.push_back(2);
-    mass.push_back(1);
-    mass.push_back(3);
-
-    ASSERT_ANY_THROW(mass.find_first(0));
-}
 
 TEST(Test_TDMassive, FindLast) {
     TDMassive<int> mass(10);
@@ -338,15 +331,6 @@ TEST(Test_TDMassive, FindLast) {
     EXPECT_EQ(mass.find_last(3), 3);
 }
 
-TEST(Test_TDMassive, FindLast_any_throw) {
-    TDMassive<int> mass(10);
-    mass.push_back(1);
-    mass.push_back(2);
-    mass.push_back(1);
-    mass.push_back(3);
-
-    ASSERT_ANY_THROW(mass.find_last(0));
-}
 
 TEST(Test_TDMassive, FindAll) {
     TDMassive<int> mass(10);

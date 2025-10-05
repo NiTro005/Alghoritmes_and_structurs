@@ -4,7 +4,7 @@
 #include <utility>
 #include <algorithm>
 #define STEP_CAPACITY 15
-#define MAX_CAPACITY 100000
+#define MAX_CAPACITY 10000000
 
 enum State { empty, busy, deleted };
 
@@ -19,13 +19,17 @@ inline void swap(T& val_1, T& val_2) noexcept {
 
 template <typename T>
 class TDMassive {
+    class Iterator;
+
     T* _data;
     State* _states;
     size_t _capacity;
     size_t _size;
     size_t _deleted;
 
+
  public:
+    typedef Iterator iterator;
     TDMassive();
     TDMassive(const TDMassive& archive);
     TDMassive(const T* arr, size_t n);
@@ -53,7 +57,7 @@ class TDMassive {
 
     void clear();
     void resize(size_t n, T value = NULL);
-    void reserve(size_t n = 15);
+    void reserve(size_t n = 0);
 
     void push_back(T value);
     void pop_back();
@@ -78,10 +82,72 @@ class TDMassive {
     T& operator[](size_t index);
     const T& operator[](size_t index) const;
     TDMassive& operator=(const TDMassive& other);
+    iterator begin() {
+        return iterator(_data, _states, _size, 0);
+    }
+
+    iterator end() {
+        return iterator(_data + _size, _states + _size, _size, _size);
+    }
+
 
  private:
     size_t count_value(T value)  const noexcept;
     void repacking();
+
+    class Iterator {
+        T* _ptr;
+        State* _states;
+        size_t _size;
+        size_t _current_index;
+
+     public:
+        Iterator() = default;
+        Iterator(const Iterator& it)
+            : _ptr(it._ptr), _states(it._states),
+            _size(it._size), _current_index(it._current_index) {}
+        explicit Iterator(T* ptr, State* states,
+            size_t size, size_t current_index = 0)
+            : _ptr(ptr), _states(states), _size(size),
+            _current_index(current_index) {
+            while (_current_index < _size &&
+                _states[_current_index] == State::deleted) {
+                ++_current_index;
+                ++_ptr;
+            }
+        }
+
+        Iterator& operator++() {
+            do {
+                ++_current_index;
+                ++_ptr;
+            } while (_current_index < _size &&
+                _states[_current_index] == State::deleted);
+            return *this;
+        }
+
+        Iterator operator++(int) {
+            Iterator temp = *this;
+            ++(*this);
+            return temp;
+        }
+
+        bool operator!=(const Iterator& other) const {
+            return _ptr != other._ptr;
+        }
+
+        bool operator==(const Iterator& other) const {
+            return _ptr == other._ptr;
+        }
+
+        T& operator*() {
+            return *_ptr;
+        }
+
+        const T& operator*() const {
+            return *_ptr;
+        }
+    };
 };
 
 template <typename T>
@@ -192,7 +258,7 @@ void TDMassive<T>::set_size(size_t size) noexcept {
 }
 
 template <typename T>
-const T* TDMassive<T> ::data() const {
+const T* TDMassive<T>::data() const {
     return _data;
 }
 
@@ -253,10 +319,11 @@ void TDMassive <T>::resize(size_t n, T value) {
 template <typename T>
 void TDMassive <T>::reserve(size_t n) {
     repacking();
-    if (n < _capacity ||(_size < _capacity && n <= _capacity)) {
+    if (_size + n < _capacity) {
         return;
     }
-    _capacity = (n / STEP_CAPACITY) * STEP_CAPACITY + STEP_CAPACITY;
+    _capacity = ((_capacity + n) /
+        STEP_CAPACITY) * STEP_CAPACITY + STEP_CAPACITY;
     if (_capacity > MAX_CAPACITY) {
         throw std::logic_error("Error in function" \
                                "void TArchive<T>::reserve(size_t n)\":"
@@ -299,7 +366,7 @@ TDMassive<T>::~TDMassive() {
 
 template <typename T>
 inline bool TDMassive<T>::empty() const noexcept {
-    return _size == 0;
+    return _size - _deleted == 0;
 }
 
 template <typename T>
@@ -399,18 +466,18 @@ void TDMassive<T>::push_front(T value) {
 
 template <typename T>
 void TDMassive<T>::pop_front() {
-    if (_size <= 0) {
+    if (_size - _deleted <= 0) {
         throw std::logic_error("Error in function" \
                                "void TArchive<T>::pop_front()\":"
                                "archive clear");
     }
-    for (size_t i = 1; i < _size; i++) {
-        _data[i - 1] = _data[i];
-        _states[i - 1] = _states[i];
+    for (size_t i = 0; i < _size; i++) {
+        if (_states[i] != State::deleted) {
+            _states[i] = State::deleted;
+            break;
+        }
     }
-    _states[_size - 1] = State::deleted;
     _deleted++;
-    _size--;
 }
 
 template <typename T>
@@ -426,14 +493,21 @@ void TDMassive<T>::pop_back() {
 
 template <typename T>
 TDMassive<T>& TDMassive<T> ::remove_by_index(size_t pos) {
-    if (_size <= pos || pos < 0 || _states[pos] == State::deleted) {
+    if (pos >= _size || pos < 0) {
         throw std::logic_error("Error in function" \
                                "void TArchive<T>::pop_back()\":"
                                " archive clear");
     }
-    _states[pos] = State::deleted;
-    _deleted++;
-    return *this;
+    for (size_t i = pos; i < _size; i++) {
+        if (_states[i] != State::deleted) {
+            _states[i] = State::deleted;
+            _deleted++;
+            return *this;
+        }
+    }
+    throw std::logic_error("Error in function" \
+        "void TArchive<T>::pop_back()\":"
+        " archive clear");
 }
 
 template <typename T>
@@ -511,8 +585,7 @@ size_t TDMassive<T>::find_first(T value) const {
             return i;
         }
     }
-    throw std::logic_error("Error in function" \
-    "size_t TArchive<T>::find_first(T value)\":No mathes");
+    return -1;
 }
 
 
@@ -523,8 +596,7 @@ size_t TDMassive<T>::find_last(T value) const {
             return i;
         }
     }
-    throw std::logic_error("Error in function" \
-    "size_t TArchive<T>::find_first(T value)\":No mathes");
+    return -1;
 }
 
 template <typename T>
@@ -585,20 +657,32 @@ size_t TDMassive<T>::count_value(T value) const noexcept {
 
 template <typename T>
 T& TDMassive<T>::operator[](size_t index) {
-    for (int i = index; i < _size; i++) {
-        if (_states[i] == State::busy) {
-            return _data[i];
+    size_t del = 0;
+    size_t cur = 0;
+    for (size_t i = 0; i < _size + del; i++) {
+        if (_states[i] == State::deleted) {
+            del++;
+        } else if (_states[i] == State::busy) {
+            if (index == cur) break;
+            cur++;
         }
     }
+    return _data[index + del];
 }
 
 template <typename T>
 const T& TDMassive<T>::operator[](size_t index) const {
-    for (int i = index; i < _size; i++) {
-        if (_states[i] == State::busy) {
-            return _data[i];
+    size_t del = 0;
+    size_t cur = 0;
+    for (size_t i = 0; i < _size + del; i++) {
+        if (_states[i] == State::deleted) {
+            del++;
+        } else if (_states[i] == State::busy) {
+            if (index == cur) break;
+            cur++;
         }
     }
+    return _data[index + del];
 }
 
 template <typename T>

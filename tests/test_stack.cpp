@@ -42,3 +42,14 @@ TEST(Test_TStack, Full_metod) {
 
     ASSERT_ANY_THROW(st1.push(2));
 }
+
+TEST(Test_TStack, Top_metod) {
+    TStack<int> st1(2);
+    st1.push(2);
+    st1.push(3);
+    EXPECT_EQ(st1.top(), 3);
+    st1.pop();
+    EXPECT_EQ(st1.top(), 2);
+    st1.pop();
+    ASSERT_ANY_THROW(st1.top());
+}

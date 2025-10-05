@@ -1,0 +1,5 @@
+create_project_lib(SortedTable)
+add_depend(SortedTable List lib_list)
+add_depend(SortedTable DMassive lib_dmassive)
+add_depend(SortedTable Pair lib_pair)
+add_depend(SortedTable ITable lib_itable)
